@@ -46,15 +46,15 @@ export default function HeroSection() {
   return (
     <div className="relative">
       <HeroHeader />
-      <section className="fixed top-0 left-0 h-[100dvh] w-full flex flex-col pointer-events-none -z-10">
+      <section className="fixed top-0 left-0 h-[100dvh] w-full flex flex-col pointer-events-none -z-10 bg-[#212121]">
         {/* Dither Background */}
         <div className="absolute inset-0 pointer-events-auto">
           <Dither />
         </div>
 
         {/* Main content area - Side by side layout */}
-        <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-20 relative z-10 overflow-hidden">
-          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 max-h-full overflow-y-auto">
+        <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-8 relative z-10 overflow-y-auto min-h-0">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 lg:gap-16">
               {/* Left Column: Text Content */}
               <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -72,7 +72,7 @@ export default function HeroSection() {
                   tag="h1"
                   textAlign="inherit"
                 />
-                <p className="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl text-white/80 max-w-lg">
+                <p className="mt-3 sm:mt-6 md:mt-8 text-pretty text-sm sm:text-lg md:text-xl text-white/80 max-w-lg">
                   Somos una comunidad de builders que transformamos ideas en
                   productos digitales reales usando IA como nuestro superpoder.
                 </p>
@@ -107,7 +107,7 @@ export default function HeroSection() {
               <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-end pointer-events-auto">
                 <div
                   ref={gridRef}
-                  className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full sm:max-w-[450px] md:max-w-[500px] lg:max-w-none"
+                  className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full max-w-[280px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-none"
                 >
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
                     <img
@@ -138,11 +138,11 @@ export default function HeroSection() {
                     />
                   </div>
                 </div>
-                <div className="mt-3 sm:mt-6 flex lg:hidden w-full gap-2 sm:gap-3 pointer-events-auto">
+                <div className="mt-3 sm:mt-6 flex lg:hidden w-full gap-2 sm:gap-3 pointer-events-auto shrink-0">
                   <Button
                     asChild
                     size="lg"
-                    className="flex-1 bg-white text-black hover:bg-white/90 px-6 sm:px-10 py-5 sm:py-7 text-sm sm:text-lg font-medium rounded-xl"
+                    className="flex-1 bg-white text-black hover:bg-white/90 px-4 sm:px-10 py-4 sm:py-7 text-sm sm:text-lg font-medium rounded-xl"
                   >
                     <Link
                       href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm"
@@ -156,7 +156,7 @@ export default function HeroSection() {
                   <Link
                     href="https://www.linkedin.com/company/aibuildersmexico"
                     target="_blank"
-                    className="flex items-center justify-center w-12 sm:w-14 shrink-0 rounded-xl bg-white text-black hover:bg-white/90 transition-all"
+                    className="flex items-center justify-center w-11 sm:w-14 shrink-0 rounded-xl bg-white text-black hover:bg-white/90 transition-all"
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="size-5 sm:size-6" />
@@ -167,8 +167,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Logo Banner - at the very bottom */}
-        <div className="relative z-10 pb-4 sm:pb-10 md:pb-12 mt-auto shrink-0">
+        {/* Logo Banner - at the very bottom (hidden on mobile, shown in stats section instead) */}
+        <div className="relative z-10 pb-3 sm:pb-6 md:pb-8 shrink-0 hidden md:block">
           <div className="group relative m-auto max-w-6xl px-4 sm:px-6">
             <div className="flex flex-col items-center md:flex-row">
               <div className="md:max-w-44 md:border-r md:border-white/20 md:pr-6">
@@ -176,7 +176,7 @@ export default function HeroSection() {
                   Partners:
                 </p>
               </div>
-              <div className="relative py-2 sm:py-6 md:w-[calc(100%-11rem)] pointer-events-auto">
+              <div className="relative py-2 sm:py-4 md:w-[calc(100%-11rem)] pointer-events-auto">
                 <InfiniteSlider speedOnHover={20} speed={40} gap={112}>
                   <div className="flex items-center">
                     <img
