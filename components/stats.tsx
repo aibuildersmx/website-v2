@@ -3,8 +3,8 @@ import { Users, Calendar, UserCheck } from "lucide-react"
 
 const stats = [
     {
-        label: "Builders en WhatsApp",
-        value: "+600",
+        label: "Builders",
+        value: "1500+",
         icon: Users,
     },
     {
@@ -13,8 +13,8 @@ const stats = [
         icon: Calendar,
     },
     {
-        label: "Asistentes IRL",
-        value: "200",
+        label: "Asistentes a eventos",
+        value: "700+",
         icon: UserCheck,
     },
 ]
