@@ -61,56 +61,46 @@ export default function StatsSection() {
               Partners
             </p>
             <div className="w-full overflow-hidden">
-              <InfiniteSlider speedOnHover={20} speed={40} gap={80}>
-                <div className="flex items-center">
-                  <img
-                    className="mx-auto h-5 w-fit opacity-50"
-                    src="/cursor-logo-dark.svg"
-                    alt="Cursor Logo"
-                    height="20"
-                    width="auto"
-                    style={{ filter: "invert(1)" }}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="mx-auto h-6 w-fit opacity-50"
-                    src="/rbr logo.svg"
-                    alt="RBR Logo"
-                    height="24"
-                    width="auto"
-                    style={{ filter: "invert(1)" }}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="mx-auto h-5 w-fit opacity-50"
-                    src="/stripe-logo.png"
-                    alt="Stripe Logo"
-                    height="20"
-                    width="auto"
-                    style={{ filter: "invert(1)" }}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="mx-auto h-5 w-fit opacity-50"
-                    src="/v0-logo-black.svg"
-                    alt="v0 Logo"
-                    height="20"
-                    width="auto"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="mx-auto h-5 w-fit opacity-50"
-                    src="/vercel-logo.svg"
-                    alt="Vercel Logo"
-                    height="20"
-                    width="auto"
-                    style={{ filter: "invert(1)" }}
-                  />
-                </div>
+              <InfiniteSlider speedOnHover={15} speed={25} gap={32}>
+                <img
+                  className="h-5 w-auto shrink-0 opacity-50"
+                  src="/cursor-logo-dark.svg"
+                  alt="Cursor Logo"
+                  height="20"
+                  width="80"
+                  style={{ filter: "invert(1)" }}
+                />
+                <img
+                  className="h-6 w-auto shrink-0 opacity-50"
+                  src="/rbr logo.svg"
+                  alt="RBR Logo"
+                  height="24"
+                  width="80"
+                  style={{ filter: "invert(1)" }}
+                />
+                <img
+                  className="h-5 w-auto shrink-0 opacity-50"
+                  src="/stripe-logo.png"
+                  alt="Stripe Logo"
+                  height="20"
+                  width="80"
+                  style={{ filter: "invert(1)" }}
+                />
+                <img
+                  className="h-5 w-auto shrink-0 opacity-50"
+                  src="/v0-logo-black.svg"
+                  alt="v0 Logo"
+                  height="20"
+                  width="80"
+                />
+                <img
+                  className="h-5 w-auto shrink-0 opacity-50"
+                  src="/vercel-logo.svg"
+                  alt="Vercel Logo"
+                  height="20"
+                  width="80"
+                  style={{ filter: "invert(1)" }}
+                />
               </InfiniteSlider>
             </div>
           </div>
