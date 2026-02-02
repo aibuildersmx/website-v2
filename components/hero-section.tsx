@@ -53,9 +53,9 @@ export default function HeroSection() {
         </div>
 
         {/* Main content area - Side by side layout */}
-        <div className="flex-1 flex items-center w-full pt-20 pb-4 md:pt-32 md:pb-20 relative z-10">
-          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-16">
+        <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-20 relative z-10 overflow-hidden">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 max-h-full overflow-y-auto">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 lg:gap-16">
               {/* Left Column: Text Content */}
               <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <SplitText
@@ -70,6 +70,7 @@ export default function HeroSection() {
                   threshold={0.1}
                   rootMargin="-50px"
                   tag="h1"
+                  textAlign="inherit"
                 />
                 <p className="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl text-white/80 max-w-lg">
                   Somos una comunidad de builders que transformamos ideas en
@@ -94,7 +95,7 @@ export default function HeroSection() {
                   <Link
                     href="https://www.linkedin.com/company/aibuildersmexico"
                     target="_blank"
-                    className="flex items-center justify-center size-14 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
+                    className="flex items-center justify-center size-14 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 bg-white/10 transition-all z-50"
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="size-6" />
@@ -137,7 +138,7 @@ export default function HeroSection() {
                     />
                   </div>
                 </div>
-                <div className="mt-4 sm:mt-6 flex lg:hidden w-full gap-2 sm:gap-3 pointer-events-auto">
+                <div className="mt-3 sm:mt-6 flex lg:hidden w-full gap-2 sm:gap-3 pointer-events-auto">
                   <Button
                     asChild
                     size="lg"
@@ -155,7 +156,7 @@ export default function HeroSection() {
                   <Link
                     href="https://www.linkedin.com/company/aibuildersmexico"
                     target="_blank"
-                    className="flex items-center justify-center size-12 sm:size-14 shrink-0 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
+                    className="flex items-center justify-center w-12 sm:w-14 shrink-0 rounded-xl bg-white text-black hover:bg-white/90 transition-all"
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="size-5 sm:size-6" />
@@ -167,7 +168,7 @@ export default function HeroSection() {
         </div>
 
         {/* Logo Banner - at the very bottom */}
-        <div className="relative z-10 pb-6 sm:pb-10 md:pb-12 mt-auto">
+        <div className="relative z-10 pb-4 sm:pb-10 md:pb-12 mt-auto shrink-0">
           <div className="group relative m-auto max-w-6xl px-4 sm:px-6">
             <div className="flex flex-col items-center md:flex-row">
               <div className="md:max-w-44 md:border-r md:border-white/20 md:pr-6">
@@ -175,7 +176,7 @@ export default function HeroSection() {
                   Partners:
                 </p>
               </div>
-              <div className="relative py-4 sm:py-6 md:w-[calc(100%-11rem)] pointer-events-auto">
+              <div className="relative py-2 sm:py-6 md:w-[calc(100%-11rem)] pointer-events-auto">
                 <InfiniteSlider speedOnHover={20} speed={40} gap={112}>
                   <div className="flex items-center">
                     <img
