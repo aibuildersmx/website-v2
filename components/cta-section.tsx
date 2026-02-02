@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MessageCircle, Mail, Send } from 'lucide-react';
+import { ArrowRight, MessageCircle, Mail, Send, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import SplitText from '@/components/SplitText';
 
@@ -43,7 +43,7 @@ export default function CTASection() {
               Sé parte de la comunidad más activa de builders en México. Recibe las últimas noticias y conecta con otros expertos.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center">
               <Button
                 asChild
                 size="lg"
@@ -55,6 +55,14 @@ export default function CTASection() {
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
+              <Link
+                href="https://www.linkedin.com/company/aibuildersmexico"
+                target="_blank"
+                className="flex items-center justify-center size-12 rounded-xl border border-black/10 text-black/60 hover:text-black hover:border-black/20 hover:bg-black/[0.02] transition-all"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="size-5" />
+              </Link>
             </div>
           </div>
 

@@ -7,6 +7,7 @@ import { HeroHeader } from './header'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import Dither from '@/components/Dither'
 import SplitText from '@/components/SplitText'
+import { Linkedin } from 'lucide-react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -48,7 +49,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Main content area - Side by side layout */}
-                <div className="flex-1 flex items-center w-full pt-24 pb-12 md:pt-32 md:pb-20 relative z-10">
+                <div className="flex-1 flex items-center w-full pt-20 pb-4 md:pt-32 md:pb-20 relative z-10">
                     <div className="mx-auto w-full max-w-6xl px-6">
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-16">
                             {/* Left Column: Text Content */}
@@ -71,7 +72,7 @@ export default function HeroSection() {
                                     Somos una comunidad de builders que transformamos ideas en productos digitales reales usando IA como nuestro superpoder.
                                 </p>
 
-                                    <div className="mt-8 md:mt-10 hidden lg:flex pointer-events-auto">
+                                    <div className="mt-8 md:mt-10 hidden lg:flex items-center gap-3 pointer-events-auto">
                                         <Button
                                             asChild
                                             size="lg"
@@ -80,6 +81,14 @@ export default function HeroSection() {
                                                 <span className="text-nowrap">Únete a nuestra comunidad</span>
                                             </Link>
                                         </Button>
+                                        <Link
+                                            href="https://www.linkedin.com/company/aibuildersmexico"
+                                            target="_blank"
+                                            className="flex items-center justify-center size-14 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
+                                            aria-label="LinkedIn"
+                                        >
+                                            <Linkedin className="size-6" />
+                                        </Link>
                                     </div>
                             </div>
 
@@ -99,15 +108,23 @@ export default function HeroSection() {
                                         <img src="/hero4.avif" alt="Hero 4" className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105" />
                                     </div>
                                 </div>
-                                <div className="mt-6 flex lg:hidden w-full pointer-events-auto">
+                                <div className="mt-6 flex lg:hidden w-full gap-3 pointer-events-auto">
                                     <Button
                                         asChild
                                         size="lg"
-                                        className="w-full bg-white text-black hover:bg-white/90 px-10 py-7 text-lg font-medium rounded-xl">
+                                        className="flex-1 bg-white text-black hover:bg-white/90 px-10 py-7 text-lg font-medium rounded-xl">
                                         <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank">
                                             <span className="text-nowrap">Únete a nuestra comunidad</span>
                                         </Link>
                                     </Button>
+                                    <Link
+                                        href="https://www.linkedin.com/company/aibuildersmexico"
+                                        target="_blank"
+                                        className="flex items-center justify-center size-14 shrink-0 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
+                                        aria-label="LinkedIn"
+                                    >
+                                        <Linkedin className="size-6" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +132,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Logo Banner - at the very bottom */}
-                <div className="relative z-10 pb-6 md:pb-8 mt-6 md:mt-12">
+                <div className="relative z-10 pb-10 md:pb-12 mt-auto">
                     <div className="group relative m-auto max-w-6xl px-6">
                         <div className="flex flex-col items-center md:flex-row">
                             <div className="md:max-w-44 md:border-r md:border-white/20 md:pr-6">

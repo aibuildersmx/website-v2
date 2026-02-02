@@ -32,7 +32,7 @@ export default function TeamSection() {
                             key={index}
                             href={member.link}
                             target="_blank"
-                            className="group flex flex-row md:flex-col bg-white border border-black/5 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
+                            className="group flex flex-row md:flex-col bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
                         >
                             {/* Image Container: Square on mobile, 4/5 on desktop */}
                             <div className="w-32 h-32 md:w-full md:h-auto md:aspect-[4/5] overflow-hidden bg-black/[0.02] shrink-0">

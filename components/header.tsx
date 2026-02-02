@@ -4,6 +4,7 @@ import { LogoIcon } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { Linkedin } from 'lucide-react'
 
 const menuItems = [
     { name: 'Manifesto', href: '#manifesto' },
@@ -55,15 +56,25 @@ export const HeroHeader = () => {
                     ))}
                 </ul>
 
-                <Button
-                    asChild
-                    size="sm"
-                    className="rounded-full bg-white text-black hover:bg-white/90 px-6 font-mono text-xs uppercase tracking-widest h-10"
-                >
-                    <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank">
-                        Únete
+                <div className="flex items-center gap-2">
+                    <Link
+                        href="https://www.linkedin.com/company/aibuildersmexico"
+                        target="_blank"
+                        className="flex items-center justify-center size-10 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                        aria-label="LinkedIn"
+                    >
+                        <Linkedin className="size-4" />
                     </Link>
-                </Button>
+                    <Button
+                        asChild
+                        size="sm"
+                        className="rounded-full bg-white text-black hover:bg-white/90 px-6 font-mono text-xs uppercase tracking-widest h-10"
+                    >
+                        <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank">
+                            Únete
+                        </Link>
+                    </Button>
+                </div>
             </nav>
         </header>
     )

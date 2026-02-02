@@ -72,7 +72,7 @@ export default function EventsSection() {
           {events.map((event, index) => (
             <div 
               key={index} 
-              className="group relative flex flex-col md:flex-col bg-white border border-black/5 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
+              className="group relative flex flex-col md:flex-col bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
             >
               {/* Mobile Layout (Horizontal/Subtle) */}
               <div className="flex md:hidden items-center p-6 gap-5">
@@ -223,7 +223,7 @@ export default function EventsSection() {
             {pastEvents.map((event, index) => (
               <div 
                 key={index}
-                className="group flex items-center gap-4 p-4 rounded-xl border border-black/5 bg-white hover:border-black/10 hover:bg-black/[0.01] transition-all duration-300"
+                className="group flex items-center gap-4 p-4 rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300"
               >
                 <div className="flex flex-col items-center justify-center w-12 h-12 rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
                   <span className="text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">{event.month}</span>

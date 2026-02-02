@@ -29,7 +29,7 @@ export default function StatsSection() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
                     {stats.map((stat, index) => (
-                        <Card key={index} className="group overflow-hidden border-black/5 rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5">
+                        <Card key={index} className="group overflow-hidden border-black/10 rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5">
                             <CardContent className="p-6 flex items-center gap-4 md:flex-col md:items-center md:text-center md:gap-6 md:py-10">
                                 <div className="flex items-center justify-center size-12 rounded-xl bg-black/[0.03] border border-black/5 shrink-0 group-hover:bg-black group-hover:text-white transition-colors duration-500">
                                     <stat.icon className="size-5" />

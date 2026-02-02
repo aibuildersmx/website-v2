@@ -6,7 +6,7 @@ export default function ContentSection() {
     return (
         <section className="py-24 md:py-32 bg-white text-black" id="manifesto">
             <div className="mx-auto max-w-6xl space-y-12 px-6 md:space-y-16">
-                <div className="relative overflow-hidden rounded-3xl border border-black/5 h-[500px]">
+                <div className="relative overflow-hidden rounded-3xl border border-black/10 h-[500px]">
                     <img
                         className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                         src="/us.png"
