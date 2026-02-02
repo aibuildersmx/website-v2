@@ -6,19 +6,19 @@ const members = [
         name: 'Ben Kim',
         role: 'Co-Founder',
         avatar: 'https://unavatar.io/x/benkimbuilds',
-        link: 'https://x.com/benkimbuilds',
+        link: 'https://ben-k.im',
     },
     {
         name: 'Javier Rivero',
         role: 'Co-Founder',
         avatar: '/javier.avif',
-        link: 'https://javierrivero.com/',
+        link: 'https://javierivero.com/',
     },
     {
         name: 'Ricardo Garcia',
         role: 'Partner',
         avatar: '/ricardo.avif',
-        link: 'https://x.com/ricgarcas',
+        link: 'https://linkedin.com/in/ricgarcas',
     },
 ]
 
