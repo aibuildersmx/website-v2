@@ -18,7 +18,8 @@ export default function Home() {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      const revealHeight = 200;
+      // Responsive reveal height
+      const revealHeight = window.innerWidth < 640 ? 120 : window.innerWidth < 768 ? 160 : 200;
       
       // Calculate distance from bottom
       const distanceToBottom = documentHeight - (scrollY + windowHeight);
@@ -43,7 +44,7 @@ export default function Home() {
         <HeroSection />
       </div>
       
-      <div className="relative z-10 bg-black mt-[100vh] mb-[200px] shadow-[0_20px_50px_rgba(0,0,0,1)]">
+      <div className="relative z-10 bg-black mt-[100vh] mb-[120px] sm:mb-[160px] md:mb-[200px] shadow-[0_20px_50px_rgba(0,0,0,1)]">
         <StatsSection />
         <ContentSection />
         <EventsSection />
@@ -52,8 +53,8 @@ export default function Home() {
       </div>
       
       {/* Footer Reveal Section */}
-      <div className="fixed bottom-0 left-0 w-full h-[200px] bg-[#212121] flex items-center justify-center -z-20">
-        <div className="text-white/30 text-xs font-mono tracking-widest uppercase text-center px-4">
+      <div className="fixed bottom-0 left-0 w-full h-[120px] sm:h-[160px] md:h-[200px] bg-[#212121] flex items-center justify-center -z-20">
+        <div className="text-white/30 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-center px-4">
         2026 – built in v0, hand crafted in cursor, made with ♥︎ by aibuilders.mx
         </div>
       </div>

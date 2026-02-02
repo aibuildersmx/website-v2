@@ -56,41 +56,41 @@ const pastEvents = [
 
 export default function EventsSection() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-white text-black border-t border-black/5" id="events">
+    <section className="relative py-16 sm:py-24 md:py-32 overflow-hidden bg-white text-black border-t border-black/5" id="events">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-black/[0.02] rounded-full blur-3xl" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-black/[0.02] rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         {/* Upcoming Events Header */}
         
 
         {/* Upcoming Events Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-32">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16 sm:mb-24 md:mb-32">
           {events.map((event, index) => (
             <div 
               key={index} 
               className="group relative flex flex-col md:flex-col bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
             >
               {/* Mobile Layout (Horizontal/Subtle) */}
-              <div className="flex md:hidden items-center p-6 gap-5">
-                <div className="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-black/[0.03] border border-black/5 shrink-0">
-                  <span className="text-[10px] font-mono font-bold text-black/40 leading-none mb-1 uppercase tracking-wider">{event.month}</span>
-                  <span className="text-2xl font-instrument font-medium leading-none">{event.day}</span>
+              <div className="flex md:hidden items-center p-4 sm:p-6 gap-3 sm:gap-5">
+                <div className="flex flex-col items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-black/[0.03] border border-black/5 shrink-0">
+                  <span className="text-[8px] sm:text-[10px] font-mono font-bold text-black/40 leading-none mb-0.5 sm:mb-1 uppercase tracking-wider">{event.month}</span>
+                  <span className="text-lg sm:text-2xl font-instrument font-medium leading-none">{event.day}</span>
                 </div>
                 
                 <div className="flex-1 min-w-0 py-1">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-2 sm:mb-3">
                     <div className={`size-1.5 rounded-full ${event.status === 'ABIERTO' ? 'bg-green-500 animate-pulse' : 'bg-black/20'}`} />
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-black/40 font-medium">
+                    <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-black/40 font-medium">
                       {event.status}
                     </span>
                   </div>
 
                   {event.logo && (
-                    <div className="h-5 w-fit mb-3">
+                    <div className="h-4 sm:h-5 w-fit mb-2 sm:mb-3">
                       <img 
                         src={event.logo} 
                         alt={`${event.title} logo`} 
@@ -100,16 +100,16 @@ export default function EventsSection() {
                     </div>
                   )}
 
-                  <h3 className="text-2xl font-instrument font-medium leading-[1.2] text-black/90 mb-2">
+                  <h3 className="text-lg sm:text-2xl font-instrument font-medium leading-[1.2] text-black/90 mb-1.5 sm:mb-2">
                     {event.title}
                   </h3>
-                  <div className="flex items-center gap-3 text-[10px] font-mono text-black/40 uppercase tracking-wider">
+                  <div className="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-wider">
                     <div className="flex items-center gap-1">
-                      <MapPin className="size-3" />
+                      <MapPin className="size-2.5 sm:size-3" />
                       <span className="truncate">{event.location.split(',')[0]}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Ticket className="size-3" />
+                      <Ticket className="size-2.5 sm:size-3" />
                       <span>{event.attendees.split(' ')[0]}</span>
                     </div>
                   </div>
@@ -120,7 +120,7 @@ export default function EventsSection() {
                     asChild={!!event.link && !event.buttonDisabled}
                     disabled={event.buttonDisabled}
                     size="icon"
-                    className={`rounded-full size-10 transition-all duration-300 ${
+                    className={`rounded-full size-9 sm:size-10 transition-all duration-300 ${
                       event.buttonDisabled 
                         ? "bg-transparent border border-black/10 text-black/20" 
                         : "bg-black text-white"
@@ -128,10 +128,10 @@ export default function EventsSection() {
                   >
                     {event.link && !event.buttonDisabled ? (
                       <Link href={event.link} target="_blank">
-                        <ArrowUpRight className="size-4" />
+                        <ArrowUpRight className="size-3.5 sm:size-4" />
                       </Link>
                     ) : (
-                      <ArrowUpRight className="size-4" />
+                      <ArrowUpRight className="size-3.5 sm:size-4" />
                     )}
                   </Button>
                 </div>
@@ -213,28 +213,28 @@ export default function EventsSection() {
         </div>
 
         {/* Past Events Section */}
-        <div className="space-y-12">
-          <div className="flex items-center gap-4">
-            <h3 className="text-2xl font-instrument font-medium">Eventos Pasados</h3>
+        <div className="space-y-6 sm:space-y-12">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <h3 className="text-xl sm:text-2xl font-instrument font-medium whitespace-nowrap">Eventos Pasados</h3>
             <div className="h-px flex-1 bg-black/5" />
           </div>
           
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {pastEvents.map((event, index) => (
               <div 
                 key={index}
-                className="group flex items-center gap-4 p-4 rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300"
+                className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300"
               >
-                <div className="flex flex-col items-center justify-center w-12 h-12 rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
-                  <span className="text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">{event.month}</span>
-                  <span className="text-lg font-sans font-semibold leading-none">{event.day}</span>
+                <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
+                  <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">{event.month}</span>
+                  <span className="text-base sm:text-lg font-sans font-semibold leading-none">{event.day}</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-base font-sans font-medium leading-tight truncate group-hover:text-black/80 transition-colors">
+                  <h4 className="text-sm sm:text-base font-sans font-medium leading-tight truncate group-hover:text-black/80 transition-colors">
                     {event.title}
                   </h4>
-                  <div className="flex items-center gap-1.5 mt-1 text-[10px] font-mono text-black/40 uppercase tracking-tight">
-                    <MapPin className="size-2.5 shrink-0" />
+                  <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
+                    <MapPin className="size-2 sm:size-2.5 shrink-0" />
                     <span className="truncate">{event.location}</span>
                   </div>
                 </div>
