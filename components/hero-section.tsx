@@ -107,7 +107,7 @@ export default function HeroSection() {
               <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-end pointer-events-auto">
                 <div
                   ref={gridRef}
-                  className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full max-w-[280px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-none"
+                  className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full max-w-[360px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-none"
                 >
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
                     <img
