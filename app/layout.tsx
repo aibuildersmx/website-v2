@@ -24,6 +24,27 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    title: "AI Builders Mexico",
+    description: "La Primer Comunidad de AI en México",
+    type: "website",
+    locale: "es_MX",
+    siteName: "AI Builders Mexico",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "AI Builders Mexico",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Builders Mexico",
+    description: "La Primer Comunidad de AI en México",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
