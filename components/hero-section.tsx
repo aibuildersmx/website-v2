@@ -53,7 +53,7 @@ export default function HeroSection() {
         </div>
 
         {/* Main content area - Side by side layout */}
-        <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-8 relative z-10 overflow-y-auto min-h-0">
+        <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-8 relative z-10 overflow-hidden">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 lg:gap-16">
               {/* Left Column: Text Content */}
