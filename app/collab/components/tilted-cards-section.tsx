@@ -4,14 +4,14 @@ import TiltedCard from './TiltedCard';
 
 export default function TiltedCardsSection() {
   return (
-    <section className="py-20 px-4 md:px-6 lg:px-8">
+    <section className="py-20 px-4 md:px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Experience the Magic
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-4 font-instrument">
+            Nuestros Eventos
           </h2>
           <p className="text-muted-foreground text-lg">
-            
+            Experiencias que transforman ideas en realidad
           </p>
         </div>
         

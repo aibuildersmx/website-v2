@@ -86,13 +86,13 @@ export default function HeroSection() {
                                         <V0Icon size={35} aria-label="v0 Logo" className='text-white mx-auto'/>
                                     </div>
                                     <div className="flex items-center">
-                                        <Image src="/stripe.png" alt="Stripe Logo" width={80} height={35} className='mx-auto object-contain'/>
+                                        <Image src="/stripe-logo.png" alt="Stripe Logo" width={80} height={35} className='mx-auto object-contain'/>
                                     </div>
                                     <div className="flex items-center">
                                         <Image src="/cursor-logo-dark.svg" alt="Cursor Logo" width={100} height={35} className='mx-auto object-contain'/>
                                     </div>
                                     <div className="flex items-center">
-                                        <Image src="/rbr.svg" alt="RBR Logo" width={80} height={35} className='mx-auto object-contain'/>
+                                        <Image src="/rbr logo.svg" alt="RBR Logo" width={80} height={35} className='mx-auto object-contain'/>
                                     </div>
                                     <div className="flex items-center">
                                         <Image src="/google.png" alt="Google Logo" width={80} height={35} className='mx-auto object-contain'/>
