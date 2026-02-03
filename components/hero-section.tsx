@@ -59,7 +59,7 @@ export default function HeroSection() {
               {/* Left Column: Text Content */}
               <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <SplitText
-                  text="La Primer Comunidad de AI en México"
+                  text="La Comunidad de AI en México"
                   className="text-balance text-3xl sm:text-4xl md:text-5xl font-medium text-white lg:text-6xl xl:text-7xl leading-[1.1] font-instrument text-center lg:text-left"
                   delay={30}
                   duration={0.8}

@@ -20,13 +20,13 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: "AI Builders Mexico",
-  description: "La Primer Comunidad de AI en México",
+  description: "La Comunidad de AI en México",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
     title: "AI Builders Mexico",
-    description: "La Primer Comunidad de AI en México",
+    description: "La Comunidad de AI en México",
     type: "website",
     locale: "es_MX",
     siteName: "AI Builders Mexico",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "AI Builders Mexico",
-    description: "La Primer Comunidad de AI en México",
+    description: "La Comunidad de AI en México",
     images: ["/og-image.png"],
   },
 };
