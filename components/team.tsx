@@ -16,7 +16,7 @@ const members = [
   },
   {
     name: "Ricardo Garcia",
-    role: "Partner",
+    role: "Co-Founder",
     avatar: "/ricardo.avif",
     link: "https://linkedin.com/in/ricgarcas",
   },

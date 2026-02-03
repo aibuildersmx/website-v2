@@ -15,7 +15,7 @@ const stats = [
   },
   {
     label: "Asistentes a eventos",
-    value: "700+",
+    value: "1000+",
     icon: UserCheck,
   },
 ];
@@ -34,7 +34,7 @@ export default function StatsSection() {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="group overflow-hidden border-black/10 rounded-xl sm:rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
+              className="group overflow-hidden border-black/10 rounded-xl sm:rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5 cursor-default"
             >
               <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-4 md:flex-col md:items-center md:text-center md:gap-6 md:py-10">
                 <div className="flex items-center justify-center size-10 sm:size-12 rounded-lg sm:rounded-xl bg-black/[0.03] border border-black/5 shrink-0 group-hover:bg-black group-hover:text-white transition-colors duration-500">
