@@ -1,6 +1,6 @@
 import React from "react"
 import type {Metadata} from 'next'
-import {Geist, Geist_Mono} from 'next/font/google'
+import {Geist, Geist_Mono, Instrument_Serif} from 'next/font/google'
 import DitherWrapper from "@/app/collab/components/DitherWrapper";
 import FooterSection from "@/app/collab/components/footer";
 import {HeroHeader} from "@/app/collab/components/header";
@@ -12,6 +12,11 @@ const geist = Geist({
 const geistMono = Geist_Mono({
     subsets: ["latin"],
     variable: "--font-geist-mono"
+});
+const instrumentSerif = Instrument_Serif({
+    subsets: ["latin"],
+    variable: "--font-instrument",
+    weight: "400"
 });
 
 export const metadata: Metadata = {
@@ -42,7 +47,7 @@ export default function CollabLayout({
     children: React.ReactNode
 }>) {
     return (
-        <div className={`${geist.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background text-foreground`}>
+        <div className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} font-sans antialiased min-h-screen bg-background text-foreground`}>
             <div className='absolute w-full h-screen'>
                 <DitherWrapper />
             </div>

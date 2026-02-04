@@ -1,10 +1,10 @@
 'use client'
 import Link from 'next/link'
-import {Button} from '@/app/collab/components/ui/button'
+import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 
-export const HeroHeader = () => {
+export const PhotosHeader = () => {
     const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
@@ -20,18 +20,18 @@ export const HeroHeader = () => {
             <nav className={cn(
                 "pointer-events-auto flex items-center justify-between p-1.5 sm:p-2 rounded-full border transition-all duration-500 ease-in-out w-full max-w-6xl",
                 scrolled 
-                    ? "bg-black/80 backdrop-blur-xl border-white/10 shadow-2xl shadow-black/20" 
-                    : "bg-black/50 backdrop-blur-md border-white/5 shadow-lg"
+                    ? "bg-white/80 dark:bg-black/80 backdrop-blur-xl border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/20" 
+                    : "bg-white/50 dark:bg-black/50 backdrop-blur-md border-black/5 dark:border-white/5 shadow-lg"
             )}>
                 <Link
                     href="/"
                     aria-label="home"
-                    className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-white/10 transition-colors"
+                    className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
                 >
                     <img 
-                        src="/AIBM-logo-dark.svg" 
+                        src="/AIBM-logo-dark.svg"
                         alt="AI Builders Mexico" 
-                        className="h-4 sm:h-5 w-auto" 
+                        className="h-4 sm:h-5 w-auto invert dark:invert-0" 
                     />
                 </Link>
 
@@ -39,7 +39,7 @@ export const HeroHeader = () => {
                     <Button
                         asChild
                         size="sm"
-                        className="rounded-full bg-white text-black hover:bg-white/90 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
+                        className="rounded-full bg-foreground text-background hover:bg-foreground/90 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
                     >
                         <Link href="/">
                             Regresar

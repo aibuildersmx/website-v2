@@ -1,48 +1,45 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import React from "react";
-
-const links = [
-    {
-        title: 'Vercel',
-        href: 'https://vercel.com/',
-    },
-    {
-        title: 'v0',
-        href: 'https://v0.dev/',
-    },
-    {
-        title: 'Meetup SDK',
-        href: 'https://meetup-sdk.vercel.com/',
-    },
-    {
-        title: 'v0 IRL',
-        href: 'https://v0.app/irl',
-    },
-]
 
 export default function FooterSection() {
     return (
-        <footer className="py-16 md:py-32">
+        <footer className="py-16 sm:py-24 md:py-32 border-t border-black/10 dark:border-white/10 bg-background">
             <div className="mx-auto max-w-5xl px-6">
                 <Link
                     href="/"
                     aria-label="go home"
                     className="mx-auto block size-fit">
-                    <Image src="/images/logo-light.svg" alt="Logo" width={120} height={40} className='block dark:hidden'/>
-                    <Image src="/logo-dark.svg" alt="Logo" width={120} height={40} className='hidden dark:block'/>
+                    <img src="/AIBM-logo-dark.svg" alt="AI Builders Mexico" className="h-6 sm:h-8 w-auto dark:invert-0 invert" />
                 </Link>
 
-                <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
-                    
+                <div className="mt-8 text-center">
+                    <span className="text-foreground/30 text-[10px] sm:text-xs font-mono tracking-widest uppercase">
+                        AI Builders somos:{' '}
+                        <Link
+                            href="https://javierivero.com/"
+                            className="text-foreground/50 hover:text-foreground transition-colors underline">
+                            Javier
+                        </Link>
+                        ,{' '}
+                        <Link
+                            href="https://x.com/benkimbuilds"
+                            className="text-foreground/50 hover:text-foreground transition-colors underline">
+                            Ben
+                        </Link>
+                        {' '}y{' '}
+                        <Link
+                            href="https://x.com/ricgarcas"
+                            className="text-foreground/50 hover:text-foreground transition-colors underline">
+                            Ricardo
+                        </Link>
+                    </span>
                 </div>
-                <span className="text-muted-foreground block text-center text-sm font-mono">AI Builders somos: <Link
-                    href="https://javierivero.com/"
-                    className="text-foreground underline">Javier</Link>, <Link
-                    href="https://x.com/benkimbuilds"
-                    className="text-foreground underline">Ben</Link> y <Link
-                    href="https://x.com/ricgarcas"
-                    className="text-foreground underline">Ricardo</Link></span>
+                
+                <div className="mt-6 text-center">
+                    <span className="text-foreground/20 text-[10px] sm:text-xs font-mono tracking-widest uppercase">
+                        2026 – built in v0, hand crafted in cursor, made with ♥︎ by aibuilders.mx
+                    </span>
+                </div>
             </div>
         </footer>
     )

@@ -7,7 +7,7 @@ import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-
 
 export default function Features() {
     return (
-        <section className="py-16 md:py-32 dark:bg-transparent bg-transparent">
+        <section className="py-16 md:py-32 bg-background">
             <div className="@container mx-auto max-w-5xl px-6">
                 <div className="text-center">
                     <TextEffect
@@ -15,7 +15,7 @@ export default function Features() {
                         preset="fade-in-blur"
                         speedSegment={0.3}
                         as="h2"
-                        className="text-balance text-4xl font-semibold lg:text-5xl">
+                        className="text-balance text-3xl sm:text-4xl md:text-5xl font-medium lg:text-5xl font-instrument">
                         Ayudamos en la transformación de equipos AI-first.
                     </TextEffect>
                 </div>

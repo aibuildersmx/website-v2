@@ -34,3 +34,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# pnpm
+.pnpm-store/
+
+# OS
+Thumbs.db
+
+# env
+.env
