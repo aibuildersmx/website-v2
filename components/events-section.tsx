@@ -6,6 +6,38 @@ import Link from "next/link";
 
 const events = [
   {
+    title: "How I Use AI – Vol 2",
+    description:
+      "Domina tus Bases de Datos con Claude Code. Diana nos mostrará cómo integrar Claude Code con SQL para conversar con tu data.",
+    month: "FEB",
+    day: "12",
+    location: "Virtual",
+    attendees: "100 lugares",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/lgd37763",
+  },
+  {
+    title: "Master Midjourney",
+    description:
+      "Exploraremos los diferentes features de Midjourney para crear imágenes desde 0. Aprende a usar Style References, Moodboards y Style Creator.",
+    month: "FEB",
+    day: "19",
+    location: "Virtual",
+    attendees: "100 lugares",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/d342anny",
+  },
+  {
     title: "Build with Cursor Mexico City",
     description:
       "Tercer evento oficial de Cursor en CDMX. Trae tu laptop, te daremos créditos y acceso a todo lo que necesites para construir.",
