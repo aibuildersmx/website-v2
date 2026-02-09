@@ -10,6 +10,8 @@ import {
   Briefcase,
   ChevronDown,
   Check,
+  Upload,
+  Image as ImageIcon,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -77,6 +79,7 @@ type StatusType = "New" | "Urgent" | "Closing Soon";
 
 interface FormState {
   title: string;
+  companyLogo: string;
   location: string;
   locationType: LocationType;
   salary: string;
@@ -88,6 +91,7 @@ interface FormState {
 
 const emptyForm: FormState = {
   title: "",
+  companyLogo: "",
   location: "",
   locationType: "Remote",
   salary: "",
@@ -343,6 +347,7 @@ export default function DashboardPage() {
             ? {
                 ...r,
                 title: form.title,
+                companyLogo: form.companyLogo || r.companyLogo,
                 location: form.location,
                 locationType: form.locationType,
                 salary: form.salary || "Undisclosed",
@@ -356,11 +361,12 @@ export default function DashboardPage() {
       );
     } else {
       // Add new
+      const defaultLogo = `https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`;
       const newRole: JobData = {
         id: `JB-2026-${String(Date.now()).slice(-4)}`,
         title: form.title,
         company: recruiterCompany,
-        companyLogo: `https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`,
+        companyLogo: form.companyLogo || defaultLogo,
         location: form.location,
         locationType: form.locationType,
         salary: form.salary || "Undisclosed",
@@ -384,6 +390,7 @@ export default function DashboardPage() {
       setEditingId(job.id);
       setForm({
         title: job.title,
+        companyLogo: job.companyLogo,
         location: job.location,
         locationType: job.locationType,
         salary: job.salary,
@@ -663,6 +670,64 @@ export default function DashboardPage() {
                   placeholder="Brief description of the role and responsibilities..."
                   className="w-full resize-none border-none bg-transparent text-sm leading-relaxed text-gray-500 placeholder:text-gray-300 focus:outline-none sm:text-base"
                 />
+              </div>
+
+              {/* Company Logo Upload */}
+              <div className="px-5 pb-5 sm:px-8 sm:pb-6">
+                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
+                  Company Logo (JPG/PNG)
+                </label>
+                <div className="flex items-center gap-4">
+                  {/* Logo preview */}
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
+                    {form.companyLogo ? (
+                      <img
+                        src={form.companyLogo}
+                        alt="Company logo"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <ImageIcon className="h-6 w-6 text-gray-300" strokeWidth={1.5} />
+                    )}
+                  </div>
+                  
+                  {/* Upload button */}
+                  <div className="flex flex-1 flex-col gap-2">
+                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700">
+                      <Upload className="h-4 w-4" strokeWidth={1.5} />
+                      <span>Upload logo</span>
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              updateField("companyLogo", reader.result as string);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                    <p className="font-mono text-[10px] text-gray-300">
+                      Max 2MB • Square recommended
+                    </p>
+                  </div>
+
+                  {/* Remove button */}
+                  {form.companyLogo && (
+                    <button
+                      type="button"
+                      onClick={() => updateField("companyLogo", "")}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                    >
+                      <X className="h-4 w-4 text-gray-400" strokeWidth={1.5} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Details grid */}
