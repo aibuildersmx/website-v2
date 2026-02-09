@@ -6,77 +6,66 @@ import { AiModeCard } from "@/components/job-board/cards/ai-mode-card";
 import { AiModeToggle } from "@/components/job-board/ai-mode-toggle";
 import type { JobData } from "@/components/job-board/job-data";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, MessageCircle, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { X, MessageCircle, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
-const demoJobs: JobData[] = [
-  {
-    id: "JB-2026-0101",
-    title: "Senior AI Engineer",
-    company: "NeuralForge Labs",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=NF&backgroundColor=6366f1",
-    location: "San Francisco, CA",
-    locationType: "Hybrid",
-    salary: "$185,000 – $240,000",
-    experience: "5+ years",
-    description:
-      "Build and deploy large language models at scale. Lead a team of ML engineers working on next-gen foundation models.",
-    applyUrl: "#",
-    tags: ["Python", "PyTorch", "LLMs", "MLOps"],
-    status: "New",
-    postedAt: "2 days ago",
-  },
-  {
-    id: "JB-2026-0102",
-    title: "Staff Frontend Engineer",
-    company: "Voidform Studio",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=VS&backgroundColor=ec4899",
-    location: "New York, NY",
-    locationType: "Remote",
-    salary: "$195,000 – $260,000",
-    experience: "7+ years",
-    description:
-      "Architect design systems and craft WebGL-powered experiences. Shape the future of our product interface and creative tools.",
-    applyUrl: "#",
-    tags: ["React", "TypeScript", "WebGL", "Design Systems"],
-    status: "Urgent",
-    postedAt: "5 hours ago",
-  },
-  {
-    id: "JB-2026-0103",
-    title: "Product Designer",
-    company: "Linear",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=LN&backgroundColor=5e6ad2",
-    location: "San Francisco, CA",
-    locationType: "Remote",
-    salary: "$160,000 – $210,000",
-    experience: "4+ years",
-    description:
-      "Design intuitive workflows for complex developer tools. Own end-to-end product design from research to polished UI.",
-    applyUrl: "#",
-    tags: ["Figma", "Prototyping", "User Research", "Systems Design"],
-    status: "New",
-    postedAt: "1 day ago",
-  },
-  {
-    id: "JB-2026-0104",
-    title: "Blockchain Protocol Engineer",
-    company: "ChainMind",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=CM&backgroundColor=10b981",
-    location: "Zurich, Switzerland",
-    locationType: "On-site",
-    salary: "CHF 180,000 – 230,000",
-    experience: "3+ years",
-    description:
-      "Design consensus protocols and ZK proof systems. Work on cutting-edge L2 solutions pushing the boundary of on-chain privacy.",
-    applyUrl: "#",
-    tags: ["Rust", "Solidity", "ZK Proofs", "Consensus"],
-    status: "Closing Soon",
-    postedAt: "1 week ago",
-  },
+type LocationType = "Remote" | "Hybrid" | "On-site";
+type StatusType = "New" | "Urgent" | "Closing Soon";
+
+/* ------------------------------------------------------------------ */
+/*  Helper: Convert DB row to JobData                                   */
+/* ------------------------------------------------------------------ */
+function dbToJobData(row: {
+  id: string;
+  title: string;
+  description: string | null;
+  location: string | null;
+  location_type: string | null;
+  salary: string | null;
+  experience: string | null;
+  tags: string[] | null;
+  status: string;
+  apply_url: string | null;
+  created_at: string;
+  company: {
+    id: string;
+    name: string;
+    logo_url: string | null;
+    website: string | null;
+  };
+}): JobData {
+  const createdAt = new Date(row.created_at);
+  const now = new Date();
+  const diffMs = now.getTime() - createdAt.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHours / 24);
+
+  let postedAt = "Just now";
+  if (diffDays > 0) {
+    postedAt = diffDays === 1 ? "1 day ago" : `${diffDays} days ago`;
+  } else if (diffHours > 0) {
+    postedAt = diffHours === 1 ? "1 hour ago" : `${diffHours} hours ago`;
+  }
+
+  return {
+    id: row.id,
+    title: row.title,
+    company: row.company.name,
+    companyLogo: row.company.logo_url || `https://api.dicebear.com/9.x/initials/svg?seed=${row.company.name.substring(0, 2)}&backgroundColor=6366f1`,
+    location: row.location || "Remote",
+    locationType: (row.location_type as LocationType) || "Remote",
+    salary: row.salary || "Competitive",
+    experience: row.experience || "Not specified",
+    description: row.description || "",
+    applyUrl: row.apply_url || "#",
+    tags: row.tags || [],
+    status: row.status as StatusType,
+    postedAt,
+  };
+}
+
+// Fallback data in case DB is empty
+const fallbackJobs: JobData[] = [
   {
     id: "JB-2026-0105",
     title: "DevOps & Platform Lead",
@@ -197,12 +186,42 @@ function FilterPill({
 }
 
 export default function DemoPage() {
+  const [jobs, setJobs] = useState<JobData[]>([]);
+  const [loading, setLoading] = useState(true);
   const [aiMode, setAiMode] = useState(false);
   const [locationFilter, setLocationFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+  const supabase = createClient();
+
+  // Fetch jobs from Supabase
+  useEffect(() => {
+    async function loadJobs() {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("jobs")
+        .select(`
+          *,
+          company:companies(*)
+        `)
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Failed to load jobs:", error);
+        setJobs(fallbackJobs);
+      } else if (data && data.length > 0) {
+        setJobs(data.map((job) => dbToJobData(job as never)));
+      } else {
+        setJobs(fallbackJobs);
+      }
+      setLoading(false);
+    }
+
+    loadJobs();
+  }, [supabase]);
 
   // Close chat bubble when clicking outside
   useEffect(() => {
@@ -218,7 +237,7 @@ export default function DemoPage() {
   }, [chatOpen]);
 
   const filteredJobs = useMemo(() => {
-    return demoJobs.filter((job) => {
+    return jobs.filter((job) => {
       /* Location type */
       if (locationFilter !== "All" && job.locationType !== locationFilter)
         return false;
@@ -227,7 +246,15 @@ export default function DemoPage() {
 
       return true;
     });
-  }, [locationFilter, statusFilter]);
+  }, [jobs, locationFilter, statusFilter]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stone-100">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   const activeFilterCount =
     (locationFilter !== "All" ? 1 : 0) +

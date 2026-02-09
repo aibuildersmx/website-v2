@@ -12,64 +12,9 @@ import {
   Check,
   Upload,
   Image as ImageIcon,
+  Loader2,
 } from "lucide-react";
-
-/* ------------------------------------------------------------------ */
-/*  Seed roles – the recruiter's existing mock listings                */
-/* ------------------------------------------------------------------ */
-const seedRoles: JobData[] = [
-  {
-    id: "JB-2026-0201",
-    title: "Senior AI Engineer",
-    company: "NeuralForge Labs",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=NF&backgroundColor=6366f1",
-    location: "San Francisco, CA",
-    locationType: "Hybrid",
-    salary: "$185,000 – $240,000",
-    experience: "5+ years",
-    description:
-      "Build and deploy large language models at scale. Lead a team of ML engineers working on next-gen foundation models.",
-    applyUrl: "#",
-    tags: ["Python", "PyTorch", "LLMs", "MLOps"],
-    status: "New",
-    postedAt: "2 days ago",
-  },
-  {
-    id: "JB-2026-0202",
-    title: "Staff Frontend Engineer",
-    company: "NeuralForge Labs",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=NF&backgroundColor=6366f1",
-    location: "New York, NY",
-    locationType: "Remote",
-    salary: "$195,000 – $260,000",
-    experience: "7+ years",
-    description:
-      "Architect design systems and craft WebGL-powered experiences. Shape the future of our product interface and creative tools.",
-    applyUrl: "#",
-    tags: ["React", "TypeScript", "WebGL", "Design Systems"],
-    status: "Urgent",
-    postedAt: "5 hours ago",
-  },
-  {
-    id: "JB-2026-0203",
-    title: "DevOps & Platform Lead",
-    company: "NeuralForge Labs",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=NF&backgroundColor=6366f1",
-    location: "Austin, TX",
-    locationType: "Hybrid",
-    salary: "$175,000 – $225,000",
-    experience: "6+ years",
-    description:
-      "Own the infrastructure that powers millions of developer sessions. Build resilient CI/CD pipelines and scale Kubernetes clusters.",
-    applyUrl: "#",
-    tags: ["Kubernetes", "Terraform", "AWS", "CI/CD"],
-    status: "Closing Soon",
-    postedAt: "1 week ago",
-  },
-];
+import { createClient } from "@/lib/supabase/client";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -282,20 +227,128 @@ function DeleteDialog({
 }
 
 /* ------------------------------------------------------------------ */
+/*  Helper: Convert DB row to JobData                                   */
+/* ------------------------------------------------------------------ */
+function dbToJobData(row: {
+  id: string;
+  title: string;
+  description: string | null;
+  location: string | null;
+  location_type: string | null;
+  salary: string | null;
+  experience: string | null;
+  tags: string[] | null;
+  status: string;
+  apply_url: string | null;
+  created_at: string;
+  company: {
+    id: string;
+    name: string;
+    logo_url: string | null;
+    website: string | null;
+  };
+}): JobData {
+  const createdAt = new Date(row.created_at);
+  const now = new Date();
+  const diffMs = now.getTime() - createdAt.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHours / 24);
+
+  let postedAt = "Just now";
+  if (diffDays > 0) {
+    postedAt = diffDays === 1 ? "1 day ago" : `${diffDays} days ago`;
+  } else if (diffHours > 0) {
+    postedAt = diffHours === 1 ? "1 hour ago" : `${diffHours} hours ago`;
+  }
+
+  return {
+    id: row.id,
+    title: row.title,
+    company: row.company.name,
+    companyLogo: row.company.logo_url || `https://api.dicebear.com/9.x/initials/svg?seed=${row.company.name.substring(0, 2)}&backgroundColor=6366f1`,
+    location: row.location || "Remote",
+    locationType: (row.location_type as LocationType) || "Remote",
+    salary: row.salary || "Competitive",
+    experience: row.experience || "Not specified",
+    description: row.description || "",
+    applyUrl: row.apply_url || "#",
+    tags: row.tags || [],
+    status: row.status as StatusType,
+    postedAt,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /*  Dashboard page                                                      */
 /* ------------------------------------------------------------------ */
 export default function DashboardPage() {
-  const [roles, setRoles] = useState<JobData[]>(seedRoles);
+  const [roles, setRoles] = useState<JobData[]>([]);
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<JobData | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [companyId, setCompanyId] = useState<string | null>(null);
 
-  /* ── Mock recruiter info ── */
-  const recruiterCompany = "NeuralForge Labs";
-  const recruiterInitials = "NF";
+  const supabase = createClient();
+
+  /* ── Mock recruiter info (will come from auth later) ── */
+  const recruiterCompany = "AI Builders MX";
+  const recruiterInitials = "AIBM";
   const recruiterColor = "6366f1";
+
+  /* ── Load jobs from Supabase ── */
+  useEffect(() => {
+    async function loadJobs() {
+      setLoading(true);
+      
+      // Get or create company
+      const { data: companies } = await supabase
+        .from("companies")
+        .select("*")
+        .eq("name", recruiterCompany)
+        .limit(1);
+
+      let currentCompanyId: string;
+
+      if (companies && companies.length > 0) {
+        currentCompanyId = (companies[0] as { id: string }).id;
+      } else {
+        const { data: newCompany } = await supabase
+          .from("companies")
+          .insert({
+            name: recruiterCompany,
+            logo_url: `https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`,
+          } as never)
+          .select()
+          .single();
+        currentCompanyId = (newCompany as { id: string } | null)?.id || "";
+      }
+
+      setCompanyId(currentCompanyId);
+
+      // Get jobs for this company
+      const { data: jobs, error } = await supabase
+        .from("jobs")
+        .select(`
+          *,
+          company:companies(*)
+        `)
+        .eq("company_id", currentCompanyId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Failed to load jobs:", error);
+      } else if (jobs) {
+        setRoles(jobs.map((job) => dbToJobData(job as never)));
+      }
+
+      setLoading(false);
+    }
+
+    loadJobs();
+  }, [supabase]);
 
   /* ── Helpers ── */
   const resetForm = useCallback(() => {
@@ -311,7 +364,6 @@ export default function DashboardPage() {
 
   const closeModal = useCallback(() => {
     setModalOpen(false);
-    // Small delay so the exit animation plays before resetting
     setTimeout(() => {
       setForm(emptyForm);
       setEditingId(null);
@@ -331,8 +383,8 @@ export default function DashboardPage() {
   );
 
   /* ── Handlers ── */
-  const handleSubmit = useCallback(() => {
-    if (!form.title.trim() || !form.location.trim()) return;
+  const handleSubmit = useCallback(async () => {
+    if (!form.title.trim() || !form.location.trim() || !companyId) return;
 
     const tagsArray = form.tags
       .split(",")
@@ -341,49 +393,55 @@ export default function DashboardPage() {
 
     if (editingId) {
       // Update existing
-      setRoles((prev) =>
-        prev.map((r) =>
-          r.id === editingId
-            ? {
-                ...r,
-                title: form.title,
-                companyLogo: form.companyLogo || r.companyLogo,
-                location: form.location,
-                locationType: form.locationType,
-                salary: form.salary || "Undisclosed",
-                experience: form.experience || "Not specified",
-                description: form.description,
-                tags: tagsArray,
-                status: form.status,
-              }
-            : r
-        )
-      );
+      const { data, error } = await supabase
+        .from("jobs")
+        .update({
+          title: form.title,
+          location: form.location,
+          location_type: form.locationType,
+          salary: form.salary || "Competitive",
+          experience: form.experience || "Not specified",
+          description: form.description,
+          tags: tagsArray,
+          status: form.status,
+        } as never)
+        .eq("id", editingId)
+        .select(`*, company:companies(*)`)
+        .single();
+
+      if (!error && data) {
+        setRoles((prev) =>
+          prev.map((r) => (r.id === editingId ? dbToJobData(data as never) : r))
+        );
+      }
     } else {
       // Add new
-      const defaultLogo = `https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`;
-      const newRole: JobData = {
-        id: `JB-2026-${String(Date.now()).slice(-4)}`,
-        title: form.title,
-        company: recruiterCompany,
-        companyLogo: form.companyLogo || defaultLogo,
-        location: form.location,
-        locationType: form.locationType,
-        salary: form.salary || "Undisclosed",
-        experience: form.experience || "Not specified",
-        description: form.description,
-        applyUrl: "#",
-        tags: tagsArray,
-        status: form.status,
-        postedAt: "Just now",
-      };
-      setRoles((prev) => [newRole, ...prev]);
+      const { data, error } = await supabase
+        .from("jobs")
+        .insert({
+          company_id: companyId,
+          title: form.title,
+          location: form.location,
+          location_type: form.locationType,
+          salary: form.salary || "Competitive",
+          experience: form.experience || "Not specified",
+          description: form.description,
+          tags: tagsArray,
+          status: form.status,
+          apply_url: "https://aibuilders.mx/jobs",
+        } as never)
+        .select(`*, company:companies(*)`)
+        .single();
+
+      if (!error && data) {
+        setRoles((prev) => [dbToJobData(data as never), ...prev]);
+      }
     }
 
     setModalOpen(false);
     resetForm();
     flashSuccess();
-  }, [form, editingId, recruiterCompany, recruiterInitials, recruiterColor, resetForm, flashSuccess]);
+  }, [form, editingId, companyId, supabase, resetForm, flashSuccess]);
 
   const handleEdit = useCallback(
     (job: JobData) => {
@@ -404,12 +462,24 @@ export default function DashboardPage() {
     []
   );
 
-  const handleDelete = useCallback((id: string) => {
-    setRoles((prev) => prev.filter((r) => r.id !== id));
+  const handleDelete = useCallback(async (id: string) => {
+    const { error } = await supabase.from("jobs").delete().eq("id", id);
+
+    if (!error) {
+      setRoles((prev) => prev.filter((r) => r.id !== id));
+    }
     setDeleteTarget(null);
-  }, []);
+  }, [supabase]);
 
   const isFormValid = form.title.trim() !== "" && form.location.trim() !== "";
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stone-100">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-stone-100">
@@ -446,11 +516,7 @@ export default function DashboardPage() {
 
       <main className="px-4 py-6 sm:px-6 sm:py-10 md:px-12 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          {/* ============================================================ */}
-          {/*  Your Open Roles                                              */}
-          {/* ============================================================ */}
-
-          {/* Toolbar: section label + Add button */}
+          {/* Toolbar */}
           <div className="mb-5 flex items-center gap-4 sm:mb-8">
             <div className="h-px flex-1 bg-gray-300/40" />
             <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-gray-400/70">
@@ -485,7 +551,7 @@ export default function DashboardPage() {
               >
                 <Check className="h-4 w-4 text-green-500" strokeWidth={2} />
                 <span className="font-mono text-xs uppercase tracking-[0.15em] text-green-600">
-                  Role published successfully
+                  Role saved successfully
                 </span>
               </motion.div>
             )}
@@ -566,7 +632,7 @@ export default function DashboardPage() {
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-2xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
             >
-              {/* Modal header – company info + status + close */}
+              {/* Modal header */}
               <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/80 px-5 py-5 sm:px-8 sm:py-6">
                 <div className="flex items-center gap-2.5">
                   <img
@@ -585,7 +651,6 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {/* Status pills – hidden on very small screens, shown on sm+ */}
                   <div className="hidden items-center gap-1.5 sm:flex">
                     {statusOptions.map((s) => (
                       <button
@@ -622,7 +687,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Mobile-only status pills */}
+              {/* Mobile status pills */}
               <div className="flex items-center gap-1.5 border-b border-gray-100 px-5 py-3 sm:hidden">
                 {statusOptions.map((s) => (
                   <button
@@ -672,71 +737,13 @@ export default function DashboardPage() {
                 />
               </div>
 
-              {/* Company Logo Upload */}
-              <div className="px-5 pb-5 sm:px-8 sm:pb-6">
-                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
-                  Company Logo (JPG/PNG)
-                </label>
-                <div className="flex items-center gap-4">
-                  {/* Logo preview */}
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
-                    {form.companyLogo ? (
-                      <img
-                        src={form.companyLogo}
-                        alt="Company logo"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <ImageIcon className="h-6 w-6 text-gray-300" strokeWidth={1.5} />
-                    )}
-                  </div>
-                  
-                  {/* Upload button */}
-                  <div className="flex flex-1 flex-col gap-2">
-                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700">
-                      <Upload className="h-4 w-4" strokeWidth={1.5} />
-                      <span>Upload logo</span>
-                      <input
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              updateField("companyLogo", reader.result as string);
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                      />
-                    </label>
-                    <p className="font-mono text-[10px] text-gray-300">
-                      Max 2MB • Square recommended
-                    </p>
-                  </div>
-
-                  {/* Remove button */}
-                  {form.companyLogo && (
-                    <button
-                      type="button"
-                      onClick={() => updateField("companyLogo", "")}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
-                    >
-                      <X className="h-4 w-4 text-gray-400" strokeWidth={1.5} />
-                    </button>
-                  )}
-                </div>
-              </div>
-
               {/* Details grid */}
               <div className="grid grid-cols-1 gap-4 px-5 pb-5 sm:grid-cols-2 sm:gap-5 sm:px-8 sm:pb-6">
                 <Field
                   label="Location"
                   value={form.location}
                   onChange={(v) => updateField("location", v)}
-                  placeholder="e.g. San Francisco, CA"
+                  placeholder="e.g. CDMX, Mexico"
                 />
                 <CustomSelect
                   label="Location Type"
@@ -748,7 +755,7 @@ export default function DashboardPage() {
                   label="Salary Range"
                   value={form.salary}
                   onChange={(v) => updateField("salary", v)}
-                  placeholder="e.g. $150,000 – $200,000"
+                  placeholder="e.g. $80,000 – $120,000 USD"
                 />
                 <Field
                   label="Experience"
@@ -767,7 +774,6 @@ export default function DashboardPage() {
                   placeholder="e.g. Python, PyTorch, LLMs, MLOps"
                 />
 
-                {/* Tag preview */}
                 {form.tags.trim() && (
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {form.tags
