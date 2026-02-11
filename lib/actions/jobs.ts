@@ -1,8 +1,17 @@
 'use server'
 
-import { createAdminClient } from '@/lib/supabase/server'
+import { createAdminClient, createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import type { Job, Company, JobWithCompany } from '@/lib/supabase/types'
+
+async function requireAuth() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { error: 'No autorizado.' }
+  }
+  return { user }
+}
 
 type JobInsert = Omit<Job, 'id' | 'created_at' | 'updated_at'> & { id?: string }
 type JobUpdate = Partial<JobInsert>
@@ -48,6 +57,9 @@ export async function getJobsByCompany(companyId: string): Promise<JobWithCompan
 }
 
 export async function createJob(job: JobInsert) {
+  const auth = await requireAuth()
+  if ('error' in auth) return auth
+
   const supabase = createAdminClient()
   
   const { data, error } = await supabase
@@ -69,6 +81,9 @@ export async function createJob(job: JobInsert) {
 }
 
 export async function updateJob(id: string, updates: JobUpdate) {
+  const auth = await requireAuth()
+  if ('error' in auth) return auth
+
   const supabase = createAdminClient()
   
   const { data, error } = await supabase
@@ -91,6 +106,9 @@ export async function updateJob(id: string, updates: JobUpdate) {
 }
 
 export async function deleteJob(id: string) {
+  const auth = await requireAuth()
+  if ('error' in auth) return auth
+
   const supabase = createAdminClient()
   
   const { error } = await supabase
