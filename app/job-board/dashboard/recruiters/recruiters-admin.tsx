@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   addRecruiter,
+  type AddRecruiterState,
   deleteRecruiter,
   toggleRecruiterStatus,
 } from "@/lib/actions/recruiters";
@@ -13,12 +14,6 @@ type RecruiterRow = {
   is_active: boolean;
   created_at: string;
   last_invited_at: string | null;
-};
-
-type AddRecruiterState = {
-  error?: string;
-  success?: boolean;
-  message?: string;
 };
 
 const initialState: AddRecruiterState = {};
@@ -67,10 +62,10 @@ export function RecruitersAdmin({
           <AddButton />
         </form>
 
-        {state?.error && (
+        {"error" in state && state.error && (
           <p className="mt-3 text-sm text-red-600">{state.error}</p>
         )}
-        {state?.success && (
+        {"success" in state && state.success && (
           <p className="mt-3 text-sm text-green-600">
             {state.message || "Invitacion enviada y acceso habilitado."}
           </p>

@@ -158,7 +158,7 @@ export async function getOrCreateCompany(name: string, logoUrl?: string): Promis
   if (!normalizedName) return null
 
   // Check if company exists
-  const { data: existing, error: existingError } = await supabase
+  const { data: existingData, error: existingError } = await supabase
     .from('companies')
     .select('*')
     .eq('name', normalizedName)
@@ -169,6 +169,7 @@ export async function getOrCreateCompany(name: string, logoUrl?: string): Promis
     return null
   }
 
+  const existing = existingData as Company | null
   if (existing) {
     if (logoUrl && logoUrl !== existing.logo_url) {
       const { data: updated, error: updateError } = await supabase

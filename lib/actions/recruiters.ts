@@ -74,12 +74,17 @@ export async function getRecruiters() {
   return data;
 }
 
+export type AddRecruiterState =
+  | { error?: string; success?: boolean; message?: string }
+  | { error: string }
+  | { success: true; message: string };
+
 export async function addRecruiter(
-  _prevState: { error?: string; success?: boolean; message?: string },
+  _prevState: AddRecruiterState,
   formData: FormData
-) {
+): Promise<AddRecruiterState> {
   const auth = await requireMainAdmin();
-  if ("error" in auth) return auth;
+  if ("error" in auth) return { error: auth.error };
 
   const emailRaw = String(formData.get("email") || "").trim().toLowerCase();
   if (!emailRaw || !emailRaw.includes("@")) {
@@ -91,7 +96,7 @@ export async function addRecruiter(
     {
       email: emailRaw,
       is_active: true,
-    },
+    } as never,
     { onConflict: "email" }
   );
 
@@ -130,7 +135,7 @@ export async function addRecruiter(
 
   await admin
     .from("recruiters")
-    .update({ last_invited_at: new Date().toISOString() })
+    .update({ last_invited_at: new Date().toISOString() } as never)
     .eq("email", emailRaw);
 
   revalidatePath(RECRUITERS_PATH);
@@ -140,49 +145,43 @@ export async function addRecruiter(
   };
 }
 
-export async function toggleRecruiterStatus(formData: FormData) {
+export async function toggleRecruiterStatus(
+  formData: FormData
+): Promise<void> {
   const auth = await requireMainAdmin();
-  if ("error" in auth) return auth;
+  if ("error" in auth) return;
 
   const email = String(formData.get("email") || "").trim().toLowerCase();
   const nextActive = String(formData.get("nextActive") || "false") === "true";
 
-  if (!email) return { error: "Correo invalido." };
+  if (!email) return;
   if (email === auth.userEmail && !nextActive) {
-    return { error: "No puedes desactivarte a ti mismo." };
+    return;
   }
 
   const admin = createAdminClient();
   const { error } = await admin
     .from("recruiters")
-    .update({ is_active: nextActive })
+    .update({ is_active: nextActive } as never)
     .eq("email", email);
 
-  if (error) {
-    return { error: "No se pudo actualizar el estado." };
-  }
+  if (error) return;
 
   revalidatePath(RECRUITERS_PATH);
-  return { success: true };
 }
 
-export async function deleteRecruiter(formData: FormData) {
+export async function deleteRecruiter(formData: FormData): Promise<void> {
   const auth = await requireMainAdmin();
-  if ("error" in auth) return auth;
+  if ("error" in auth) return;
 
   const email = String(formData.get("email") || "").trim().toLowerCase();
-  if (!email) return { error: "Correo invalido." };
-  if (email === auth.userEmail) {
-    return { error: "No puedes eliminarte a ti mismo." };
-  }
+  if (!email) return;
+  if (email === auth.userEmail) return;
 
   const admin = createAdminClient();
   const { error } = await admin.from("recruiters").delete().eq("email", email);
 
-  if (error) {
-    return { error: "No se pudo eliminar el correo." };
-  }
+  if (error) return;
 
   revalidatePath(RECRUITERS_PATH);
-  return { success: true };
 }
