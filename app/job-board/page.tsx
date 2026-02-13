@@ -5,12 +5,26 @@ import { CleanLedgerCard } from "@/components/job-board/cards/clean-ledger-card"
 import { AiModeCard } from "@/components/job-board/cards/ai-mode-card";
 import { AiModeToggle } from "@/components/job-board/ai-mode-toggle";
 import type { JobData } from "@/components/job-board/job-data";
+import { TEAM_OPTIONS } from "@/components/job-board/team-options";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, MessageCircle, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type LocationType = "Remote" | "Hybrid" | "On-site";
-type StatusType = "New" | "Urgent" | "Closing Soon";
+type StatusType = "New" | "Urgent" | "Last Call";
+type FilterKey = "location" | "team" | "status";
+
+function getCompanyInitials(name: string) {
+  const words = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (words.length === 0) return "C";
+  if (words.length === 1) return words[0][0]?.toUpperCase() ?? "C";
+
+  return `${words[0][0] ?? ""}${words[1][0] ?? ""}`.toUpperCase() || "CO";
+}
 
 /* ------------------------------------------------------------------ */
 /*  Helper: Convert DB row to JobData                                   */
@@ -23,6 +37,7 @@ function dbToJobData(row: {
   location_type: string | null;
   salary: string | null;
   experience: string | null;
+  team: string | null;
   tags: string[] | null;
   status: string;
   apply_url: string | null;
@@ -51,7 +66,10 @@ function dbToJobData(row: {
     id: row.id,
     title: row.title,
     company: row.company.name,
-    companyLogo: row.company.logo_url || `https://api.dicebear.com/9.x/initials/svg?seed=${row.company.name.substring(0, 2)}&backgroundColor=6366f1`,
+    companyLogo:
+      row.company.logo_url ||
+      `https://api.dicebear.com/9.x/initials/svg?seed=${getCompanyInitials(row.company.name)}&backgroundColor=6366f1`,
+    team: row.team || "Software Engineering",
     location: row.location || "Remote",
     locationType: (row.location_type as LocationType) || "Remote",
     salary: row.salary || "Competitive",
@@ -59,7 +77,7 @@ function dbToJobData(row: {
     description: row.description || "",
     applyUrl: row.apply_url || "#",
     tags: row.tags || [],
-    status: row.status as StatusType,
+    status: row.status === "Closing Soon" ? "Last Call" : (row.status as StatusType),
     postedAt,
   };
 }
@@ -72,6 +90,7 @@ const fallbackJobs: JobData[] = [
     company: "Warp Terminal",
     companyLogo:
       "https://api.dicebear.com/9.x/initials/svg?seed=WT&backgroundColor=f59e0b",
+    team: "Software Engineering",
     location: "Austin, TX",
     locationType: "Hybrid",
     salary: "$175,000 – $225,000",
@@ -89,6 +108,7 @@ const fallbackJobs: JobData[] = [
     company: "DeepMind",
     companyLogo:
       "https://api.dicebear.com/9.x/initials/svg?seed=DM&backgroundColor=3b82f6",
+    team: "AI Research",
     location: "London, UK",
     locationType: "On-site",
     salary: "£130,000 – £190,000",
@@ -106,6 +126,7 @@ const fallbackJobs: JobData[] = [
     company: "Vercel",
     companyLogo:
       "https://api.dicebear.com/9.x/initials/svg?seed=VC&backgroundColor=171717",
+    team: "Software Engineering",
     location: "Anywhere",
     locationType: "Remote",
     salary: "$170,000 – $220,000",
@@ -123,6 +144,7 @@ const fallbackJobs: JobData[] = [
     company: "Runway",
     companyLogo:
       "https://api.dicebear.com/9.x/initials/svg?seed=RW&backgroundColor=a855f7",
+    team: "Design",
     location: "New York, NY",
     locationType: "Hybrid",
     salary: "$150,000 – $200,000",
@@ -137,7 +159,7 @@ const fallbackJobs: JobData[] = [
 ];
 
 const locationTypes = ["All", "Remote", "Hybrid", "On-site"] as const;
-const statusTypes = ["All", "New", "Urgent", "Closing Soon"] as const;
+const statusTypes = ["All", "Urgent", "New", "Last Call"] as const;
 
 /* ------------------------------------------------------------------ */
 /*  Filter pill component                                              */
@@ -190,11 +212,15 @@ export default function JobBoardPage() {
   const [loading, setLoading] = useState(true);
   const [aiMode, setAiMode] = useState(false);
   const [locationFilter, setLocationFilter] = useState<string>("All");
+  const [teamFilter, setTeamFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+
+  const teamTypes = useMemo(() => ["All", ...TEAM_OPTIONS], []);
 
   // Fetch jobs from Supabase
   useEffect(() => {
@@ -241,12 +267,14 @@ export default function JobBoardPage() {
       /* Location type */
       if (locationFilter !== "All" && job.locationType !== locationFilter)
         return false;
+      /* Team / Area */
+      if (teamFilter !== "All" && job.team !== teamFilter) return false;
       /* Status */
       if (statusFilter !== "All" && job.status !== statusFilter) return false;
 
       return true;
     });
-  }, [jobs, locationFilter, statusFilter]);
+  }, [jobs, locationFilter, teamFilter, statusFilter]);
 
   if (loading) {
     return (
@@ -258,8 +286,27 @@ export default function JobBoardPage() {
 
   const activeFilterCount =
     (locationFilter !== "All" ? 1 : 0) +
+    (teamFilter !== "All" ? 1 : 0) +
     (statusFilter !== "All" ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
+  const activeFilterLabel =
+    openFilter === "location"
+      ? "Location"
+      : openFilter === "team"
+        ? "Team"
+        : "Status";
+  const activeFilterOptions =
+    openFilter === "location"
+      ? locationTypes
+      : openFilter === "team"
+        ? teamTypes
+        : statusTypes;
+
+  const clearAllFilters = () => {
+    setLocationFilter("All");
+    setTeamFilter("All");
+    setStatusFilter("All");
+  };
 
   return (
     <motion.div
@@ -458,10 +505,10 @@ export default function JobBoardPage() {
                 className="overflow-hidden"
               >
                 <div className="flex flex-col gap-3 pt-4">
-                  {/* Location */}
-                  <div className="-mx-4 flex items-center gap-1.5 overflow-x-auto px-4 scrollbar-none">
+                  {/* Location trigger */}
+                  <div className="flex items-center justify-between gap-3">
                     <motion.span
-                      className="mr-0.5 shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
+                      className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
                       animate={{
                         color: aiMode
                           ? "rgba(255,255,255,0.2)"
@@ -470,21 +517,44 @@ export default function JobBoardPage() {
                     >
                       Location
                     </motion.span>
-                    {locationTypes.map((type) => (
-                      <FilterPill
-                        key={type}
-                        label={type}
-                        active={locationFilter === type}
-                        onClick={() => setLocationFilter(type)}
-                        aiMode={aiMode}
-                      />
-                    ))}
+                    <FilterPill
+                      label={locationFilter}
+                      active={locationFilter !== "All" || openFilter === "location"}
+                      onClick={() =>
+                        setOpenFilter((prev) =>
+                          prev === "location" ? null : "location"
+                        )
+                      }
+                      aiMode={aiMode}
+                    />
                   </div>
 
-                  {/* Status */}
-                  <div className="-mx-4 flex items-center gap-1.5 overflow-x-auto px-4 scrollbar-none">
+                  {/* Team trigger */}
+                  <div className="flex items-center justify-between gap-3">
                     <motion.span
-                      className="mr-0.5 shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
+                      className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
+                      animate={{
+                        color: aiMode
+                          ? "rgba(255,255,255,0.2)"
+                          : "rgba(0,0,0,0.35)",
+                      }}
+                    >
+                      Team
+                    </motion.span>
+                    <FilterPill
+                      label={teamFilter}
+                      active={teamFilter !== "All" || openFilter === "team"}
+                      onClick={() =>
+                        setOpenFilter((prev) => (prev === "team" ? null : "team"))
+                      }
+                      aiMode={aiMode}
+                    />
+                  </div>
+
+                  {/* Status trigger */}
+                  <div className="flex items-center justify-between gap-3">
+                    <motion.span
+                      className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
                       animate={{
                         color: aiMode
                           ? "rgba(255,255,255,0.2)"
@@ -493,25 +563,21 @@ export default function JobBoardPage() {
                     >
                       Status
                     </motion.span>
-                    {statusTypes.map((type) => (
-                      <FilterPill
-                        key={type}
-                        label={type}
-                        active={statusFilter === type}
-                        onClick={() => setStatusFilter(type)}
-                        aiMode={aiMode}
-                      />
-                    ))}
+                    <FilterPill
+                      label={statusFilter}
+                      active={statusFilter !== "All" || openFilter === "status"}
+                      onClick={() =>
+                        setOpenFilter((prev) => (prev === "status" ? null : "status"))
+                      }
+                      aiMode={aiMode}
+                    />
                   </div>
 
                   {/* Clear */}
                   {hasActiveFilters && (
                     <button
                       type="button"
-                      onClick={() => {
-                        setLocationFilter("All");
-                        setStatusFilter("All");
-                      }}
+                      onClick={clearAllFilters}
                       className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] transition-colors duration-300"
                       style={{
                         color: aiMode
@@ -532,8 +598,8 @@ export default function JobBoardPage() {
         {/* ── Desktop toolbar: inline filters + toggle ── */}
         <div className="mb-10 hidden sm:flex sm:items-center sm:justify-between sm:gap-5">
           {/* Filter row */}
-          <div className="flex items-center gap-6">
-            {/* Location type filters */}
+          <div className="flex items-center gap-6 overflow-x-auto pb-1 scrollbar-none">
+            {/* Location trigger */}
             <div className="flex items-center gap-2">
               <motion.span
                 className="mr-1 shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
@@ -545,15 +611,14 @@ export default function JobBoardPage() {
               >
                 Location
               </motion.span>
-              {locationTypes.map((type) => (
-                <FilterPill
-                  key={type}
-                  label={type}
-                  active={locationFilter === type}
-                  onClick={() => setLocationFilter(type)}
-                  aiMode={aiMode}
-                />
-              ))}
+              <FilterPill
+                label={locationFilter}
+                active={locationFilter !== "All" || openFilter === "location"}
+                onClick={() =>
+                  setOpenFilter((prev) => (prev === "location" ? null : "location"))
+                }
+                aiMode={aiMode}
+              />
             </div>
 
             {/* Divider */}
@@ -566,7 +631,39 @@ export default function JobBoardPage() {
               }}
             />
 
-            {/* Status filters */}
+            {/* Team trigger */}
+            <div className="flex items-center gap-2">
+              <motion.span
+                className="mr-1 shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
+                animate={{
+                  color: aiMode
+                    ? "rgba(255,255,255,0.2)"
+                    : "rgba(0,0,0,0.35)",
+                }}
+              >
+                Team
+              </motion.span>
+              <FilterPill
+                label={teamFilter}
+                active={teamFilter !== "All" || openFilter === "team"}
+                onClick={() =>
+                  setOpenFilter((prev) => (prev === "team" ? null : "team"))
+                }
+                aiMode={aiMode}
+              />
+            </div>
+
+            {/* Divider */}
+            <motion.div
+              className="h-6 w-px"
+              animate={{
+                backgroundColor: aiMode
+                  ? "rgba(255,255,255,0.06)"
+                  : "rgba(0,0,0,0.1)",
+              }}
+            />
+
+            {/* Status trigger */}
             <div className="flex items-center gap-2">
               <motion.span
                 className="mr-1 shrink-0 font-mono text-[10px] uppercase tracking-[0.2em]"
@@ -578,15 +675,14 @@ export default function JobBoardPage() {
               >
                 Status
               </motion.span>
-              {statusTypes.map((type) => (
-                <FilterPill
-                  key={type}
-                  label={type}
-                  active={statusFilter === type}
-                  onClick={() => setStatusFilter(type)}
-                  aiMode={aiMode}
-                />
-              ))}
+              <FilterPill
+                label={statusFilter}
+                active={statusFilter !== "All" || openFilter === "status"}
+                onClick={() =>
+                  setOpenFilter((prev) => (prev === "status" ? null : "status"))
+                }
+                aiMode={aiMode}
+              />
             </div>
 
             {/* Clear filters */}
@@ -597,10 +693,7 @@ export default function JobBoardPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   type="button"
-                  onClick={() => {
-                    setLocationFilter("All");
-                    setStatusFilter("All");
-                  }}
+                  onClick={clearAllFilters}
                   className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] transition-colors duration-300"
                   style={{
                     color: aiMode
@@ -623,6 +716,79 @@ export default function JobBoardPage() {
             />
           </div>
         </div>
+
+        {/* Filter option panel */}
+        <AnimatePresence>
+          {openFilter && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="mb-6 rounded-2xl border p-4 sm:p-5"
+              style={{
+                borderColor: aiMode
+                  ? "rgba(255,255,255,0.08)"
+                  : "rgba(0,0,0,0.1)",
+                backgroundColor: aiMode
+                  ? "rgba(255,255,255,0.02)"
+                  : "rgba(255,255,255,0.5)",
+              }}
+            >
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <motion.p
+                  className="font-mono text-[11px] uppercase tracking-[0.2em]"
+                  animate={{
+                    color: aiMode
+                      ? "rgba(255,255,255,0.35)"
+                      : "rgba(0,0,0,0.45)",
+                  }}
+                >
+                  Select {activeFilterLabel}
+                </motion.p>
+                <button
+                  type="button"
+                  onClick={() => setOpenFilter(null)}
+                  className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.15em]"
+                  style={{
+                    color: aiMode
+                      ? "rgba(255,255,255,0.35)"
+                      : "rgba(0,0,0,0.45)",
+                  }}
+                >
+                  <X className="h-3 w-3" strokeWidth={1.5} />
+                  Close
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {activeFilterOptions.map((option) => {
+                  const isActive =
+                    openFilter === "location"
+                      ? locationFilter === option
+                      : openFilter === "team"
+                        ? teamFilter === option
+                        : statusFilter === option;
+
+                  return (
+                    <FilterPill
+                      key={`${openFilter}-${option}`}
+                      label={option}
+                      active={isActive}
+                      onClick={() => {
+                        if (openFilter === "location") setLocationFilter(option);
+                        if (openFilter === "team") setTeamFilter(option);
+                        if (openFilter === "status") setStatusFilter(option);
+                        setOpenFilter(null);
+                      }}
+                      aiMode={aiMode}
+                    />
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         </motion.div>
 
@@ -681,8 +847,8 @@ export default function JobBoardPage() {
               <motion.button
                 type="button"
                 onClick={() => {
-                  setLocationFilter("All");
-                  setStatusFilter("All");
+                  clearAllFilters();
+                  setOpenFilter(null);
                 }}
                 className="mt-4 font-mono text-xs uppercase tracking-[0.15em] underline decoration-dotted underline-offset-4 transition-colors duration-300"
                 animate={{

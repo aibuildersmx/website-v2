@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Link from "next/link";
 import { CleanLedgerCard } from "@/components/job-board/cards/clean-ledger-card";
 import type { JobData } from "@/components/job-board/job-data";
+import { TEAM_OPTIONS, type TeamOption } from "@/components/job-board/team-options";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Plus,
@@ -17,16 +19,20 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/lib/auth";
+import { createJob, deleteJob, getOrCreateCompany, updateJob } from "@/lib/actions/jobs";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 type LocationType = "Remote" | "Hybrid" | "On-site";
-type StatusType = "New" | "Urgent" | "Closing Soon";
+type StatusType = "New" | "Urgent" | "Last Call";
+type TeamType = TeamOption;
 
 interface FormState {
   title: string;
+  companyName: string;
   companyLogo: string;
+  team: TeamType;
   location: string;
   locationType: LocationType;
   salary: string;
@@ -38,7 +44,9 @@ interface FormState {
 
 const emptyForm: FormState = {
   title: "",
+  companyName: "",
   companyLogo: "",
+  team: "Software Engineering",
   location: "",
   locationType: "Remote",
   salary: "",
@@ -49,9 +57,23 @@ const emptyForm: FormState = {
 };
 
 const locationTypeOptions: LocationType[] = ["Remote", "Hybrid", "On-site"];
-const statusOptions: StatusType[] = ["New", "Urgent", "Closing Soon"];
+const statusOptions: StatusType[] = ["Urgent", "New", "Last Call"];
+const teamOptions: TeamType[] = [...TEAM_OPTIONS];
 
 const JOBS_PER_PAGE = 9;
+const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
+
+function getCompanyInitials(name: string) {
+  const words = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (words.length === 0) return "C";
+  if (words.length === 1) return words[0][0]?.toUpperCase() ?? "C";
+
+  return `${words[0][0] ?? ""}${words[1][0] ?? ""}`.toUpperCase() || "CO";
+}
 
 /* ------------------------------------------------------------------ */
 /*  Small custom select                                                */
@@ -102,7 +124,7 @@ function CustomSelect<T extends string>({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
+              className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
             >
               {options.map((opt) => (
                 <button
@@ -241,6 +263,7 @@ function dbToJobData(row: {
   location_type: string | null;
   salary: string | null;
   experience: string | null;
+  team: string | null;
   tags: string[] | null;
   status: string;
   apply_url: string | null;
@@ -269,7 +292,10 @@ function dbToJobData(row: {
     id: row.id,
     title: row.title,
     company: row.company.name,
-    companyLogo: row.company.logo_url || `https://api.dicebear.com/9.x/initials/svg?seed=${row.company.name.substring(0, 2)}&backgroundColor=6366f1`,
+    companyLogo:
+      row.company.logo_url ||
+      `https://api.dicebear.com/9.x/initials/svg?seed=${getCompanyInitials(row.company.name)}&backgroundColor=6366f1`,
+    team: row.team || "Software Engineering",
     location: row.location || "Remote",
     locationType: (row.location_type as LocationType) || "Remote",
     salary: row.salary || "Competitive",
@@ -277,7 +303,7 @@ function dbToJobData(row: {
     description: row.description || "",
     applyUrl: row.apply_url || "#",
     tags: row.tags || [],
-    status: row.status as StatusType,
+    status: row.status === "Closing Soon" ? "Last Call" : (row.status as StatusType),
     postedAt,
   };
 }
@@ -293,44 +319,19 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<JobData | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [companyId, setCompanyId] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const supabase = createClient();
 
-  const recruiterCompany = "AI Builders MX";
-  const recruiterInitials = "AIBM";
   const recruiterColor = "6366f1";
+  const isMainAdmin = userEmail.trim().toLowerCase() === MAIN_ADMIN_EMAIL;
 
   /* ── Load jobs from Supabase ── */
   useEffect(() => {
     async function loadJobs() {
       setLoading(true);
-
-      // Get or create company
-      const { data: companies } = await supabase
-        .from("companies")
-        .select("*")
-        .eq("name", recruiterCompany)
-        .limit(1);
-
-      let currentCompanyId: string;
-
-      if (companies && companies.length > 0) {
-        currentCompanyId = (companies[0] as { id: string }).id;
-      } else {
-        const { data: newCompany } = await supabase
-          .from("companies")
-          .insert({
-            name: recruiterCompany,
-            logo_url: `https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`,
-          } as never)
-          .select()
-          .single();
-        currentCompanyId = (newCompany as { id: string } | null)?.id || "";
-      }
-
-      setCompanyId(currentCompanyId);
 
       // Get ALL jobs (all admins see everything)
       const { data: jobs, error } = await supabase
@@ -388,8 +389,15 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
   }, []);
 
   const flashSuccess = useCallback(() => {
+    setErrorMessage(null);
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2200);
+  }, []);
+
+  const flashError = useCallback((message: string) => {
+    setShowSuccess(false);
+    setErrorMessage(message);
+    setTimeout(() => setErrorMessage(null), 3200);
   }, []);
 
   const updateField = useCallback(
@@ -399,79 +407,140 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
     []
   );
 
+  const uploadLogo = useCallback(
+    async (file: File) => {
+      setIsUploadingLogo(true);
+      const fileExt = file.name.split(".").pop() ?? "png";
+      const path = `logos/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+      const { data, error } = await supabase.storage
+        .from("company-logos")
+        .upload(path, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (error || !data?.path) {
+        console.error("Failed to upload logo:", error);
+        setIsUploadingLogo(false);
+        flashError("No se pudo subir el logo. Intenta con otra imagen.");
+        return null;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("company-logos").getPublicUrl(data.path);
+      setIsUploadingLogo(false);
+      return publicUrl;
+    },
+    [supabase, flashError]
+  );
+
+  const handleLogoFileChange = useCallback(
+    async (file: File | null) => {
+      if (!file) return;
+      const publicUrl = await uploadLogo(file);
+      if (publicUrl) {
+        updateField("companyLogo", publicUrl);
+      }
+    },
+    [updateField, uploadLogo]
+  );
+
   /* ── Handlers ── */
   const handleSubmit = useCallback(async () => {
-    if (!form.title.trim() || !form.location.trim() || !companyId) return;
+    if (
+      !form.title.trim() ||
+      !form.location.trim() ||
+      !form.companyName.trim() ||
+      !form.description.trim()
+    ) {
+      flashError("La descripcion es obligatoria para publicar la vacante.");
+      return;
+    }
 
     const tagsArray = form.tags
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
+    const normalizedDescription = form.description.slice(0, 140);
+    const trimmedCompanyName = form.companyName.trim();
+    const fallbackLogo = `https://api.dicebear.com/9.x/initials/svg?seed=${getCompanyInitials(trimmedCompanyName)}&backgroundColor=${recruiterColor}`;
+
+    const logoToPersist = form.companyLogo.trim() || fallbackLogo;
+    const company = await getOrCreateCompany(trimmedCompanyName, logoToPersist);
+    if (!company) {
+      console.error("Failed to create or load company.");
+      flashError("No se pudo crear o cargar la empresa.");
+      return;
+    }
 
     if (editingId) {
-      // Update existing
-      const { data, error } = await supabase
-        .from("jobs")
-        .update({
+      const result = await updateJob(editingId, {
+          company_id: company.id,
           title: form.title,
           location: form.location,
           location_type: form.locationType,
           salary: form.salary || "Competitive",
           experience: form.experience || "Not specified",
-          description: form.description,
+          description: normalizedDescription,
+          team: form.team,
           tags: tagsArray,
           status: form.status,
-        } as never)
-        .eq("id", editingId)
-        .select(`*, company:companies(*)`)
-        .single();
+        } as never);
 
-      if (!error && data) {
+      if (!("error" in result) && result.data) {
         setRoles((prev) =>
-          prev.map((r) => (r.id === editingId ? dbToJobData(data as never) : r))
+          prev.map((r) => (r.id === editingId ? dbToJobData(result.data as never) : r))
         );
+      } else {
+        flashError(result.error || "No se pudo actualizar la vacante.");
+        return;
       }
     } else {
-      // Add new
-      const { data, error } = await supabase
-        .from("jobs")
-        .insert({
-          company_id: companyId,
+      const result = await createJob({
+          company_id: company.id,
           title: form.title,
           location: form.location,
           location_type: form.locationType,
           salary: form.salary || "Competitive",
           experience: form.experience || "Not specified",
-          description: form.description,
+          description: normalizedDescription,
+          team: form.team,
           tags: tagsArray,
           status: form.status,
           apply_url: "https://aibuilders.mx/jobs",
-        } as never)
-        .select(`*, company:companies(*)`)
-        .single();
+        } as never);
 
-      if (!error && data) {
-        setRoles((prev) => [dbToJobData(data as never), ...prev]);
+      if (!("error" in result) && result.data) {
+        setRoles((prev) => [dbToJobData(result.data as never), ...prev]);
         setCurrentPage(1); // Go to first page to see new job
+      } else {
+        flashError(result.error || "No se pudo publicar la vacante.");
+        return;
       }
     }
 
     setModalOpen(false);
     resetForm();
     flashSuccess();
-  }, [form, editingId, companyId, supabase, resetForm, flashSuccess]);
+  }, [form, editingId, resetForm, flashSuccess, flashError]);
 
   const handleEdit = useCallback(
     (job: JobData) => {
       setEditingId(job.id);
+      const normalizedTeam = teamOptions.includes(job.team as TeamType)
+        ? (job.team as TeamType)
+        : "Software Engineering";
       setForm({
         title: job.title,
+        companyName: job.company,
         companyLogo: job.companyLogo,
+        team: normalizedTeam,
         location: job.location,
         locationType: job.locationType,
         salary: job.salary,
         experience: job.experience,
-        description: job.description,
+        description: job.description.slice(0, 140),
         tags: job.tags.join(", "),
         status: job.status,
       });
@@ -481,15 +550,21 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
   );
 
   const handleDelete = useCallback(async (id: string) => {
-    const { error } = await supabase.from("jobs").delete().eq("id", id);
-
-    if (!error) {
+    const result = await deleteJob(id);
+    if (!("error" in result)) {
       setRoles((prev) => prev.filter((r) => r.id !== id));
+    } else {
+      flashError(result.error || "No se pudo eliminar la vacante.");
     }
     setDeleteTarget(null);
-  }, [supabase]);
+  }, [flashError]);
 
-  const isFormValid = form.title.trim() !== "" && form.location.trim() !== "";
+  const isFormValid =
+    form.title.trim() !== "" &&
+    form.location.trim() !== "" &&
+    form.companyName.trim() !== "" &&
+    form.description.trim() !== "" &&
+    !isUploadingLogo;
 
   if (loading) {
     return (
@@ -512,8 +587,7 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
               Gestiona tus roles.
             </h1>
             <p className="max-w-lg text-base leading-relaxed text-gray-400">
-              Publica, edita y administra las posiciones abiertas de{" "}
-              <span className="font-medium text-gray-500">{recruiterCompany}</span>.
+              Publica, edita y administra las posiciones abiertas de tu empresa.
             </p>
           </div>
 
@@ -521,6 +595,14 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
             <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400">
               {userEmail}
             </span>
+            {isMainAdmin && (
+              <Link
+                href="/job-board/dashboard/recruiters"
+                className="rounded-full border border-gray-200 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400 transition-colors hover:border-gray-300 hover:text-gray-600"
+              >
+                Gestionar accesos
+              </Link>
+            )}
             <form action={signOut}>
               <button
                 type="submit"
@@ -535,9 +617,19 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
 
         {/* Mobile logout */}
         <div className="mt-4 flex items-center justify-between sm:hidden">
-          <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400">
-            {userEmail}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400">
+              {userEmail}
+            </span>
+            {isMainAdmin && (
+              <Link
+                href="/job-board/dashboard/recruiters"
+                className="rounded-full border border-gray-200 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400 transition-colors hover:border-gray-300 hover:text-gray-600"
+              >
+                Accesos
+              </Link>
+            )}
+          </div>
           <form action={signOut}>
             <button
               type="submit"
@@ -588,6 +680,23 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                 <Check className="h-4 w-4 text-green-500" strokeWidth={2} />
                 <span className="font-mono text-xs uppercase tracking-[0.15em] text-green-600">
                   Role saved successfully
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Error toast */}
+          <AnimatePresence>
+            {errorMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mx-auto mb-8 flex w-fit items-center gap-2 rounded-full border border-red-200 bg-red-50 px-5 py-2.5"
+              >
+                <X className="h-4 w-4 text-red-500" strokeWidth={2} />
+                <span className="font-mono text-xs uppercase tracking-[0.15em] text-red-600">
+                  {errorMessage}
                 </span>
               </motion.div>
             )}
@@ -704,19 +813,22 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
               exit={{ opacity: 0, scale: 0.96, y: 20 }}
               transition={{ type: "spring", stiffness: 380, damping: 28 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
+              className="w-full max-w-2xl overflow-visible rounded-2xl border border-gray-200 bg-white shadow-2xl"
             >
               {/* Modal header */}
               <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/80 px-5 py-5 sm:px-8 sm:py-6">
                 <div className="flex items-center gap-2.5">
                   <img
-                    src={`https://api.dicebear.com/9.x/initials/svg?seed=${recruiterInitials}&backgroundColor=${recruiterColor}`}
-                    alt={recruiterCompany}
+                    src={
+                      form.companyLogo ||
+                      `https://api.dicebear.com/9.x/initials/svg?seed=${getCompanyInitials(form.companyName || "Company")}&backgroundColor=${recruiterColor}`
+                    }
+                    alt={form.companyName || "Company"}
                     className="h-10 w-10 rounded-xl"
                   />
                   <div>
                     <span className="text-sm text-gray-400">
-                      {recruiterCompany}
+                      {form.companyName || "Nombre de la empresa"}
                     </span>
                     <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-300">
                       {editingId ? "Editing role" : "New role"}
@@ -741,7 +853,7 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                           className={`h-1.5 w-1.5 rounded-full ${
                             s === "Urgent"
                               ? "bg-blue-400"
-                              : s === "Closing Soon"
+                              : s === "Last Call"
                                 ? "bg-orange-400"
                                 : "bg-green-400"
                           }`}
@@ -778,7 +890,7 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                       className={`h-1.5 w-1.5 rounded-full ${
                         s === "Urgent"
                           ? "bg-blue-400"
-                          : s === "Closing Soon"
+                          : s === "Last Call"
                             ? "bg-orange-400"
                             : "bg-green-400"
                       }`}
@@ -805,14 +917,58 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                 <textarea
                   rows={3}
                   value={form.description}
-                  onChange={(e) => updateField("description", e.target.value)}
+                  onChange={(e) => updateField("description", e.target.value.slice(0, 140))}
                   placeholder="Brief description of the role and responsibilities..."
-                  className="w-full resize-none border-none bg-transparent text-sm leading-relaxed text-gray-500 placeholder:text-gray-300 focus:outline-none sm:text-base"
+                  maxLength={140}
+                  className={`w-full resize-none border-none bg-transparent text-sm leading-relaxed placeholder:text-gray-300 focus:outline-none sm:text-base ${
+                    form.description.length >= 140 ? "text-amber-600" : "text-gray-500"
+                  }`}
                 />
+                <p
+                  className={`mt-2 text-right font-mono text-[10px] uppercase tracking-[0.15em] ${
+                    form.description.length >= 140 ? "text-amber-500" : "text-gray-300"
+                  }`}
+                >
+                  {form.description.length}/140
+                </p>
+                {form.description.length >= 140 && (
+                  <p className="mt-1 text-right text-xs text-amber-500">
+                    Limite de 140 caracteres alcanzado.
+                  </p>
+                )}
               </div>
 
               {/* Details grid */}
               <div className="grid grid-cols-1 gap-4 px-5 pb-5 sm:grid-cols-2 sm:gap-5 sm:px-8 sm:pb-6">
+                <Field
+                  label="Company Name"
+                  value={form.companyName}
+                  onChange={(v) => updateField("companyName", v)}
+                  placeholder="e.g. AI Builders MX"
+                />
+                <div className="flex flex-col gap-2">
+                  <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
+                    Company Logo
+                  </label>
+                  <label className="flex cursor-pointer items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 transition-colors hover:border-gray-300">
+                    <span className="truncate">
+                      {isUploadingLogo
+                        ? "Uploading..."
+                        : form.companyLogo
+                          ? "Logo uploaded"
+                          : "Upload logo image"}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        void handleLogoFileChange(e.target.files?.[0] ?? null);
+                        e.currentTarget.value = "";
+                      }}
+                    />
+                  </label>
+                </div>
                 <Field
                   label="Location"
                   value={form.location}
@@ -836,6 +992,12 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                   value={form.experience}
                   onChange={(v) => updateField("experience", v)}
                   placeholder="e.g. 5+ years"
+                />
+                <CustomSelect
+                  label="Team"
+                  value={form.team}
+                  options={teamOptions}
+                  onChange={(v) => updateField("team", v)}
                 />
               </div>
 
