@@ -488,12 +488,12 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
           status: form.status,
         } as never);
 
-      if (!("error" in result) && result.data) {
+      if ("data" in result && result.data) {
         setRoles((prev) =>
           prev.map((r) => (r.id === editingId ? dbToJobData(result.data as never) : r))
         );
       } else {
-        flashError(result.error || "No se pudo actualizar la vacante.");
+        flashError(("error" in result ? result.error : null) ?? "No se pudo actualizar la vacante.");
         return;
       }
     } else {
@@ -511,11 +511,11 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
           apply_url: "https://aibuilders.mx/jobs",
         } as never);
 
-      if (!("error" in result) && result.data) {
+      if ("data" in result && result.data) {
         setRoles((prev) => [dbToJobData(result.data as never), ...prev]);
         setCurrentPage(1); // Go to first page to see new job
       } else {
-        flashError(result.error || "No se pudo publicar la vacante.");
+        flashError(("error" in result ? result.error : null) ?? "No se pudo publicar la vacante.");
         return;
       }
     }
