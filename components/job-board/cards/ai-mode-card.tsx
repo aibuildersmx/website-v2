@@ -24,14 +24,14 @@ export function AiModeCard({ job }: { job: JobData }) {
   const statusColor =
     job.status === "Urgent"
       ? "text-blue-400"
-      : job.status === "Closing Soon"
+      : job.status === "Last Call"
         ? "text-orange-400"
         : "text-green-400";
 
   const statusDot =
     job.status === "Urgent"
       ? "bg-blue-400"
-      : job.status === "Closing Soon"
+      : job.status === "Last Call"
         ? "bg-orange-400"
         : "bg-green-400";
 
@@ -108,6 +108,10 @@ export function AiModeCard({ job }: { job: JobData }) {
             <span className="font-medium text-white/80">
               {job.locationType}
             </span>
+          </p>
+          <p className="text-[13px] leading-relaxed">
+            <span className="text-white/30">team: </span>
+            <span className="font-medium text-white/80">{job.team}</span>
           </p>
         </div>
 

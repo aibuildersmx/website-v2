@@ -4,6 +4,15 @@
 
 ---
 
+## Job Board First (Important)
+
+If a task is only for the job board, follow `JOB-BOARD.md` first.
+
+- Scope job board changes to `/job-board/demo`, `/job-board/dashboard`, and `components/job-board/*`
+- Use `JOB-BOARD.md` for job-board-specific guardrails, prompt templates, and validation checklist
+
+---
+
 ## What Is This Project?
 
 This is the **AI Builders Mexico** community website ([aibuilders.mx](https://aibuilders.mx)). It's built with:

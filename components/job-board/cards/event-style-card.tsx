@@ -37,7 +37,7 @@ export function EventStyleCard({ job }: { job: JobData }) {
             className={`h-2 w-2 rounded-full ${
               job.status === "Urgent"
                 ? "bg-orange-400"
-                : job.status === "Closing Soon"
+                : job.status === "Last Call"
                   ? "bg-amber-400"
                   : "bg-emerald-400"
             }`}
@@ -47,7 +47,7 @@ export function EventStyleCard({ job }: { job: JobData }) {
               ? "Open"
               : job.status === "Urgent"
                 ? "Urgent"
-                : "Closing"}
+                : "Last Call"}
           </span>
         </div>
       </div>

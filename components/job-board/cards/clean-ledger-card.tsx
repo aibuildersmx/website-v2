@@ -1,8 +1,16 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion } from "framer-motion";
-import { MapPin, DollarSign, ArrowRight, Pencil, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  MapPin,
+  DollarSign,
+  ArrowRight,
+  Pencil,
+  Trash2,
+  Plus,
+  Minus,
+} from "lucide-react";
 import type { JobData } from "../job-data";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -13,7 +21,6 @@ function useTextScramble(text: string, isActive: boolean) {
 
   useEffect(() => {
     if (!isActive) {
-      setDisplay(text);
       if (intervalRef.current) clearInterval(intervalRef.current);
       return;
     }
@@ -46,7 +53,7 @@ function useTextScramble(text: string, isActive: boolean) {
     };
   }, [isActive, text]);
 
-  return display;
+  return isActive ? display : text;
 }
 
 export function CleanLedgerCard({
@@ -65,6 +72,7 @@ export function CleanLedgerCard({
   const [ctaHovered, setCtaHovered] = useState(false);
   const [editHovered, setEditHovered] = useState(false);
   const [deleteHovered, setDeleteHovered] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const scrambledApply = useTextScramble("Apply now", ctaHovered);
   const scrambledEdit = useTextScramble("Edit", editHovered);
   const scrambledDelete = useTextScramble("Delete", deleteHovered);
@@ -118,7 +126,7 @@ export function CleanLedgerCard({
               className={`h-1.5 w-1.5 rounded-full ${
                 job.status === "Urgent"
                   ? "bg-blue-400"
-                  : job.status === "Closing Soon"
+                  : job.status === "Last Call"
                     ? "bg-orange-400"
                     : "bg-green-400"
               }`}
@@ -135,51 +143,70 @@ export function CleanLedgerCard({
         </div>
 
         {/* Description */}
-        <div className="px-5 pb-14 sm:px-8 sm:pb-20">
+        <div className="px-5 pb-8 sm:px-8 sm:pb-10">
           <p className="text-sm leading-relaxed text-gray-500 sm:text-base">
             {job.description}
           </p>
         </div>
 
+        <AnimatePresence initial={false}>
+          {isDetailsOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="overflow-hidden"
+            >
+              {/* Details -- stacked rows */}
+              <div className="flex flex-col gap-3 px-5 pb-5 sm:gap-4 sm:px-8 sm:pb-6">
+                <div className="flex items-center gap-3">
+                  <MapPin className="h-4 w-4 text-gray-300" strokeWidth={1.5} />
+                  <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.2em] text-gray-400">
+                    <span>{job.location}</span>
+                    <span className="text-gray-200">·</span>
+                    <span className="rounded-full bg-gray-100 px-3 py-1 text-[10px] tracking-[0.15em] text-gray-500">
+                      {job.locationType}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="w-4 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-gray-300">
+                    T
+                  </span>
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400">
+                    {job.team}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <DollarSign className="h-4 w-4 text-gray-300" strokeWidth={1.5} />
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400">
+                    {job.salary}
+                  </span>
+                </div>
+              </div>
+
+              {/* Skills section */}
+              <div className="px-5 pb-6 sm:px-8 sm:pb-8">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  {job.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-gray-200 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* ---- Spacer pushes bottom group down ---- */}
         <div className="flex-1" />
-
-        {/* ---- Bottom group: details + skills + CTA ---- */}
-
-        {/* Details -- stacked rows */}
-        <div className="flex flex-col gap-3 px-5 pb-5 sm:gap-4 sm:px-8 sm:pb-6">
-          <div className="flex items-center gap-3">
-            <MapPin className="h-4 w-4 text-gray-300" strokeWidth={1.5} />
-            <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.2em] text-gray-400">
-              <span>{job.location}</span>
-              <span className="text-gray-200">·</span>
-              <span className="rounded-full bg-gray-100 px-3 py-1 text-[10px] tracking-[0.15em] text-gray-500">
-                {job.locationType}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <DollarSign className="h-4 w-4 text-gray-300" strokeWidth={1.5} />
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400">
-              {job.salary}
-            </span>
-          </div>
-        </div>
-
-        {/* Skills section */}
-        <div className="px-5 pb-5 sm:px-8 sm:pb-6">
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {job.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-gray-200 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
 
         {/* ---- Bottom section (subtle bg) ---- */}
         <div className="border-t border-gray-200 bg-gray-50/80 px-5 py-6 sm:px-8 sm:py-8">
@@ -210,7 +237,10 @@ export function CleanLedgerCard({
                   onMouseLeave={() => setDeleteHovered(false)}
                   className="group/cta inline-flex items-center overflow-hidden rounded-full border border-red-200 bg-white py-4 pl-8 pr-8 font-mono text-xs font-medium uppercase tracking-[0.25em] text-red-500 transition-all duration-300 ease-out hover:border-red-300 hover:bg-red-50 hover:pr-4"
                 >
-                  <Trash2 className="mr-2.5 h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
+                  <Trash2
+                    className="mr-2.5 h-3.5 w-3.5 shrink-0 transition-opacity duration-200 group-hover/cta:opacity-0"
+                    strokeWidth={1.5}
+                  />
                   <span className="inline-block whitespace-nowrap">{scrambledDelete}</span>
                   <span className="ml-0 flex h-7 w-0 items-center justify-center overflow-hidden rounded-full border border-red-200 bg-red-50 opacity-0 transition-all duration-300 ease-out group-hover/cta:ml-3 group-hover/cta:w-7 group-hover/cta:opacity-100">
                     <Trash2 className="h-3.5 w-3.5 shrink-0 text-red-400" strokeWidth={2} />
@@ -219,18 +249,33 @@ export function CleanLedgerCard({
               )}
             </div>
           ) : (
-            <motion.a
-              href={job.applyUrl}
-              whileTap={{ scale: 0.97 }}
-              onMouseEnter={() => setCtaHovered(true)}
-              onMouseLeave={() => setCtaHovered(false)}
-              className="group/cta inline-flex items-center overflow-hidden rounded-full bg-gray-900 py-4 pl-10 pr-10 font-mono text-xs font-medium uppercase tracking-[0.25em] text-white transition-all duration-300 ease-out hover:bg-gray-800 hover:pr-5"
-            >
-              <span className="inline-block whitespace-nowrap">{scrambledApply}</span>
-              <span className="ml-0 flex h-7 w-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 opacity-0 transition-all duration-300 ease-out group-hover/cta:ml-4 group-hover/cta:w-7 group-hover/cta:opacity-100">
-                <ArrowRight className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
-              </span>
-            </motion.a>
+            <div className="flex items-center gap-3">
+              <motion.a
+                href={job.applyUrl}
+                whileTap={{ scale: 0.97 }}
+                onMouseEnter={() => setCtaHovered(true)}
+                onMouseLeave={() => setCtaHovered(false)}
+                className="group/cta inline-flex items-center overflow-hidden rounded-full bg-gray-900 py-3 pl-8 pr-8 font-mono text-xs font-medium uppercase tracking-[0.25em] text-white transition-all duration-300 ease-out hover:bg-gray-800 hover:pr-5"
+              >
+                <span className="inline-block whitespace-nowrap">{scrambledApply}</span>
+                <span className="ml-0 flex h-7 w-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 opacity-0 transition-all duration-300 ease-out group-hover/cta:ml-4 group-hover/cta:w-7 group-hover/cta:opacity-100">
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
+                </span>
+              </motion.a>
+
+              <button
+                type="button"
+                onClick={() => setIsDetailsOpen((prev) => !prev)}
+                aria-label={isDetailsOpen ? "Hide details" : "Show details"}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
+              >
+                {isDetailsOpen ? (
+                  <Minus className="h-4 w-4" strokeWidth={2} />
+                ) : (
+                  <Plus className="h-4 w-4" strokeWidth={2} />
+                )}
+              </button>
+            </div>
           )}
         </div>
       </div>

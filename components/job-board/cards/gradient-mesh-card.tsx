@@ -48,7 +48,7 @@ export function GradientMeshCard({ job }: { job: JobData }) {
             className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${
               job.status === "Urgent"
                 ? "bg-rose-100 text-rose-600"
-                : job.status === "Closing Soon"
+                : job.status === "Last Call"
                   ? "bg-amber-100 text-amber-600"
                   : "bg-emerald-100 text-emerald-600"
             }`}

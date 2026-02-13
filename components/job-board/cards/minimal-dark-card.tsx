@@ -31,7 +31,7 @@ export function MinimalDarkCard({ job }: { job: JobData }) {
             className={`h-1.5 w-1.5 rounded-full ${
               job.status === "Urgent"
                 ? "bg-orange-400"
-                : job.status === "Closing Soon"
+                : job.status === "Last Call"
                   ? "bg-yellow-400"
                   : "bg-emerald-400"
             }`}

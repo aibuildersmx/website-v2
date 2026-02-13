@@ -22,7 +22,7 @@ export function BrutalistCard({ job }: { job: JobData }) {
           className={`border-2 border-black px-3 py-1 font-mono text-[10px] font-bold uppercase ${
             job.status === "Urgent"
               ? "bg-red-500 text-white"
-              : job.status === "Closing Soon"
+              : job.status === "Last Call"
                 ? "bg-yellow-400 text-black"
                 : "bg-black text-white"
           }`}

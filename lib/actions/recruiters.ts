@@ -1,0 +1,188 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
+
+const RECRUITERS_PATH = "/job-board/dashboard/recruiters";
+const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
+
+async function requireRecruiter() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user?.email) {
+    return { error: "No autorizado." as const };
+  }
+
+  const normalizedEmail = user.email.trim().toLowerCase();
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("recruiters")
+    .select("email")
+    .eq("email", normalizedEmail)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  if (error || !data) {
+    return { error: "No autorizado." as const };
+  }
+
+  return { userEmail: normalizedEmail };
+}
+
+async function requireMainAdmin() {
+  const auth = await requireRecruiter();
+  if ("error" in auth) return auth;
+
+  if (auth.userEmail !== MAIN_ADMIN_EMAIL) {
+    return { error: "No autorizado." as const };
+  }
+
+  return auth;
+}
+
+async function getBaseUrl() {
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (configuredUrl) return configuredUrl.replace(/\/$/, "");
+
+  const requestHeaders = await headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
+
+  if (host) return `${protocol}://${host}`;
+  return "http://localhost:3000";
+}
+
+export async function getRecruiters() {
+  const auth = await requireMainAdmin();
+  if ("error" in auth) return [];
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("recruiters")
+    .select("email, is_active, created_at, last_invited_at")
+    .order("created_at", { ascending: false });
+
+  if (error || !data) {
+    return [];
+  }
+
+  return data;
+}
+
+export async function addRecruiter(
+  _prevState: { error?: string; success?: boolean; message?: string },
+  formData: FormData
+) {
+  const auth = await requireMainAdmin();
+  if ("error" in auth) return auth;
+
+  const emailRaw = String(formData.get("email") || "").trim().toLowerCase();
+  if (!emailRaw || !emailRaw.includes("@")) {
+    return { error: "Ingresa un correo valido." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("recruiters").upsert(
+    {
+      email: emailRaw,
+      is_active: true,
+    },
+    { onConflict: "email" }
+  );
+
+  if (error) {
+    return { error: "No se pudo guardar el correo." };
+  }
+
+  const redirectTo = `${await getBaseUrl()}/login`;
+  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(
+    emailRaw,
+    {
+      redirectTo,
+    }
+  );
+
+  if (inviteError) {
+    const inviteMessage = inviteError.message.toLowerCase();
+    if (
+      inviteMessage.includes("already") ||
+      inviteMessage.includes("registered")
+    ) {
+      revalidatePath(RECRUITERS_PATH);
+      return {
+        success: true,
+        message:
+          "El correo ya existe en Auth. Acceso habilitado o actualizado correctamente.",
+      };
+    }
+
+    revalidatePath(RECRUITERS_PATH);
+    return {
+      error:
+        "Acceso guardado, pero no se pudo enviar invitacion automaticamente. Puedes invitarlo desde Supabase Auth.",
+    };
+  }
+
+  await admin
+    .from("recruiters")
+    .update({ last_invited_at: new Date().toISOString() })
+    .eq("email", emailRaw);
+
+  revalidatePath(RECRUITERS_PATH);
+  return {
+    success: true,
+    message: "Invitacion enviada y acceso habilitado correctamente.",
+  };
+}
+
+export async function toggleRecruiterStatus(formData: FormData) {
+  const auth = await requireMainAdmin();
+  if ("error" in auth) return auth;
+
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const nextActive = String(formData.get("nextActive") || "false") === "true";
+
+  if (!email) return { error: "Correo invalido." };
+  if (email === auth.userEmail && !nextActive) {
+    return { error: "No puedes desactivarte a ti mismo." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("recruiters")
+    .update({ is_active: nextActive })
+    .eq("email", email);
+
+  if (error) {
+    return { error: "No se pudo actualizar el estado." };
+  }
+
+  revalidatePath(RECRUITERS_PATH);
+  return { success: true };
+}
+
+export async function deleteRecruiter(formData: FormData) {
+  const auth = await requireMainAdmin();
+  if ("error" in auth) return auth;
+
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  if (!email) return { error: "Correo invalido." };
+  if (email === auth.userEmail) {
+    return { error: "No puedes eliminarte a ti mismo." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("recruiters").delete().eq("email", email);
+
+  if (error) {
+    return { error: "No se pudo eliminar el correo." };
+  }
+
+  revalidatePath(RECRUITERS_PATH);
+  return { success: true };
+}

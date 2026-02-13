@@ -4,6 +4,13 @@ This guide helps non-developers work safely in this project with AI agents (Curs
 
 If you can describe what you want in plain language, an agent can usually do it for you.
 
+## Job Board First (Important)
+
+If your request is job-board-only, start with `JOB-BOARD.md`.
+
+- Use it as the primary guide for `/job-board/demo` and `/job-board/dashboard`
+- Keep changes scoped to job-board files unless a shared dependency requires otherwise
+
 ## What This Project Is
 
 - Public website for AI Builders (`/`)

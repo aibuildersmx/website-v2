@@ -76,7 +76,7 @@ export function PerspectiveCard({ job }: { job: JobData }) {
             className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${
               job.status === "Urgent"
                 ? "bg-red-50 text-red-500"
-                : job.status === "Closing Soon"
+                : job.status === "Last Call"
                   ? "bg-amber-50 text-amber-500"
                   : "bg-emerald-50 text-emerald-500"
             }`}

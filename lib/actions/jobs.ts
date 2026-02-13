@@ -10,6 +10,29 @@ async function requireAuth() {
   if (!user) {
     return { error: 'No autorizado.' }
   }
+
+  const admin = createAdminClient()
+  const normalizedEmail = (user.email ?? '').trim().toLowerCase()
+  if (!normalizedEmail) {
+    return { error: 'No autorizado.' }
+  }
+
+  const { data: recruiter, error: recruiterError } = await admin
+    .from('recruiters')
+    .select('email')
+    .eq('email', normalizedEmail)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (recruiterError) {
+    console.error('Failed to validate recruiter allowlist:', recruiterError)
+    return { error: 'No autorizado.' }
+  }
+
+  if (!recruiter) {
+    return { error: 'No autorizado.' }
+  }
+
   return { user }
 }
 
@@ -126,23 +149,50 @@ export async function deleteJob(id: string) {
 }
 
 export async function getOrCreateCompany(name: string, logoUrl?: string): Promise<Company | null> {
+  const auth = await requireAuth()
+  if ('error' in auth) return null
+
   const supabase = createAdminClient()
-  
+
+  const normalizedName = name.trim()
+  if (!normalizedName) return null
+
   // Check if company exists
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from('companies')
     .select('*')
-    .eq('name', name)
-    .single()
+    .eq('name', normalizedName)
+    .maybeSingle()
+
+  if (existingError) {
+    console.error('Failed to look up company:', existingError)
+    return null
+  }
 
   if (existing) {
+    if (logoUrl && logoUrl !== existing.logo_url) {
+      const { data: updated, error: updateError } = await supabase
+        .from('companies')
+        .update({ logo_url: logoUrl } as never)
+        .eq('id', existing.id)
+        .select()
+        .single()
+
+      if (updateError) {
+        console.error('Failed to update company logo:', updateError)
+        return existing as unknown as Company
+      }
+
+      return updated as unknown as Company
+    }
+
     return existing as unknown as Company
   }
 
   // Create new company
   const { data, error } = await supabase
     .from('companies')
-    .insert({ name, logo_url: logoUrl } as never)
+    .insert({ name: normalizedName, logo_url: logoUrl } as never)
     .select()
     .single()
 
