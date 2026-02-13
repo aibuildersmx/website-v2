@@ -6,23 +6,7 @@ import Link from "next/link";
 
 const events = [
   {
-    title: "How I Use AI – Vol 2",
-    description:
-      "Domina tus Bases de Datos con Claude Code. Diana nos mostrará cómo integrar Claude Code con SQL para conversar con tu data.",
-    month: "FEB",
-    day: "12",
-    location: "Virtual",
-    attendees: "100 lugares",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Workshop", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/lgd37763",
-  },
-  {
-    title: "Master Midjourney",
+    title: "How I Use AI #3 – Midjourney",
     description:
       "Exploraremos los diferentes features de Midjourney para crear imágenes desde 0. Aprende a usar Style References, Moodboards y Style Creator.",
     month: "FEB",
@@ -36,6 +20,22 @@ const events = [
     tags: ["Workshop", "AI"],
     logo: "/favicon.svg",
     link: "https://luma.com/d342anny",
+  },
+  {
+    title: "How I Use AI #4 – OpenClaw",
+    description:
+      "Sesión virtual para conocer OpenClaw en acción y cómo integrarlo en tu flujo de trabajo con AI.",
+    month: "FEB",
+    day: "26",
+    location: "Virtual, 6:00 PM",
+    attendees: "100 lugares",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/5ivardas",
   },
   {
     title: "Build with Cursor Mexico City",
@@ -71,6 +71,13 @@ const events = [
 ];
 
 const pastEvents = [
+  {
+    title: "How I Use AI – Vol 2",
+    month: "FEB",
+    day: "12",
+    location: "Virtual",
+    logo: "/favicon.svg",
+  },
   {
     title: "v0: Prompt to Production",
     month: "ENE",
