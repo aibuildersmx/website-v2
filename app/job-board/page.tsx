@@ -77,6 +77,7 @@ function dbToJobData(row: {
     description: row.description || "",
     applyUrl: row.apply_url || "#",
     tags: row.tags || [],
+    badge: row.tags?.includes("DEMO") ? "DEMO" : undefined,
     status: row.status === "Closing Soon" ? "Last Call" : (row.status as StatusType),
     postedAt,
   };
@@ -85,76 +86,23 @@ function dbToJobData(row: {
 // Fallback data in case DB is empty
 const fallbackJobs: JobData[] = [
   {
-    id: "JB-2026-0105",
-    title: "DevOps & Platform Lead",
-    company: "Warp Terminal",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=WT&backgroundColor=f59e0b",
+    id: "JB-2026-DEMO",
+    title: "Senior AI Product Engineer",
+    company: "AI Builders Mexico",
+    companyLogo: "/favicon.svg",
+    badge: "DEMO",
     team: "Software Engineering",
-    location: "Austin, TX",
+    location: "Ciudad de México, MX",
     locationType: "Hybrid",
-    salary: "$175,000 – $225,000",
-    experience: "6+ years",
+    salary: "$80,000 - $110,000 USD",
+    experience: "5+ years",
     description:
-      "Own the infrastructure that powers millions of developer sessions. Build resilient CI/CD pipelines and scale Kubernetes clusters.",
-    applyUrl: "#",
-    tags: ["Kubernetes", "Terraform", "AWS", "CI/CD"],
+      "Lead end-to-end delivery of AI-native product features, from prototype to production. You will build with Next.js and Python services, orchestrate LLM workflows, and partner closely with design and growth to ship high-impact user experiences.",
+    applyUrl:
+      "mailto:talent@aibuilders.mx?subject=Application%20-%20Senior%20AI%20Product%20Engineer",
+    tags: ["DEMO", "Next.js", "TypeScript", "Python", "LLMs", "Product"],
     status: "New",
-    postedAt: "3 days ago",
-  },
-  {
-    id: "JB-2026-0106",
-    title: "Machine Learning Researcher",
-    company: "DeepMind",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=DM&backgroundColor=3b82f6",
-    team: "AI Research",
-    location: "London, UK",
-    locationType: "On-site",
-    salary: "£130,000 – £190,000",
-    experience: "PhD + 2 years",
-    description:
-      "Advance the state of the art in reinforcement learning and multi-agent systems. Publish at top-tier venues and ship research into products.",
-    applyUrl: "#",
-    tags: ["RL", "JAX", "Research", "Multi-Agent"],
-    status: "Urgent",
-    postedAt: "12 hours ago",
-  },
-  {
-    id: "JB-2026-0107",
-    title: "Full-Stack Engineer",
-    company: "Vercel",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=VC&backgroundColor=171717",
-    team: "Software Engineering",
-    location: "Anywhere",
-    locationType: "Remote",
-    salary: "$170,000 – $220,000",
-    experience: "4+ years",
-    description:
-      "Build the platform that powers the modern web. Work on Next.js, edge functions, and developer experience tooling at global scale.",
-    applyUrl: "#",
-    tags: ["Next.js", "TypeScript", "Node.js", "Edge"],
-    status: "New",
-    postedAt: "4 days ago",
-  },
-  {
-    id: "JB-2026-0108",
-    title: "Creative Technologist",
-    company: "Runway",
-    companyLogo:
-      "https://api.dicebear.com/9.x/initials/svg?seed=RW&backgroundColor=a855f7",
-    team: "Design",
-    location: "New York, NY",
-    locationType: "Hybrid",
-    salary: "$150,000 – $200,000",
-    experience: "3+ years",
-    description:
-      "Bridge art and engineering to prototype generative AI experiences. Combine GPU programming, creative coding, and interaction design.",
-    applyUrl: "#",
-    tags: ["Three.js", "GLSL", "GenAI", "Creative Coding"],
-    status: "New",
-    postedAt: "6 days ago",
+    postedAt: "2 days ago",
   },
 ];
 

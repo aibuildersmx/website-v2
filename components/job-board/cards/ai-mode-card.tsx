@@ -59,7 +59,8 @@ export function AiModeCard({ job }: { job: JobData }) {
       {/* Card body */}
       <div className="relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-[#141414] font-mono shadow-2xl shadow-black/40 transition-colors duration-300 group-hover:border-white/[0.1] sm:min-h-[480px]">
         {/* ---- Header: avatar + company ---- */}
-        <div className="flex items-center gap-3 px-5 pt-6 pb-1 sm:px-7 sm:pt-7">
+        <div className="flex items-center justify-between gap-3 px-5 pt-6 pb-1 sm:px-7 sm:pt-7">
+          <div className="flex items-center gap-3">
           <img
             src={job.companyLogo}
             alt={job.company}
@@ -68,6 +69,12 @@ export function AiModeCard({ job }: { job: JobData }) {
           <span className="text-[15px] font-semibold tracking-tight text-white/90">
             {job.company}
           </span>
+          </div>
+          {job.badge && (
+            <span className="inline-flex items-center rounded-full border border-indigo-300/30 bg-indigo-500/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] text-indigo-300">
+              {job.badge}
+            </span>
+          )}
         </div>
 
         {/* ---- Title as quoted text ---- */}

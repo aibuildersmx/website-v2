@@ -303,6 +303,7 @@ function dbToJobData(row: {
     description: row.description || "",
     applyUrl: row.apply_url || "#",
     tags: row.tags || [],
+    badge: row.tags?.includes("DEMO") ? "DEMO" : undefined,
     status: row.status === "Closing Soon" ? "Last Call" : (row.status as StatusType),
     postedAt,
   };

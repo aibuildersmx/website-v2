@@ -120,19 +120,26 @@ export function CleanLedgerCard({
             <span className="text-sm text-gray-400">{job.company}</span>
           </div>
 
-          {/* Status pill */}
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500">
-            <span
-              className={`h-1.5 w-1.5 rounded-full ${
-                job.status === "Urgent"
-                  ? "bg-blue-400"
-                  : job.status === "Last Call"
-                    ? "bg-orange-400"
-                    : "bg-green-400"
-              }`}
-            />
-            {job.status}
-          </span>
+          <div className="flex items-center gap-2">
+            {job.badge && (
+              <span className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-indigo-600">
+                {job.badge}
+              </span>
+            )}
+            {/* Status pill */}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  job.status === "Urgent"
+                    ? "bg-blue-400"
+                    : job.status === "Last Call"
+                      ? "bg-orange-400"
+                      : "bg-green-400"
+                }`}
+              />
+              {job.status}
+            </span>
+          </div>
         </div>
 
         {/* Role name */}

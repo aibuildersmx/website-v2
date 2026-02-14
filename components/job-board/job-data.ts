@@ -3,6 +3,7 @@ export interface JobData {
   title: string;
   company: string;
   companyLogo: string;
+  badge?: string;
   team: string;
   location: string;
   locationType: "Remote" | "Hybrid" | "On-site";
@@ -17,19 +18,22 @@ export interface JobData {
 
 export const sampleJob: JobData = {
   id: "JB-2026-0042",
-  title: "Senior AI Engineer",
-  company: "NeuralForge Labs",
-  companyLogo: "https://api.dicebear.com/9.x/initials/svg?seed=NF&backgroundColor=6366f1",
+  title: "Senior AI Product Engineer",
+  company: "AI Builders Mexico",
+  companyLogo: "/favicon.svg",
+  badge: "DEMO",
   team: "Software Engineering",
-  location: "San Francisco, CA",
+  location: "Ciudad de México, MX",
   locationType: "Hybrid",
-  salary: "$185,000 - $240,000",
+  salary: "$80,000 - $110,000 USD",
   experience: "5+ years",
-  description: "Build and deploy large language models. Strong Python, PyTorch, and MLOps skills required. Lead a team of ML engineers.",
-  applyUrl: "#",
-  tags: ["Python", "PyTorch", "LLMs", "MLOps", "Transformers"],
+  description:
+    "Lead end-to-end delivery of AI-native product features, from prototype to production. You will build with Next.js and Python services, orchestrate LLM workflows, and partner closely with design and growth to ship high-impact user experiences.",
+  applyUrl:
+    "mailto:talent@aibuilders.mx?subject=Application%20-%20Senior%20AI%20Product%20Engineer",
+  tags: ["DEMO", "Next.js", "TypeScript", "Python", "LLMs", "Product"],
   status: "New",
-  postedAt: "2 days ago",
+  postedAt: "Just now",
 };
 
 export const sampleJobs: JobData[] = [
