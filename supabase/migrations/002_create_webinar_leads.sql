@@ -1,6 +1,6 @@
 CREATE TABLE webinar_leads (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT NOT NULL,
+  name TEXT,
   email TEXT NOT NULL,
   question TEXT,
   webinar_slug TEXT NOT NULL DEFAULT 'midjourney',
