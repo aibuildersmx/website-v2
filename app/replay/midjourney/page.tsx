@@ -113,7 +113,7 @@ export default function MidjourneyReplayPage() {
 
           <div className="flex flex-col gap-2">
             <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
-              Pregunta{" "}
+              Cuéntanos{" "}
               <span className="normal-case tracking-normal text-gray-300">
                 (opcional)
               </span>
@@ -121,7 +121,7 @@ export default function MidjourneyReplayPage() {
             <textarea
               name="question"
               rows={3}
-              placeholder="¿Tienes alguna pregunta sobre Midjourney?"
+              placeholder="¿En qué estás trabajando o qué te interesa de AI y Midjourney?"
               className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 placeholder:text-gray-300 transition-colors hover:border-gray-300 focus:border-gray-400 focus:outline-none"
             />
           </div>
