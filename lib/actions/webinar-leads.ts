@@ -3,13 +3,8 @@
 import { createAdminClient } from '@/lib/supabase/server'
 
 export async function submitWebinarLead(formData: FormData) {
-  const name = formData.get('name') as string
+  const name = (formData.get('name') as string | null)?.trim() || null
   const email = formData.get('email') as string
-  const question = formData.get('question') as string | null
-
-  if (!name || !name.trim()) {
-    return { error: 'El nombre es requerido.' }
-  }
 
   if (!email || !email.trim()) {
     return { error: 'El correo electrónico es requerido.' }
@@ -26,9 +21,9 @@ export async function submitWebinarLead(formData: FormData) {
   const { error } = await supabase
     .from('webinar_leads')
     .insert({
-      name: name.trim(),
+      name: name,
       email: email.trim(),
-      question: question?.trim() || null,
+      question: null,
       webinar_slug: 'midjourney',
     } as never)
 

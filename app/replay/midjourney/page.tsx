@@ -44,9 +44,9 @@ export default function MidjourneyReplayPage() {
             <Image
               src="/aibm-logo.svg"
               alt="AI Builders Mexico"
-              width={120}
-              height={24}
-              className="mx-auto h-6 w-auto brightness-0"
+              width={240}
+              height={48}
+              className="mx-auto h-12 w-auto brightness-0"
             />
           </Link>
         </div>
@@ -87,12 +87,14 @@ export default function MidjourneyReplayPage() {
         <form action={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
-              Nombre
+              Nombre{" "}
+              <span className="normal-case tracking-normal text-gray-300">
+                (opcional)
+              </span>
             </label>
             <input
               type="text"
               name="name"
-              required
               placeholder="Tu nombre"
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 placeholder:text-gray-300 transition-colors hover:border-gray-300 focus:border-gray-400 focus:outline-none"
             />
@@ -108,21 +110,6 @@ export default function MidjourneyReplayPage() {
               required
               placeholder="tu@email.com"
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 placeholder:text-gray-300 transition-colors hover:border-gray-300 focus:border-gray-400 focus:outline-none"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
-              Cuéntanos{" "}
-              <span className="normal-case tracking-normal text-gray-300">
-                (opcional)
-              </span>
-            </label>
-            <textarea
-              name="question"
-              rows={3}
-              placeholder="¿En qué estás trabajando o qué te interesa de AI y Midjourney?"
-              className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 placeholder:text-gray-300 transition-colors hover:border-gray-300 focus:border-gray-400 focus:outline-none"
             />
           </div>
 
