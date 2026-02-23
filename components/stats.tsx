@@ -101,6 +101,38 @@ export default function StatsSection() {
                   width="80"
                   style={{ filter: "invert(1)" }}
                 />
+                <div className="flex items-center gap-1.5 shrink-0 opacity-50">
+                  <img
+                    className="h-5 w-auto"
+                    src="/openai.svg"
+                    alt="OpenAI Logo"
+                    height="20"
+                    width="20"
+                  />
+                  <img
+                    className="h-5 w-auto"
+                    src="/openai-text.svg"
+                    alt="OpenAI"
+                    height="20"
+                    width="80"
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0 opacity-50">
+                  <img
+                    className="h-5 w-auto"
+                    src="/gemini.svg"
+                    alt="Gemini Logo"
+                    height="20"
+                    width="20"
+                  />
+                  <img
+                    className="h-5 w-auto"
+                    src="/gemini-text.svg"
+                    alt="Gemini"
+                    height="20"
+                    width="80"
+                  />
+                </div>
               </InfiniteSlider>
             </div>
           </div>

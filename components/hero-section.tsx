@@ -223,6 +223,38 @@ export default function HeroSection() {
                       width="auto"
                     />
                   </div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      className="h-6 w-fit invert"
+                      src="/openai.svg"
+                      alt="OpenAI Logo"
+                      height="24"
+                      width="auto"
+                    />
+                    <img
+                      className="h-6 w-fit invert"
+                      src="/openai-text.svg"
+                      alt="OpenAI"
+                      height="24"
+                      width="auto"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      className="h-6 w-fit invert"
+                      src="/gemini.svg"
+                      alt="Gemini Logo"
+                      height="24"
+                      width="auto"
+                    />
+                    <img
+                      className="h-6 w-fit invert"
+                      src="/gemini-text.svg"
+                      alt="Gemini"
+                      height="24"
+                      width="auto"
+                    />
+                  </div>
                 </InfiniteSlider>
               </div>
             </div>

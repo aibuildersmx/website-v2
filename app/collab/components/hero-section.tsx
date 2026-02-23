@@ -97,6 +97,14 @@ export default function HeroSection() {
                                     <div className="flex items-center">
                                         <Image src="/google.png" alt="Google Logo" width={80} height={35} className='mx-auto object-contain'/>
                                     </div>
+                                    <div className="flex items-center gap-2">
+                                        <Image src="/openai.svg" alt="OpenAI Logo" width={28} height={28} className='object-contain invert'/>
+                                        <Image src="/openai-text.svg" alt="OpenAI" width={80} height={35} className='object-contain invert'/>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Image src="/gemini.svg" alt="Gemini Logo" width={28} height={28} className='object-contain invert'/>
+                                        <Image src="/gemini-text.svg" alt="Gemini" width={80} height={35} className='object-contain invert'/>
+                                    </div>
                                 </InfiniteSlider>
                                 <ProgressiveBlur
                                     className="pointer-events-none absolute left-0 top-0 h-full w-20"
