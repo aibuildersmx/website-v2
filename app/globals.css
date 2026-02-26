@@ -212,3 +212,35 @@
     opacity: 1;
   }
 }
+
+@keyframes role-scroll {
+  0%, 15.33%    { transform: translateY(0); }
+  16.67%, 32%   { transform: translateY(-20px); }
+  33.33%, 48.67%{ transform: translateY(-40px); }
+  50%, 65.33%   { transform: translateY(-60px); }
+  66.67%, 82%   { transform: translateY(-80px); }
+  83.33%, 98.67%{ transform: translateY(-100px); }
+  100%          { transform: translateY(-120px); }
+}
+
+@keyframes role-width {
+  0%, 15.33%    { width: 8ch; }   /* Founders */
+  16.67%, 32%   { width: 11ch; }  /* Diseñadores */
+  33.33%, 48.67%{ width: 16ch; }  /* Product Managers */
+  50%, 65.33%   { width: 10ch; }  /* Educadores */
+  66.67%, 82%   { width: 9ch; }   /* Creadores */
+  83.33%, 98.67%{ width: 10ch; }  /* Visionarios */
+  100%          { width: 8ch; }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
