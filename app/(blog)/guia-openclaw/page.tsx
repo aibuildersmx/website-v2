@@ -82,7 +82,7 @@ export default function OpenClawGuiaPage() {
                     <strong>¿En qué se diferencia de ChatGPT o Claude web?</strong> OpenClaw vive en tu infraestructura. Tiene memoria persistente, se conecta a tus apps, y puedes personalizarlo completamente. Es tu asistente, no el de todos.
                 </p>
                 <p>
-                    <strong>¿Qué necesitas?</strong> Node 22+, una API key de tu proveedor favorito (o una cuenta gratis de GitHub Copilot), y 5 minutos.
+                    <strong>¿Qué necesitas?</strong> Node 22+, una API key de tu proveedor favorito (o una cuenta de ChatGPT/Anthropic/GitHub Copilot), y 15 minutos.
                 </p>
             </Prose>
 

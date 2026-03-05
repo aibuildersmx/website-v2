@@ -76,7 +76,7 @@ export default function GoogleWorkspaceCliPage() {
             </Prose>
 
             <Callout type="warning">
-                <p><strong>Esto NO es un producto oficial de Google.</strong> Es un proyecto open-source bajo Apache-2.0 que usa las APIs públicas de Google. Tenlo en cuenta.</p>
+                <p><strong>Esto NO es un producto oficialmente soportado por Google.</strong> Vive bajo la org <code>googleworkspace</code> en GitHub, pero el propio repo aclara que no tiene soporte oficial. Es open-source (Apache-2.0), pre-v1.0, y con breaking changes esperados.</p>
             </Callout>
 
             <Prose>
