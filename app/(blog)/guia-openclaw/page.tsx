@@ -5,7 +5,7 @@ import CodeBlock from '@/components/blog/code-block'
 import { Callout, SectionTitle, SubSection, Prose, StickyTOC, MobileTOC } from '@/components/blog/shared'
 import { useBlogTheme } from '@/app/(blog)/layout'
 import Link from 'next/link'
-import { ArrowLeft, ExternalLink, Shield } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Shield, Stethoscope, Settings, Bot, MessageSquare, Lock, Brain } from 'lucide-react'
 
 const tocItems: [string, string][] = [
     ['que-es', '¿Qué es OpenClaw?'],
@@ -662,38 +662,38 @@ SMTP_PASS=tu-app-password`} className="my-6" />
             <Prose><p>Referencia rápida de los comandos que más vas a usar en el día a día:</p></Prose>
 
             {[
-                { emoji: '🩺', category: 'Diagnóstico', commands: [
+                { icon: Stethoscope, category: 'Diagnóstico', commands: [
                     { cmd: 'openclaw doctor', desc: 'Checa todo y ofrece fixes automáticos' },
                     { cmd: 'openclaw status --all', desc: 'Diagnóstico completo (copy-pasteable para soporte)' },
                     { cmd: 'openclaw logs --follow', desc: 'Logs en tiempo real' },
                 ]},
-                { emoji: '⚙️', category: 'Gateway', commands: [
+                { icon: Settings, category: 'Gateway', commands: [
                     { cmd: 'openclaw gateway restart', desc: 'Reinicia el servicio' },
                     { cmd: 'openclaw gateway status', desc: 'Estado + probe RPC' },
                     { cmd: 'openclaw gateway install', desc: 'Instala como servicio del sistema' },
                 ]},
-                { emoji: '🤖', category: 'Modelos', commands: [
+                { icon: Bot, category: 'Modelos', commands: [
                     { cmd: 'openclaw models', desc: 'Modelo activo + estado de auth' },
                     { cmd: 'openclaw models list --all', desc: 'Todos los modelos disponibles' },
                     { cmd: 'openclaw models set <modelo>', desc: 'Cambia modelo principal' },
                     { cmd: 'openclaw models scan', desc: 'Descubre modelos de tus providers' },
                     { cmd: 'openclaw models status --probe', desc: 'Prueba live de auth' },
                 ]},
-                { emoji: '📱', category: 'Canales', commands: [
+                { icon: MessageSquare, category: 'Canales', commands: [
                     { cmd: 'openclaw channels status --probe', desc: 'Salud de canales' },
                     { cmd: 'openclaw pairing approve <channel> <code>', desc: 'Aprobar pairing' },
                 ]},
-                { emoji: '🔒', category: 'Seguridad', commands: [
+                { icon: Lock, category: 'Seguridad', commands: [
                     { cmd: 'openclaw security audit', desc: 'Audita config por vulnerabilidades' },
                     { cmd: 'openclaw security audit --fix', desc: 'Aplica defaults seguros automáticamente' },
                 ]},
-                { emoji: '🧠', category: 'Skills y memoria', commands: [
+                { icon: Brain, category: 'Skills y memoria', commands: [
                     { cmd: 'openclaw skills check', desc: 'Cuáles están ready' },
                     { cmd: 'openclaw memory search "query"', desc: 'Búsqueda semántica en tu memoria' },
                 ]},
             ].map((group) => (
                 <div key={group.category} className="my-6">
-                    <p className={`text-sm font-medium mb-3 ${textPrimary}`}>{group.emoji} {group.category}</p>
+                    <p className={`text-sm font-medium mb-3 flex items-center gap-2 ${textPrimary}`}><group.icon className="w-4 h-4" /> {group.category}</p>
                     <div className="space-y-2">
                         {group.commands.map((c) => (
                             <div key={c.cmd} className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 rounded-lg border px-4 py-3 ${borderSubtle} ${bgSubtle}`}>
