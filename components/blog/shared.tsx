@@ -97,7 +97,7 @@ export function SubSection({ title, children }: { title: string; children: React
     return (
         <div className="mt-10 mb-8">
             <h3
-                className="text-lg sm:text-xl font-medium mb-4"
+                className="text-lg sm:text-2xl font-medium mb-4"
                 style={{ color: theme === 'dark' ? ctp.mocha.text : '#000' }}
             >
                 {title}

@@ -11,13 +11,15 @@ const tocItems: [string, string][] = [
     ['que-es', '¿Qué es OpenClaw?'],
     ['instalacion', 'Instalación'],
     ['modelos', 'Proveedores y Modelos'],
-    ['copilot', 'GitHub Copilot (gratis)'],
+    ['copilot', 'GitHub Copilot'],
     ['anthropic', 'Anthropic (Claude)'],
     ['codex', 'OpenAI Codex (suscripción)'],
     ['canales', 'Canales: Telegram y WhatsApp'],
     ['personalizacion', 'Personalización'],
     ['skills', 'Skills y ClawHub'],
+    ['google', 'Google (Email + Calendario)'],
     ['seguridad', 'Seguridad'],
+    ['vps', 'VPS Recomendado'],
     ['recursos', 'Recursos'],
 ]
 
@@ -113,8 +115,6 @@ export default function OpenClawGuiaPage() {
                 <p>El wizard <code>openclaw onboard</code> te guía paso a paso: elige proveedor de modelo, configura canales (WhatsApp/Telegram), instala el daemon, y verifica que todo funciona.</p>
             </Callout>
 
-            <Prose><p>También existe una <strong>macOS app</strong> que maneja todo visualmente: <a href="https://openclaw.ai" target="_blank">openclaw.ai</a>. Para este tutorial nos enfocamos en la CLI.</p></Prose>
-
             {/* ========== MODELOS ========== */}
             <SectionTitle id="modelos">Proveedores y Modelos</SectionTitle>
             <Prose>
@@ -133,7 +133,7 @@ export default function OpenClawGuiaPage() {
                             </tr>
                         </thead>
                         <tbody className={tdText}>
-                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">GitHub Copilot</td><td className="px-4 py-3 font-mono text-xs">github-copilot/gpt-5-mini</td><td className="px-4 py-3 text-xs">Device flow (gratis)</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">GitHub Copilot</td><td className="px-4 py-3 font-mono text-xs">github-copilot/gpt-5-mini</td><td className="px-4 py-3 text-xs">Device flow (desde $10/mes)</td></tr>
                             <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">Anthropic</td><td className="px-4 py-3 font-mono text-xs">anthropic/claude-sonnet-4-5</td><td className="px-4 py-3 text-xs">API key o setup-token</td></tr>
                             <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">OpenAI</td><td className="px-4 py-3 font-mono text-xs">openai/gpt-5.2</td><td className="px-4 py-3 text-xs">API key</td></tr>
                             <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">OpenAI Codex</td><td className="px-4 py-3 font-mono text-xs">openai-codex/gpt-5.3-codex</td><td className="px-4 py-3 text-xs">OAuth (suscripción)</td></tr>
@@ -145,11 +145,38 @@ export default function OpenClawGuiaPage() {
             </div>
 
             {/* ========== COPILOT ========== */}
-            <SectionTitle id="copilot">GitHub Copilot (opción gratis)</SectionTitle>
+            <SectionTitle id="copilot">GitHub Copilot</SectionTitle>
             <Prose>
-                <p>Si tienes una cuenta de GitHub (gratis), ya tienes acceso a <strong>GitHub Copilot Free</strong>. Esto te da modelos como <code>gpt-5-mini</code>, <code>gpt-4.1</code> y <code>grok-code-fast-1</code> con multiplicador <strong>0x</strong> — o sea, no consumen premium requests.</p>
-                <p>Con la <strong>Copilot Pro</strong> ($10/mes) tienes 300 premium requests y acceso a Claude Sonnet, GPT-5.2, Gemini, y más. La <strong>Pro+</strong> ($39/mes) te da 1,500. Modelos como <code>claude-haiku-4.5</code> tienen multiplicador <strong>0.33x</strong> (3 requests por el precio de 1) y <code>claude-sonnet-4.5</code> cuesta <strong>1x</strong>. Es un muy buen deal dependiendo del uso que le des.</p>
+                <p>GitHub Copilot es una de las formas más accesibles de darle modelos a OpenClaw. Con el plan <strong>Copilot Pro</strong> ($10 USD/mes) obtienes <strong>300 premium requests mensuales</strong> y acceso a una lista enorme de modelos — incluyendo Claude y GPT. Con <strong>Pro+</strong> ($39/mes) suben a 1,500.</p>
+                <p>Lo interesante es el sistema de <strong>multiplicadores</strong>. Algunos modelos cuestan más premium requests que otros, y tres modelos son completamente <strong>gratis</strong> (multiplicador 0x) dentro de cualquier plan de pago:</p>
             </Prose>
+
+            <div className={`my-6 rounded-xl border ${borderColor} overflow-hidden`}>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                        <thead><tr className={`border-b ${borderColor} ${thBg}`}><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Modelo</th><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Multiplicador</th><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Qué significa</th></tr></thead>
+                        <tbody className={tdText}>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">GPT-5 mini</td><td className="px-4 py-3 font-medium">0x ✨</td><td className="px-4 py-3 text-xs">Incluido — no consume premium requests</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">GPT-4.1</td><td className="px-4 py-3 font-medium">0x ✨</td><td className="px-4 py-3 text-xs">Incluido — no consume premium requests</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">GPT-4o</td><td className="px-4 py-3 font-medium">0x ✨</td><td className="px-4 py-3 text-xs">Incluido — no consume premium requests</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">Claude Haiku 4.5</td><td className="px-4 py-3">0.33x</td><td className="px-4 py-3 text-xs">3 requests por el precio de 1 (900 con Pro)</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">Gemini 3 Flash</td><td className="px-4 py-3">0.33x</td><td className="px-4 py-3 text-xs">3 requests por el precio de 1</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">Claude Sonnet 4.5</td><td className="px-4 py-3">1x</td><td className="px-4 py-3 text-xs">1 premium request cada una (300 con Pro)</td></tr>
+                            <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 font-mono text-xs">GPT-5.2</td><td className="px-4 py-3">1x</td><td className="px-4 py-3 text-xs">1 premium request cada una</td></tr>
+                            <tr><td className="px-4 py-3 font-mono text-xs">Claude Opus 4.5</td><td className="px-4 py-3">3x</td><td className="px-4 py-3 text-xs">3 premium requests cada una (100 con Pro)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <Prose>
+                <p><strong>En la práctica:</strong> con Copilot Pro por $10/mes puedes usar <code>GPT-5 mini</code> y <code>GPT-4.1</code> de forma <strong>ilimitada</strong> para el día a día de tu asistente — preguntas, tareas, automatizaciones. Son modelos excelentes para uso general. Y cuando necesites algo más fuerte (Claude Sonnet para razonamiento complejo, o GPT-5.2 para tareas pesadas), tienes 300 premium requests para esos momentos.</p>
+                <p>Incluso puedes pedirle a tu agente que te ayude a configurar herramientas de desarrollo en tu VPS — usar <strong>Claude Code</strong>, <strong>Cursor</strong>, o el <strong>Codex CLI</strong> si los tienes instalados. El agente tiene acceso a tu terminal y puede ejecutar comandos por ti.</p>
+            </Prose>
+
+            <Callout type="warning">
+                <p><strong>¿Y Copilot Free?</strong> El plan gratuito de GitHub tiene acceso a algunos modelos, pero con solo <strong>50 premium requests/mes</strong> y sin modelos 0x (todo cuesta 1 request). Para OpenClaw como asistente 24/7 se queda muy corto. <strong>Copilot Pro a $10/mes es la opción mínima recomendada</strong> para usar este proveedor.</p>
+            </Callout>
 
             <Terminal
                 title="~/copilot-setup"
@@ -159,14 +186,14 @@ export default function OpenClawGuiaPage() {
                     { type: 'command', text: 'openclaw models auth login-github-copilot' },
                     { type: 'output', text: '→ Open https://github.com/login/device\n→ Enter code: ABCD-1234\n✓ Authenticated as @tuusuario\n✓ Copilot token stored' },
                     { type: 'empty', text: '' },
-                    { type: 'comment', text: '# Elige tu modelo default' },
+                    { type: 'comment', text: '# Usa GPT-5 mini como default (0x — ilimitado)' },
                     { type: 'command', text: 'openclaw models set github-copilot/gpt-5-mini', delay: 600 },
                     { type: 'output', text: '✓ Default model set to github-copilot/gpt-5-mini' },
                 ]}
             />
 
             <Callout type="info">
-                <p>El device flow funciona desde cualquier máquina — solo necesitas un browser para autorizar. El token se guarda local y OpenClaw lo renueva automáticamente.</p>
+                <p>El device flow funciona desde cualquier máquina — solo necesitas un browser para autorizar. El token se guarda local y OpenClaw lo renueva automáticamente. La disponibilidad de modelos depende de tu plan de Copilot.</p>
             </Callout>
 
             {/* ========== ANTHROPIC ========== */}
@@ -348,13 +375,115 @@ export default function OpenClawGuiaPage() {
                 <p>Trata skills de terceros como <strong>código no confiable</strong>. Léelos antes de habilitarlos. Para inputs riesgosos, usa sandboxed runs.</p>
             </Callout>
 
+            {/* ========== GOOGLE ========== */}
+            <SectionTitle id="google">Integración Google (Email + Calendario)</SectionTitle>
+            <Prose>
+                <p>La integración con Google es el punto más polémico de OpenClaw. Todos los videos lo confirman: es la parte más difícil del setup y muchos influencers la saltan por completo. La buena noticia: hay diferentes niveles de complejidad dependiendo de qué necesitas.</p>
+            </Prose>
+
+            <SubSection title="📧 Email — Gmail con IMAP (Beginner Friendly)">
+                <Prose><p><strong>No necesitas Google Cloud Console.</strong> Solo un App Password de Gmail. Setup en 5 minutos.</p></Prose>
+
+                <div className="my-6 space-y-3">
+                    {[
+                        'Ir a myaccount.google.com/apppasswords',
+                        'Crear un App Password para "Mail"',
+                        'Instalar el skill de email (ver terminal abajo)',
+                        'Crear archivo .env con las credenciales IMAP/SMTP',
+                        'Listo — OpenClaw puede leer y enviar correos',
+                    ].map((step, i) => (
+                        <div key={i} className={`flex items-start gap-3 rounded-xl border p-4 ${borderSubtle} ${bgSubtle}`}>
+                            <span className={`font-mono text-xs shrink-0 mt-0.5 ${textDimmed}`}>{i + 1}</span>
+                            <p className={`text-sm ${textMuted}`}>{step}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <Terminal title="~/email-skill" className="my-6" lines={[
+                    { type: 'command', text: 'npx clawhub install imap-smtp-email' },
+                    { type: 'output', text: '✓ Installed imap-smtp-email → ~/.openclaw/skills/' },
+                ]} />
+
+                <CodeBlock title="~/.openclaw/skills/imap-smtp-email/.env" code={`IMAP_HOST=imap.gmail.com
+IMAP_PORT=993
+IMAP_USER=tu-email@gmail.com
+IMAP_PASS=tu-app-password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=tu-email@gmail.com
+SMTP_PASS=tu-app-password`} className="my-6" />
+
+                <Callout type="tip">
+                    <p><strong>Tip de seguridad:</strong> Crea una cuenta Gmail dedicada para el bot, no uses tu cuenta personal. Si algo sale mal, solo se compromete esa cuenta throwaway.</p>
+                </Callout>
+
+                <Prose><p><strong>Fuente:</strong> Video <a href="https://youtu.be/hXEKgSnD1Gs" target="_blank">&quot;How to Install and Use OpenClaw Skills&quot;</a> — paso 3 del tutorial.</p></Prose>
+            </SubSection>
+
+            <SubSection title="📅 Calendario — La verdad sin filtro">
+                <Prose>
+                    <p><strong>Google no te la pone fácil.</strong> Después de investigar videos, blogs y docs, la realidad es clara:</p>
+                </Prose>
+
+                <div className={`my-6 rounded-xl border p-5 sm:p-6 ${isDark ? 'border-[#f9e2af]/20 bg-[#f9e2af]/5' : 'border-amber-200 bg-amber-50'}`}>
+                    <p className={`text-sm italic ${textMuted}`}>Para acceder a Google Calendar por API (leer O escribir) siempre necesitas pasar por Google Cloud Console + OAuth. No hay atajo.</p>
+                </div>
+
+                <Prose><p>La pregunta no es &quot;¿puedo evitar OAuth?&quot; sino &quot;¿sobre qué cuenta lo configuro?&quot;</p></Prose>
+            </SubSection>
+
+            <SubSection title="La estrategia segura: Cuenta dedicada + compartir calendario">
+                <Prose><p>Este es el approach más inteligente. El bot tiene <strong>su propia cuenta de Google</strong>. Nunca tocas OAuth con tu cuenta personal. (Del video <a href="https://youtu.be/ji_Sd4si7jo" target="_blank">&quot;Master OpenClaw in 30 min&quot;</a>.)</p></Prose>
+
+                <div className="my-6 space-y-3">
+                    {[
+                        'Crear cuenta Gmail dedicada para el bot (ej: mi-bot@gmail.com)',
+                        'Configurar gws CLI con la cuenta del bot (ver nuestra guía de Google Workspace CLI)',
+                        'Desde TU cuenta personal de Google Calendar: Settings → seleccionar tu calendario',
+                        '"Share with specific people" → agregar mi-bot@gmail.com → permiso: "See all event details" (read-only)',
+                        'El bot ahora ve tu agenda cuando consulta desde su propia cuenta',
+                    ].map((step, i) => (
+                        <div key={i} className={`flex items-start gap-3 rounded-xl border p-4 ${
+                            isDark ? 'border-[#a6e3a1]/20 bg-[#a6e3a1]/5' : 'border-emerald-100 bg-emerald-50/50'
+                        }`}>
+                            <span className={`font-mono text-xs shrink-0 mt-0.5 ${isDark ? 'text-[#a6e3a1]' : 'text-emerald-500'}`}>{i + 1}</span>
+                            <p className={`text-sm ${textMuted}`}>{step}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <Prose><p><strong>¿Cómo funciona en la práctica?</strong></p></Prose>
+
+                <div className={`my-6 rounded-xl border overflow-hidden ${borderColor}`}>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead><tr className={`border-b ${borderColor} ${thBg}`}><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Tú dices</th><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>OpenClaw hace</th></tr></thead>
+                            <tbody className={tdText}>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3 text-xs">&quot;¿Qué tengo mañana?&quot;</td><td className="px-4 py-3 text-xs">Consulta Calendar API con la cuenta del bot → ve tu calendario compartido → responde</td></tr>
+                                <tr><td className="px-4 py-3 text-xs">&quot;Agéndame gym a las 7am el jueves&quot;</td><td className="px-4 py-3 text-xs">Crea el evento en el calendario del bot, te agrega como attendee → te llega invitación</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <Callout type="security">
+                    <p><strong>¿Por qué es seguro?</strong> Si algo sale mal, solo se compromete la cuenta throwaway. Tu cuenta personal nunca toca OAuth ni API keys. Es como compartir calendario con un colega — mismo permiso, mismo mecanismo. Puedes revocar el acceso en cualquier momento quitando el share.</p>
+                </Callout>
+
+                <Prose>
+                    <p><strong>¿Necesitas más que email y calendario?</strong> Con la misma estrategia de cuenta dedicada + <code>gws</code> CLI puedes darle acceso a tu bot a <strong>Drive</strong> (buscar y subir archivos), <strong>Sheets</strong> (leer y escribir datos), <strong>Docs</strong>, <strong>Gmail avanzado</strong> (búsquedas, labels, drafts), y prácticamente cualquier API de Google Workspace.</p>
+                    <p>Eso sí — cada servicio adicional requiere habilitar su API en Google Cloud Console y agregar los OAuth scopes correspondientes. Es un setup de una sola vez, pero sí es más complejo que el IMAP de arriba. La buena noticia: con <code>gws</code> CLI todo se maneja desde un solo comando y viene con 100+ skills pre-hechos para que tu agente sepa usarlos.</p>
+                    <p>Cubrimos todo ese proceso paso a paso en nuestra <a href="/google-workspace-cli">guía de Google Workspace CLI</a> — autenticación, OAuth, comandos, MCP server para Claude/VS Code, y troubleshooting.</p>
+                </Prose>
+            </SubSection>
+
             {/* ========== SEGURIDAD ========== */}
             <SectionTitle id="seguridad">Seguridad</SectionTitle>
             <Prose><p>Las reglas de oro para correr un asistente AI:</p></Prose>
 
             <div className="my-6 space-y-4">
                 {[
-                    { title: 'Nunca en tu máquina principal', desc: 'Usa un VPS, VM, o al menos un usuario separado. Si algo sale mal, solo se compromete ese ambiente.' },
+                    { title: 'Nunca en tu máquina principal', desc: 'Usa un VPS dedicado (como Contabo, desde ~€4.50/mes). Si algo sale mal, solo se compromete ese ambiente — no tu laptop.' },
                     { title: 'Cuentas dedicadas para el bot', desc: 'Crea una cuenta Gmail, GitHub, etc. exclusiva para el bot. Nunca le des acceso a tu email principal o cuentas bancarias.' },
                     { title: 'Usa el modelo más fuerte disponible', desc: 'OpenClaw recomienda los modelos de última generación. Los modelos más débiles son más fáciles de manipular con prompt injection.' },
                     { title: 'Revisa permisos periódicamente', desc: 'Revisa qué skills están activos, qué herramientas tiene habilitadas, y limita con tools.deny lo que no necesites.' },
@@ -373,6 +502,73 @@ export default function OpenClawGuiaPage() {
                 ))}
             </div>
 
+            {/* ========== VPS ========== */}
+            <SectionTitle id="vps">VPS Recomendado: Contabo</SectionTitle>
+            <Prose>
+                <p>OpenClaw necesita correr 24/7 en algún lugar. Puedes usar tu laptop, pero se apaga cuando la cierras. Lo ideal es un <strong>VPS</strong> (servidor virtual) dedicado. Nuestro favorito: <a href="https://contabo.com/en/vps-server/" target="_blank">Contabo</a>.</p>
+                <p><strong>¿Por qué Contabo?</strong> Tienen la mejor relación precio-rendimiento que hemos encontrado. El plan más barato te da más RAM y almacenamiento que servidores que cuestan el triple en otros providers. Además, Contabo tiene <a href="https://contabo.com/en/openclaw-hosting/" target="_blank">instalación 1-click de OpenClaw</a> — seleccionas OpenClaw como app, pones tu contraseña, y te conectas por SSH a un servidor listo para configurar.</p>
+            </Prose>
+
+            <SubSection title="Plan recomendado: Cloud VPS 10">
+                <div className={`my-6 rounded-xl border overflow-hidden ${borderColor}`}>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead><tr className={`border-b ${borderColor} ${thBg}`}><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Spec</th><th className={`text-left px-4 py-3 ${thText} font-mono text-xs`}>Cloud VPS 10</th></tr></thead>
+                            <tbody className={tdText}>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">CPU</td><td className="px-4 py-3">4 vCPU Cores</td></tr>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">RAM</td><td className="px-4 py-3">8 GB</td></tr>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">Almacenamiento</td><td className="px-4 py-3">75 GB NVMe (o 150 GB SSD)</td></tr>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">Tráfico</td><td className="px-4 py-3">Ilimitado (200 Mbit/s)</td></tr>
+                                <tr className={`border-b ${borderSubtle}`}><td className="px-4 py-3">Precio (EU)</td><td className="px-4 py-3 font-medium">€4.50/mes (~$5 USD)</td></tr>
+                                <tr><td className="px-4 py-3">Precio (US Central)</td><td className="px-4 py-3 font-medium">€5.45/mes (~$6 USD)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <Prose><p>Para contexto: 8 GB de RAM y 4 cores es <strong>más que suficiente</strong> para correr OpenClaw + gateway + múltiples canales. La mayoría de la computación la hacen los modelos AI en la nube — tu VPS solo orquesta las llamadas.</p></Prose>
+            </SubSection>
+
+            <SubSection title="Ubicación: ¿Europa o Estados Unidos?">
+                <Prose>
+                    <p>Los servidores en <strong>Europa (Alemania)</strong> no tienen costo adicional de ubicación. Los de <strong>Estados Unidos</strong> tienen un surcharge de ~€0.95/mes (US Central) a ~€1.40/mes (US East) — nada grave.</p>
+                    <p><strong>¿Importa la latencia?</strong> Para un chatbot por WhatsApp/Telegram, no realmente. La diferencia entre EU y US es ~100-200ms adicionales, pero el cuello de botella siempre es la API del modelo AI (que tarda 1-5 segundos). Esos 200ms extra son imperceptibles en la conversación.</p>
+                    <p>Elige EU si quieres el precio más bajo. Elige US si quieres latencia ligeramente menor hacia APIs en Estados Unidos (OpenAI, Anthropic). Ambas opciones funcionan perfecto.</p>
+                </Prose>
+            </SubSection>
+
+            <SubSection title="Setup con 1-Click de OpenClaw">
+                <Prose><p>Contabo tiene una imagen pre-configurada de OpenClaw. El proceso:</p></Prose>
+
+                <div className="my-6 space-y-3">
+                    {[
+                        'Comprar un Cloud VPS en contabo.com',
+                        'En el panel de control → tu VPS → Quick Action (⋮) → Reinstall',
+                        'Pestaña "Application Installation" → seleccionar OpenClaw',
+                        'Poner contraseña de admin → Install',
+                        'Conectar por SSH: ssh root@tu-ip',
+                        'El wizard de onboarding arranca automático (o corre openclaw onboard)',
+                    ].map((step, i) => (
+                        <div key={i} className={`flex items-start gap-3 rounded-xl border p-4 ${borderSubtle} ${bgSubtle}`}>
+                            <span className={`font-mono text-xs shrink-0 mt-0.5 ${textDimmed}`}>{i + 1}</span>
+                            <p className={`text-sm ${textMuted}`}>{step}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <Terminal title="~/contabo-ssh" className="my-6" lines={[
+                    { type: 'comment', text: '# Conéctate a tu VPS' },
+                    { type: 'command', text: 'ssh root@tu-servidor-ip' },
+                    { type: 'output', text: '🦞 Welcome to OpenClaw!\n\nStarting onboarding wizard...' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# Si no arranca automático:' },
+                    { type: 'command', text: 'openclaw onboard', delay: 600 },
+                    { type: 'output', text: '→ Select your AI provider...\n→ Configure channels...\n✓ Gateway running!' },
+                ]} />
+
+                <Prose><p>Guía completa de Contabo: <a href="https://help.contabo.com/en/support/solutions/articles/103000390037-what-is-openclaw-and-how-do-i-use-it-on-contabo-" target="_blank">What is OpenClaw and how do I use it on Contabo?</a></p></Prose>
+            </SubSection>
+
             {/* ========== RECURSOS ========== */}
             <SectionTitle id="recursos">Recursos</SectionTitle>
 
@@ -382,6 +578,7 @@ export default function OpenClawGuiaPage() {
                     { label: 'GitHub', url: 'https://github.com/openclaw/openclaw', desc: 'Código fuente, issues, contribuir' },
                     { label: 'ClawHub', url: 'https://clawhub.com', desc: 'Marketplace de skills' },
                     { label: 'Discord', url: 'https://discord.com/invite/clawd', desc: 'Comunidad, soporte, showcase' },
+                    { label: 'Contabo VPS', url: 'https://contabo.com/en/vps-server/', desc: 'VPS desde €4.50/mes — con 1-click install de OpenClaw' },
                     { label: 'Google Workspace CLI', url: '/google-workspace-cli', desc: 'Nuestra guía para conectar AI con Gmail, Calendar y Drive' },
                 ].map((link) => (
                     <a
