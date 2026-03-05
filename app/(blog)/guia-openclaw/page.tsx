@@ -277,30 +277,64 @@ export default function OpenClawGuiaPage() {
             <SectionTitle id="canales">Canales: Telegram y WhatsApp</SectionTitle>
             <Prose><p>OpenClaw soporta <strong>WhatsApp, Telegram, Discord, iMessage, Slack, Signal</strong> y más. Los dos más populares para asistentes personales son Telegram y WhatsApp.</p></Prose>
 
-            <SubSection title="Telegram">
-                <Prose><p>Solo necesitas un bot token de <strong>@BotFather</strong>:</p></Prose>
-                <Terminal title="~/telegram-setup" className="my-6" lines={[
-                    { type: 'comment', text: '# 1. Habla con @BotFather en Telegram → /newbot' },
-                    { type: 'comment', text: '# 2. Guarda el token que te da' },
-                    { type: 'comment', text: '# 3. Configura en OpenClaw:' },
-                    { type: 'empty', text: '' },
-                    { type: 'command', text: 'openclaw gateway', delay: 300 },
-                    { type: 'output', text: '🦞 Gateway running on port 18789\n✓ Telegram channel active' },
-                    { type: 'empty', text: '' },
-                    { type: 'comment', text: '# 4. Manda un DM a tu bot → aparece código de pairing' },
-                    { type: 'command', text: 'openclaw pairing approve telegram ABC123', delay: 500 },
-                    { type: 'output', text: '✓ Approved — you can now chat with the bot' },
-                ]} />
+            <SubSection title="Telegram (recomendado)">
+                <Prose>
+                    <p><strong>Telegram es el canal más fácil de configurar</strong> y el que recomendamos para empezar. Tu bot vive en una cuenta separada (no usa tu número personal como WhatsApp), y el setup toma menos de 5 minutos.</p>
+                </Prose>
+
+                <Prose><p><strong>Paso 1 — Crea tu bot con @BotFather:</strong></p></Prose>
+
+                <div className="my-6 space-y-3">
+                    {[
+                        'Abre Telegram y busca @BotFather (el bot oficial de Telegram para crear bots — verificado con palomita azul)',
+                        'Manda /newbot',
+                        'BotFather te pide un nombre para tu bot — es el nombre que se muestra (ej: "Mi Asistente AI")',
+                        'Después te pide un username — debe terminar en "bot" (ej: mi_asistente_bot). Este es el @ de tu bot',
+                        'BotFather te responde con un token tipo 123456789:ABCdef... — cópialo y guárdalo, es tu llave de acceso',
+                    ].map((step, i) => (
+                        <div key={i} className={`flex items-start gap-3 rounded-xl border p-4 ${borderSubtle} ${bgSubtle}`}>
+                            <span className={`font-mono text-xs shrink-0 mt-0.5 ${textDimmed}`}>{i + 1}</span>
+                            <p className={`text-sm ${textMuted}`}>{step}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <Callout type="tip">
+                    <p><strong>Comandos útiles de BotFather:</strong> <code>/setdescription</code> para agregar una bio a tu bot, <code>/setuserpic</code> para ponerle foto de perfil, y <code>/setprivacy</code> → Disable si quieres que el bot vea todos los mensajes en grupos (no solo cuando lo mencionan).</p>
+                </Callout>
+
+                <Prose><p><strong>Paso 2 — Configura el token en OpenClaw:</strong></p></Prose>
                 <CodeBlock title="~/.openclaw/openclaw.json" code={`{
   channels: {
     telegram: {
       enabled: true,
-      botToken: "123:abc",
+      botToken: "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
       dmPolicy: "pairing",
       groups: { "*": { requireMention: true } }
     }
   }
 }`} className="my-6" />
+
+                <Prose><p>También puedes ponerlo como variable de entorno en vez de en el config: <code>TELEGRAM_BOT_TOKEN=123456789:ABCdef...</code></p></Prose>
+
+                <Prose><p><strong>Paso 3 — Arranca el gateway y aprueba tu primer mensaje:</strong></p></Prose>
+                <Terminal title="~/telegram-start" className="my-6" lines={[
+                    { type: 'command', text: 'openclaw gateway' },
+                    { type: 'output', text: '🦞 Gateway running on port 18789\n✓ Telegram channel active' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# Ahora abre Telegram y manda un DM a tu bot' },
+                    { type: 'comment', text: '# El bot te responde con un código de pairing' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# En otra terminal, aprueba el código:' },
+                    { type: 'command', text: 'openclaw pairing approve telegram ABC123', delay: 600 },
+                    { type: 'output', text: '✓ Approved — you can now chat with the bot' },
+                ]} />
+
+                <Prose><p>El <strong>pairing</strong> es un mecanismo de seguridad: la primera vez que alguien le escribe al bot, le pide un código que tú apruebas desde la terminal. Después de aprobado, ya pueden chatear libremente. Los códigos expiran después de 1 hora.</p></Prose>
+
+                <Callout type="info">
+                    <p>Si quieres que <strong>solo tú</strong> puedas hablar con el bot (sin pairing para nadie más), cambia a <code>dmPolicy: &quot;allowlist&quot;</code> y agrega tu Telegram user ID en <code>allowFrom</code>. Para encontrar tu ID: manda un mensaje al bot, corre <code>openclaw logs --follow</code> y busca <code>from.id</code>.</p>
+                </Callout>
             </SubSection>
 
             <SubSection title="WhatsApp">

@@ -5,6 +5,7 @@ import { useMotionValue, animate, motion } from "motion/react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import useMeasure from "react-use-measure";
+import Image from "next/image";
 
 interface ImageItem {
   src: string;
@@ -113,12 +114,17 @@ function MarqueeRow({
             transition={{ duration: 0.2 }}
             onClick={() => onImageClick(image)}
           >
-            <img
+            <Image
               src={image.src}
               alt={image.alt || "Event photo"}
+              width={400}
+              height={300}
               className="h-full w-auto object-cover"
               style={{ borderRadius: imageBorderRadius }}
               draggable={false}
+              loading="lazy"
+              quality={75}
+              sizes="400px"
             />
           </motion.div>
         ))}
@@ -295,10 +301,15 @@ export default function PhotoMarquee({
               transition={{ duration: 0.3, delay: 0.1 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <Image
                 src={enlargedImage.src}
                 alt={enlargedImage.alt || "Event photo"}
+                width={1920}
+                height={1280}
                 className="max-h-[85vh] w-auto object-contain"
+                quality={90}
+                sizes="90vw"
+                priority
               />
 
               {/* Close button */}

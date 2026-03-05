@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { useScroll, useTransform, motion } from 'motion/react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useScroll, useTransform, useMotionValueEvent, motion } from 'motion/react';
 import Demo1 from './demos/demo1';
 import Demo2 from './demos/demo2';
 import Demo3 from './demos/demo3';
@@ -93,10 +93,18 @@ function DemoIndicator({
 
 export default function ShowcaseSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
+  });
+
+  // Track which demo is active based on scroll position
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const sliceSize = TRANSITION_END / DEMOS.length;
+    const idx = Math.min(DEMOS.length - 1, Math.floor(v / sliceSize));
+    setActiveIndex(idx);
   });
 
   return (
@@ -150,7 +158,7 @@ export default function ShowcaseSection() {
                 scrollYProgress={scrollYProgress}
               >
                 <div className="w-full h-full overflow-hidden">
-                  <DemoComponent />
+                  <DemoComponent active={activeIndex === index} />
                 </div>
               </DemoSlide>
             ))}

@@ -1,17 +1,20 @@
-import { Button } from '@/components/ui/button'
-import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ContentSection() {
     return (
         <section className="py-16 sm:py-24 md:py-32 bg-white text-black" id="manifesto">
             <div className="mx-auto max-w-6xl space-y-8 sm:space-y-12 px-4 sm:px-6 md:space-y-16">
                 <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-black/10 h-[250px] sm:h-[350px] md:h-[500px]">
-                    <img
+                    <Image
                         className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                        src="/us.png"
+                        src="/us.jpg"
                         alt="AI Builders Community"
+                        width={1982}
+                        height={1524}
                         loading="lazy"
+                        quality={75}
+                        sizes="(max-width: 768px) 100vw, 1152px"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                 </div>
