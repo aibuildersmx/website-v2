@@ -239,31 +239,16 @@ export default function OpenClawGuiaPage() {
             <SectionTitle id="codex">OpenAI Codex (suscripción ChatGPT)</SectionTitle>
             <Prose>
                 <p>Si pagas ChatGPT Plus/Team/Pro, puedes usar tu suscripción como proveedor en OpenClaw vía OAuth. OpenAI explícitamente soporta este uso en herramientas externas.</p>
-                <p><strong>Importante:</strong> el login OAuth requiere un browser porque redirige a <code>localhost:1455</code>. Esto funciona perfecto en tu <strong>máquina local</strong>. Para un VPS sin browser, el approach es: hacer login local y copiar los tokens al servidor.</p>
             </Prose>
 
-            <SubSection title="Login local">
-                <Terminal title="~/codex-local" className="my-6" lines={[
-                    { type: 'command', text: 'openclaw models auth login --provider openai-codex' },
-                    { type: 'output', text: '→ Opening browser for ChatGPT auth...\n→ Waiting for callback on localhost:1455...\n✓ Authenticated\n✓ Tokens stored for openai-codex:default' },
-                ]} />
-            </SubSection>
+            <Terminal title="~/codex-setup" className="my-6" lines={[
+                { type: 'command', text: 'openclaw models auth login --provider openai-codex' },
+                { type: 'output', text: '→ Opening browser for ChatGPT auth...\n→ Waiting for callback on localhost:1455...\n✓ Authenticated\n✓ Tokens stored for openai-codex:default' },
+            ]} />
 
-            <SubSection title="Copiar tokens a un VPS">
-                <Prose><p>Después de hacer login local, copia el archivo de auth profiles al servidor:</p></Prose>
-                <Terminal title="~/codex-vps" className="my-6" lines={[
-                    { type: 'comment', text: '# Desde tu Mac, copia los tokens al VPS' },
-                    { type: 'command', text: 'scp ~/.openclaw/agents/main/agent/auth-profiles.json tu-vps:~/.openclaw/agents/main/agent/auth-profiles.json' },
-                    { type: 'output', text: 'auth-profiles.json    100%  1.2KB   0.0s' },
-                    { type: 'empty', text: '' },
-                    { type: 'comment', text: '# Verifica en el VPS' },
-                    { type: 'command', text: 'ssh tu-vps "openclaw models status"', delay: 500 },
-                    { type: 'output', text: '✓ openai-codex:default — active\n  Model: openai-codex/gpt-5.3-codex' },
-                ]} />
-                <Callout type="warning">
-                    <p>Si copias <code>auth-profiles.json</code> completo, <strong>sobreescribes todos los perfiles de auth</strong>, incluyendo Anthropic si ya lo tenías configurado. Si tienes múltiples proveedores, haz merge manual del bloque <code>openai-codex</code>.</p>
-                </Callout>
-            </SubSection>
+            <Callout type="tip">
+                <p><strong>¿VPS sin browser?</strong> No hay problema. Corre el comando en tu VPS — te va a dar una URL con <code>localhost:1455</code>. Pégala en el browser de tu máquina local tal cual. Aunque diga localhost, el flow de OAuth completa y OpenClaw captura los tokens automáticamente. Después, corre <code>openclaw configure</code> en el VPS y te ayuda a validar que todo quedó bien.</p>
+            </Callout>
 
             <Prose><p>Config para usar Codex:</p></Prose>
             <CodeBlock title="~/.openclaw/openclaw.json" code={`{
