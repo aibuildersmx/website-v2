@@ -20,6 +20,7 @@ const tocItems: [string, string][] = [
     ['google', 'Google (Email + Calendario)'],
     ['seguridad', 'Seguridad'],
     ['vps', 'VPS Recomendado'],
+    ['comandos', 'Comandos Útiles'],
     ['recursos', 'Recursos'],
 ]
 
@@ -655,6 +656,58 @@ SMTP_PASS=tu-app-password`} className="my-6" />
 
                 <Prose><p><strong>¿Quieres profundizar?</strong> La guía de Contabo para SSH keys: <a href="https://contabo.com/blog/how-to-use-ssh-keys-with-your-server/" target="_blank">How to use SSH keys with your server</a>. Para Fail2Ban + UFW a detalle: <a href="https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04" target="_blank">DigitalOcean — Protect SSH with Fail2Ban</a>.</p></Prose>
             </SubSection>
+
+            {/* ========== COMANDOS ========== */}
+            <SectionTitle id="comandos">Comandos Útiles</SectionTitle>
+            <Prose><p>Referencia rápida de los comandos que más vas a usar en el día a día:</p></Prose>
+
+            {[
+                { emoji: '🩺', category: 'Diagnóstico', commands: [
+                    { cmd: 'openclaw doctor', desc: 'Checa todo y ofrece fixes automáticos' },
+                    { cmd: 'openclaw status --all', desc: 'Diagnóstico completo (copy-pasteable para soporte)' },
+                    { cmd: 'openclaw logs --follow', desc: 'Logs en tiempo real' },
+                ]},
+                { emoji: '⚙️', category: 'Gateway', commands: [
+                    { cmd: 'openclaw gateway restart', desc: 'Reinicia el servicio' },
+                    { cmd: 'openclaw gateway status', desc: 'Estado + probe RPC' },
+                    { cmd: 'openclaw gateway install', desc: 'Instala como servicio del sistema' },
+                ]},
+                { emoji: '🤖', category: 'Modelos', commands: [
+                    { cmd: 'openclaw models', desc: 'Modelo activo + estado de auth' },
+                    { cmd: 'openclaw models list --all', desc: 'Todos los modelos disponibles' },
+                    { cmd: 'openclaw models set <modelo>', desc: 'Cambia modelo principal' },
+                    { cmd: 'openclaw models scan', desc: 'Descubre modelos de tus providers' },
+                    { cmd: 'openclaw models status --probe', desc: 'Prueba live de auth' },
+                ]},
+                { emoji: '📱', category: 'Canales', commands: [
+                    { cmd: 'openclaw channels status --probe', desc: 'Salud de canales' },
+                    { cmd: 'openclaw pairing approve <channel> <code>', desc: 'Aprobar pairing' },
+                ]},
+                { emoji: '🔒', category: 'Seguridad', commands: [
+                    { cmd: 'openclaw security audit', desc: 'Audita config por vulnerabilidades' },
+                    { cmd: 'openclaw security audit --fix', desc: 'Aplica defaults seguros automáticamente' },
+                ]},
+                { emoji: '🧠', category: 'Skills y memoria', commands: [
+                    { cmd: 'openclaw skills check', desc: 'Cuáles están ready' },
+                    { cmd: 'openclaw memory search "query"', desc: 'Búsqueda semántica en tu memoria' },
+                ]},
+            ].map((group) => (
+                <div key={group.category} className="my-6">
+                    <p className={`text-sm font-medium mb-3 ${textPrimary}`}>{group.emoji} {group.category}</p>
+                    <div className="space-y-2">
+                        {group.commands.map((c) => (
+                            <div key={c.cmd} className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 rounded-lg border px-4 py-3 ${borderSubtle} ${bgSubtle}`}>
+                                <code className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#f38ba8]' : 'text-[#d20f39]'}`}>{c.cmd}</code>
+                                <span className={`text-xs ${textDimmed}`}>{c.desc}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+
+            <Callout type="tip">
+                <p>Tip: <code>openclaw doctor</code> es tu mejor amigo. Si algo no funciona, córrelo primero — detecta problemas de config, auth, gateway y ofrece arreglarlos en automático.</p>
+            </Callout>
 
             {/* ========== RECURSOS ========== */}
             <SectionTitle id="recursos">Recursos</SectionTitle>
