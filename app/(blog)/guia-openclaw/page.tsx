@@ -473,7 +473,7 @@ SMTP_PASS=tu-app-password`} className="my-6" />
                 <Prose>
                     <p><strong>¿Necesitas más que email y calendario?</strong> Con la misma estrategia de cuenta dedicada + <code>gws</code> CLI puedes darle acceso a tu bot a <strong>Drive</strong> (buscar y subir archivos), <strong>Sheets</strong> (leer y escribir datos), <strong>Docs</strong>, <strong>Gmail avanzado</strong> (búsquedas, labels, drafts), y prácticamente cualquier API de Google Workspace.</p>
                     <p>Eso sí — cada servicio adicional requiere habilitar su API en Google Cloud Console y agregar los OAuth scopes correspondientes. Es un setup de una sola vez, pero sí es más complejo que el IMAP de arriba. La buena noticia: con <code>gws</code> CLI todo se maneja desde un solo comando y viene con 100+ skills pre-hechos para que tu agente sepa usarlos.</p>
-                    <p>Cubrimos todo ese proceso paso a paso en nuestra <a href="/google-workspace-cli">guía de Google Workspace CLI</a> — autenticación, OAuth, comandos, MCP server para Claude/VS Code, y troubleshooting.</p>
+                    <p>Cubrimos todo ese proceso paso a paso en nuestra <a href="/integracion-google">guía de Google Workspace CLI</a> — autenticación, OAuth, comandos, MCP server para Claude/VS Code, y troubleshooting.</p>
                 </Prose>
             </SubSection>
 
@@ -569,6 +569,59 @@ SMTP_PASS=tu-app-password`} className="my-6" />
                 <Prose><p>Guía completa de Contabo: <a href="https://help.contabo.com/en/support/solutions/articles/103000390037-what-is-openclaw-and-how-do-i-use-it-on-contabo-" target="_blank">What is OpenClaw and how do I use it on Contabo?</a></p></Prose>
             </SubSection>
 
+            <SubSection title="Asegura tu VPS (5 minutos extra)">
+                <Prose>
+                    <p>Contabo te entrega el servidor con acceso SSH por <strong>contraseña</strong>. Esto funciona y es razonablemente seguro si tu contraseña es larga y random (30+ caracteres). Pero hay un riesgo: los ataques de <strong>brute force</strong> — bots que prueban miles de contraseñas por minuto contra tu puerto 22.</p>
+                    <p>Con 3 pasos extra tu servidor queda mucho más protegido: <strong>SSH keys</strong> (eliminas el riesgo de adivinar contraseñas), <strong>Fail2Ban</strong> (banea IPs que fallen login), y <strong>UFW</strong> (firewall que cierra todo excepto SSH).</p>
+                </Prose>
+
+                <Callout type="info">
+                    <p><strong>No tienes que hacer esto hoy.</strong> Tu password de Contabo funciona bien para empezar. Pero cuando tengas 10 minutos, regresa aquí y hazlo. Es una sola vez.</p>
+                </Callout>
+
+                <Prose><p><strong>Paso 1 — Genera tu SSH key</strong> (en tu Mac/PC, no en el servidor):</p></Prose>
+                <Terminal title="~/tu-mac" className="my-6" lines={[
+                    { type: 'comment', text: '# Genera una key Ed25519 (la más segura y moderna)' },
+                    { type: 'command', text: 'ssh-keygen -t ed25519 -C "mi-openclaw-vps"' },
+                    { type: 'output', text: 'Generating public/private ed25519 key pair.\nEnter file: ~/.ssh/id_ed25519\nEnter passphrase: ********\n✓ Your public key: ~/.ssh/id_ed25519.pub' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# Copia la key al servidor (te pide la contraseña de root una última vez)' },
+                    { type: 'command', text: 'ssh-copy-id root@tu-servidor-ip', delay: 600 },
+                    { type: 'output', text: '✓ Key added. Try: ssh root@tu-servidor-ip' },
+                ]} />
+
+                <Prose><p><strong>Paso 2 — Instala Fail2Ban y activa UFW</strong> (ya conectado al servidor):</p></Prose>
+                <Terminal title="root@vps" className="my-6" lines={[
+                    { type: 'comment', text: '# Instala Fail2Ban (banea IPs después de 5 intentos fallidos)' },
+                    { type: 'command', text: 'apt update && apt install -y fail2ban' },
+                    { type: 'output', text: '✓ fail2ban installed' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# Activa con config default (protege SSH automáticamente)' },
+                    { type: 'command', text: 'systemctl enable --now fail2ban', delay: 400 },
+                    { type: 'output', text: '✓ fail2ban active' },
+                    { type: 'empty', text: '' },
+                    { type: 'comment', text: '# Firewall: permite SSH y bloquea todo lo demás' },
+                    { type: 'command', text: 'ufw allow OpenSSH && ufw --force enable', delay: 400 },
+                    { type: 'output', text: '✓ Firewall active. Rules:\n  22/tcp  ALLOW  Anywhere' },
+                ]} />
+
+                <Prose><p><strong>Paso 3 (opcional) — Desactiva login por contraseña:</strong></p></Prose>
+                <Terminal title="root@vps" className="my-6" lines={[
+                    { type: 'comment', text: '# Solo si ya verificaste que tu SSH key funciona!' },
+                    { type: 'command', text: 'sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config' },
+                    { type: 'command', text: 'systemctl restart sshd', delay: 300 },
+                    { type: 'output', text: '✓ Password auth disabled — only keys accepted' },
+                ]} />
+
+                <Callout type="security">
+                    <p><strong>⚠️ No desactives password auth hasta que hayas verificado que tu SSH key funciona.</strong> Abre una segunda terminal, intenta <code>ssh root@tu-ip</code>, y confirma que entras sin contraseña. Si desactivas passwords y tu key no funciona, te quedas fuera del servidor.</p>
+                </Callout>
+
+                <Prose><p>Con esto tu VPS queda con: firewall activo (solo puerto 22 abierto), IPs baneadas automáticamente después de intentos fallidos, y acceso solo por SSH key. Es el estándar de la industria y toma 5 minutos.</p></Prose>
+
+                <Prose><p><strong>¿Quieres profundizar?</strong> La guía de Contabo para SSH keys: <a href="https://contabo.com/blog/how-to-use-ssh-keys-with-your-server/" target="_blank">How to use SSH keys with your server</a>. Para Fail2Ban + UFW a detalle: <a href="https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04" target="_blank">DigitalOcean — Protect SSH with Fail2Ban</a>.</p></Prose>
+            </SubSection>
+
             {/* ========== RECURSOS ========== */}
             <SectionTitle id="recursos">Recursos</SectionTitle>
 
@@ -579,7 +632,7 @@ SMTP_PASS=tu-app-password`} className="my-6" />
                     { label: 'ClawHub', url: 'https://clawhub.com', desc: 'Marketplace de skills' },
                     { label: 'Discord', url: 'https://discord.com/invite/clawd', desc: 'Comunidad, soporte, showcase' },
                     { label: 'Contabo VPS', url: 'https://contabo.com/en/vps-server/', desc: 'VPS desde €4.50/mes — con 1-click install de OpenClaw' },
-                    { label: 'Google Workspace CLI', url: '/google-workspace-cli', desc: 'Nuestra guía para conectar AI con Gmail, Calendar y Drive' },
+                    { label: 'Google Workspace CLI', url: '/integracion-google', desc: 'Nuestra guía para conectar AI con Gmail, Calendar y Drive' },
                 ].map((link) => (
                     <a
                         key={link.url}

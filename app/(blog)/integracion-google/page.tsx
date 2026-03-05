@@ -298,7 +298,7 @@ cp -r skills/gws-drive skills/gws-gmail ~/.openclaw/skills/`} className="my-6" /
                     { label: 'npm package', url: 'https://www.npmjs.com/package/@googleworkspace/cli', desc: '@googleworkspace/cli' },
                     { label: 'Google Cloud Console', url: 'https://console.cloud.google.com', desc: 'Crear proyectos, habilitar APIs, gestionar OAuth' },
                     { label: 'Skills Index', url: 'https://github.com/googleworkspace/cli/blob/main/docs/skills.md', desc: 'Lista completa de los 100+ skills incluidos' },
-                    { label: 'OpenClaw Guía', url: '/openclaw-guia', desc: 'Nuestra guía básica para empezar con OpenClaw' },
+                    { label: 'OpenClaw Guía', url: '/guia-openclaw', desc: 'Nuestra guía básica para empezar con OpenClaw' },
                 ].map((link) => (
                     <a
                         key={link.url}
@@ -317,7 +317,7 @@ cp -r skills/gws-drive skills/gws-gmail ~/.openclaw/skills/`} className="my-6" /
 
             {/* Cierre */}
             <div className={`mt-20 pt-12 border-t ${borderColor}`}>
-                <Prose><p><strong>¿Quieres la guía básica primero?</strong> Revisa <a href="/openclaw-guia">OpenClaw: La Guía Completa en Español</a> para instalar tu asistente AI antes de conectarlo con Google.</p></Prose>
+                <Prose><p><strong>¿Quieres la guía básica primero?</strong> Revisa <a href="/guia-openclaw">OpenClaw: La Guía Completa en Español</a> para instalar tu asistente AI antes de conectarlo con Google.</p></Prose>
             </div>
 
                 </article>
