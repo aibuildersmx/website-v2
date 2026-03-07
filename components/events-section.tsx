@@ -6,46 +6,14 @@ import Link from "next/link";
 
 const events = [
   {
-    title: "How I Use AI #3 – Midjourney",
-    description:
-      "Exploraremos los diferentes features de Midjourney para crear imágenes desde 0. Aprende a usar Style References, Moodboards y Style Creator.",
-    month: "FEB",
-    day: "19",
-    location: "Virtual",
-    attendees: "100 lugares",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Workshop", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/d342anny",
-  },
-  {
-    title: "How I Use AI #4 – OpenClaw",
-    description:
-      "Sesión virtual para conocer OpenClaw en acción y cómo integrarlo en tu flujo de trabajo con AI.",
-    month: "FEB",
-    day: "26",
-    location: "Virtual, 6:00 PM",
-    attendees: "100 lugares",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Workshop", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/5ivardas",
-  },
-  {
     title: "Build with Cursor Mexico City",
     description:
       "Tercer evento oficial de Cursor en CDMX. Trae tu laptop, te daremos créditos y acceso a todo lo que necesites para construir.",
     month: "MAR",
-    day: "19",
+    day: "18",
     location: "CDMX, Juárez",
-    attendees: "50 lugares",
-    status: "ABIERTO",
+    attendees: "70 lugares",
+    status: "CUPO LLENO",
     price: "Gratis",
     buttonText: "Registrarme",
     buttonDisabled: false,
@@ -54,13 +22,45 @@ const events = [
     link: "https://luma.com/zb4zha51",
   },
   {
+    title: "OpenAI Codex – Mexico City",
+    description:
+      "Meetup en Ciudad de México para conectar con builders y experimentar con OpenAI Codex en casos reales.",
+    month: "ABR",
+    day: "08",
+    location: "CDMX, Plaza Carso",
+    attendees: "70 lugares",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Meetup", "AI"],
+    logo: "/openai-logo-event.svg",
+    link: "https://luma.com/suipk589",
+  },
+  {
+    title: "How I Use AI #5: Scaling to 1M users",
+    description:
+      "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
+    month: "ABR",
+    day: "16",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/11fz6ef5",
+  },
+  {
     title: "Gemini 3 Hackathon",
     description:
       "Hackathon oficial de Gemini3 en México. Construye proyectos innovadores, compite por premios y conecta con otros builders.",
-    month: "MAR",
-    day: "TBD",
+    month: "ABR",
+    day: "27",
     location: "CDMX, TBD",
-    attendees: "300+ cupos",
+    attendees: "50 lugares",
     status: "PRÓXIMO",
     price: "Coming Soon",
     buttonText: "Notificarme",
@@ -72,11 +72,28 @@ const events = [
 
 const pastEvents = [
   {
+    title: "How I Use AI #4 – OpenClaw",
+    month: "FEB",
+    day: "26",
+    location: "Virtual, 6:00 PM",
+    logo: "/favicon.svg",
+    link: "https://luma.com/5ivardas",
+  },
+  {
+    title: "How I Use AI #3 – Midjourney",
+    month: "FEB",
+    day: "19",
+    location: "Virtual",
+    logo: "/favicon.svg",
+    link: "https://luma.com/d342anny",
+  },
+  {
     title: "How I Use AI – Vol 2",
     month: "FEB",
     day: "12",
     location: "Virtual",
     logo: "/favicon.svg",
+    link: "https://luma.com/lgd37763",
   },
   {
     title: "v0: Prompt to Production",
@@ -84,6 +101,7 @@ const pastEvents = [
     day: "31",
     location: "Ciudad de México, Roma Norte",
     logo: "/v0-logo.svg",
+    link: "https://luma.com/fdg8riz2",
   },
   {
     title: "Cafe Cursor Mexico City",
@@ -91,6 +109,7 @@ const pastEvents = [
     day: "15",
     location: "Ciudad de México, Presencial",
     logo: "/cursor-logo-event.svg",
+    link: "https://luma.com/2ye0p31y",
   },
   {
     title: "Workshop: Building Products with AI",
@@ -98,6 +117,7 @@ const pastEvents = [
     day: "22",
     location: "Ciudad de México, Presencial",
     logo: "/v0-logo.svg",
+    link: "https://luma.com/i1wws1f2",
   },
   {
     title: "From Idea to MVP: Construye tu prototipo con AI",
@@ -105,6 +125,7 @@ const pastEvents = [
     day: "11",
     location: "Ciudad de México, Presencial",
     logo: "/vercel-logo.svg",
+    link: "https://luma.com/r8rwqnn9",
   },
   {
     title: "Release Before Ready",
@@ -179,7 +200,9 @@ export default function EventsSection() {
                       className={`size-1.5 rounded-full ${
                         event.status === "ABIERTO"
                           ? "bg-green-500 animate-pulse"
-                          : "bg-black/20"
+                          : event.status === "CUPO LLENO"
+                            ? "bg-red-500"
+                            : "bg-black/20"
                       }`}
                     />
                     <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-black/40 font-medium">
@@ -257,7 +280,9 @@ export default function EventsSection() {
                         className={`size-1.5 rounded-full ${
                           event.status === "ABIERTO"
                             ? "bg-green-500 animate-pulse"
-                            : "bg-black/20"
+                            : event.status === "CUPO LLENO"
+                              ? "bg-red-500"
+                              : "bg-black/20"
                         }`}
                       />
                       <span className="text-[10px] font-mono uppercase tracking-wider text-black/60 font-medium">
@@ -337,27 +362,53 @@ export default function EventsSection() {
 
           <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {pastEvents.map((event, index) => (
-              <div
-                key={index}
-                className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-default"
-              >
-                <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
-                  <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
-                    {event.month}
-                  </span>
-                  <span className="text-base sm:text-lg font-sans font-semibold leading-none">
-                    {event.day}
-                  </span>
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-sm sm:text-base font-sans font-medium leading-tight truncate group-hover:text-black/80 transition-colors">
-                    {event.title}
-                  </h4>
-                  <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
-                    <MapPin className="size-2 sm:size-2.5 shrink-0" />
-                    <span className="truncate">{event.location}</span>
+              <div key={index}>
+                {event.link ? (
+                  <Link
+                    href={event.link}
+                    target="_blank"
+                    className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
+                      <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
+                        {event.month}
+                      </span>
+                      <span className="text-base sm:text-lg font-sans font-semibold leading-none">
+                        {event.day}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm sm:text-base font-sans font-medium leading-tight whitespace-normal break-words [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden group-hover:text-black/80 transition-colors">
+                        {event.title}
+                      </h4>
+                      <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
+                        <MapPin className="size-2 sm:size-2.5 shrink-0" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="size-4 shrink-0 text-black/40 group-hover:text-black transition-colors" />
+                  </Link>
+                ) : (
+                  <div className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-default">
+                    <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
+                      <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
+                        {event.month}
+                      </span>
+                      <span className="text-base sm:text-lg font-sans font-semibold leading-none">
+                        {event.day}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm sm:text-base font-sans font-medium leading-tight whitespace-normal break-words [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden group-hover:text-black/80 transition-colors">
+                        {event.title}
+                      </h4>
+                      <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
+                        <MapPin className="size-2 sm:size-2.5 shrink-0" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ))}
           </div>
