@@ -38,7 +38,7 @@ const events = [
     link: "https://luma.com/suipk589",
   },
   {
-    title: "How I Use AI #5: Scaling to 1M users",
+    title: "How I Use AI #6: Scaling to 1M users",
     description:
       "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
     month: "ABR",
@@ -52,6 +52,22 @@ const events = [
     tags: ["Workshop", "AI"],
     logo: "/favicon.svg",
     link: "https://luma.com/11fz6ef5",
+  },
+  {
+    title: "How I Use AI #5: Image Manipulation",
+    description:
+      "En esta sesión exploramos cómo crear, manipular y editar imágenes desde cero con herramientas de AI.",
+    month: "ABR",
+    day: "01",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/wsj293yt",
   },
   {
     title: "Gemini 3 Hackathon",

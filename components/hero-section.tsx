@@ -189,6 +189,15 @@ export default function HeroSection() {
                   </div>
                   <div className="flex items-center">
                     <img
+                      className="mx-auto h-7 w-fit invert"
+                      src="/reve-logo-black.svg"
+                      alt="Reve Logo"
+                      height="28"
+                      width="auto"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <img
                       className="mx-auto h-8 w-fit"
                       src="/rbr logo.svg"
                       alt="RBR Logo"
@@ -210,15 +219,6 @@ export default function HeroSection() {
                       className="mx-auto h-6 w-fit invert"
                       src="/v0-logo-black.svg"
                       alt="v0 Logo"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-6 w-fit"
-                      src="/vercel-logo.svg"
-                      alt="Vercel Logo"
                       height="24"
                       width="auto"
                     />
