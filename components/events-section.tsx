@@ -38,22 +38,6 @@ const events = [
     link: "https://luma.com/wsj293yt",
   },
   {
-    title: "How I Use AI #6: Scaling to 1M users",
-    description:
-      "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
-    month: "ABR",
-    day: "16",
-    location: "Virtual, Google Meet",
-    attendees: "∞",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Workshop", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/11fz6ef5",
-  },
-  {
     title: "OpenAI Codex – Mexico City",
     description:
       "Meetup en Ciudad de México para conectar con builders y experimentar con OpenAI Codex en casos reales.",
@@ -68,6 +52,22 @@ const events = [
     tags: ["Meetup", "AI"],
     logo: "/openai-logo-event.svg",
     link: "https://luma.com/suipk589",
+  },
+  {
+    title: "How I Use AI #6: Scaling to 1M users",
+    description:
+      "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
+    month: "ABR",
+    day: "16",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/11fz6ef5",
   },
   {
     title: "Gemini 3 Hackathon",
