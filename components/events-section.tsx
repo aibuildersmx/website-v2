@@ -6,22 +6,6 @@ import Link from "next/link";
 
 const events = [
   {
-    title: "Build with Cursor Mexico City",
-    description:
-      "Tercer evento oficial de Cursor en CDMX. Trae tu laptop, te daremos créditos y acceso a todo lo que necesites para construir.",
-    month: "MAR",
-    day: "18",
-    location: "CDMX, Juárez",
-    attendees: "70 lugares",
-    status: "CUPO LLENO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Hackathon", "Social"],
-    logo: "/cursor-logo-event.svg",
-    link: "https://luma.com/zb4zha51",
-  },
-  {
     title: "How I Use AI #5: Image Manipulation",
     description:
       "En esta sesión exploramos cómo crear, manipular y editar imágenes desde cero con herramientas de AI.",
@@ -87,6 +71,14 @@ const events = [
 ];
 
 const pastEvents = [
+  {
+    title: "Build with Cursor Mexico City",
+    month: "MAR",
+    day: "18",
+    location: "CDMX, Juárez",
+    logo: "/cursor-logo-event.svg",
+    link: "https://luma.com/zb4zha51",
+  },
   {
     title: "How I Use AI #4 – OpenClaw",
     month: "FEB",
