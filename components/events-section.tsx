@@ -368,14 +368,14 @@ export default function EventsSection() {
             <div className="h-px flex-1 bg-black/5" />
           </div>
 
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid auto-rows-fr gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {pastEvents.map((event, index) => (
-              <div key={index}>
+              <div key={index} className="h-full">
                 {event.link ? (
                   <Link
                     href={event.link}
                     target="_blank"
-                    className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-pointer"
+                    className="group flex h-full items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-pointer"
                   >
                     <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
                       <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
@@ -397,7 +397,7 @@ export default function EventsSection() {
                     <ArrowUpRight className="size-4 shrink-0 text-black/40 group-hover:text-black transition-colors" />
                   </Link>
                 ) : (
-                  <div className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-default">
+                  <div className="group flex h-full items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-default">
                     <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
                       <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
                         {event.month}
