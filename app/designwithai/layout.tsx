@@ -1,7 +1,6 @@
 import React from "react"
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono, Instrument_Serif} from 'next/font/google'
-import FooterSection from "@/app/designwithai/components/footer"
 import {HeroHeader} from "@/app/designwithai/components/header"
 
 const geist = Geist({
@@ -49,7 +48,6 @@ export default function DesignWithAILayout({
         <div className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} font-sans antialiased min-h-screen bg-white text-black`}>
             <HeroHeader/>
             {children}
-            <FooterSection/>
         </div>
     )
 }

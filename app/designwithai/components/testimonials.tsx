@@ -77,48 +77,48 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 relative left-1/2 right-1/2 -ml-[45vw] -mr-[45vw] w-[90vw] items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative left-1/2 right-1/2 -ml-[45vw] -mr-[45vw] w-[90vw] items-stretch">
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
-              className="group relative bg-white border border-black/10 rounded-2xl flex-1 overflow-hidden transition-all duration-500 ease-out hover:border-black/20 hover:shadow-lg hover:shadow-black/5 hover:flex-[1.05] hover:z-10"
+              className="group relative bg-white border border-black/10 rounded-2xl overflow-hidden transition-all duration-500 ease-out hover:border-black/20 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-1 hover:z-10"
             >
               {/* Inner container to keep text width stable despite flex growth */}
-              <div className="p-6 sm:p-8 h-full flex flex-col items-center justify-center">
-                <CardContent className="p-0 flex flex-col h-full gap-6 w-full sm:w-[280px] lg:w-[320px] shrink-0 transition-transform duration-500">
+              <div className="p-5 sm:p-6 h-full flex flex-col">
+                <CardContent className="p-0 flex flex-col h-full gap-4 w-full transition-transform duration-500">
                 {/* Quote Icon */}
-                <div className="relative text-black/10 w-8 h-8">
+                <div className="relative text-black/10 w-6 h-6">
                   {/* Background Icon (Light Gray) */}
-                  <svg className="absolute inset-0 w-8 h-8" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="absolute inset-0 w-6 h-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" />
                   </svg>
                   {/* Foreground Icon (Black) - Fills from left to right on hover */}
                   <div className="absolute inset-0 overflow-hidden w-0 group-hover:w-full transition-[width] duration-500 ease-out">
-                    <svg className="w-8 h-8 text-black" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" />
                     </svg>
                   </div>
                 </div>
 
-                <div className="text-sm sm:text-base text-black/80 font-light leading-relaxed flex-grow [&_strong]:font-bold [&_strong]:text-black [&_strong]:bg-black/5 [&_strong]:px-1 [&_strong]:rounded">
+                <div className="text-xs sm:text-sm text-black/80 font-light leading-relaxed flex-grow [&_strong]:font-bold [&_strong]:text-black [&_strong]:bg-black/5 [&_strong]:px-1 [&_strong]:rounded">
                   {testimonial.quote}
                 </div>
 
-                <div className="flex items-center gap-4 mt-auto pt-6 border-t border-black/5">
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-black/5">
                   {testimonial.avatar ? (
                     <img
                       src={testimonial.avatar}
                       alt={testimonial.name}
-                      className="size-10 sm:size-12 rounded-full object-cover flex-shrink-0"
+                      className="size-8 sm:size-10 rounded-full object-cover flex-shrink-0"
                     />
                   ) : (
-                    <div className="size-10 sm:size-12 rounded-full bg-black/10 flex-shrink-0" />
+                    <div className="size-8 sm:size-10 rounded-full bg-black/10 flex-shrink-0" />
                   )}
                   <div>
-                    <h4 className="font-instrument text-lg sm:text-xl text-black">
+                    <h4 className="font-instrument text-base sm:text-lg text-black leading-none mb-1">
                       {testimonial.name}
                     </h4>
-                    <p className="text-xs font-mono uppercase tracking-widest text-black/40">
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-black/40">
                       {testimonial.role}
                     </p>
                   </div>

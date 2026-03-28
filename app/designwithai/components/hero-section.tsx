@@ -30,8 +30,10 @@ export default function HeroSection() {
             <h1 className="font-instrument text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[1.1]">
               Prompt to Production Bootcamp
             </h1>
-            <p className="text-xl sm:text-2xl text-white/50 max-w-3xl mx-auto font-light leading-relaxed">
-              Eleva tus skills como AI builder. Crea imágenes impactantes, prototipa interfaces dinámicas y lanza proyectos web con calidad top.
+            <p className="text-xl sm:text-2xl text-white/85 max-w-3xl mx-auto font-light leading-relaxed">
+              <strong className="font-semibold">Eleva</strong> tus skills como AI builder. Crea imágenes impactantes,{' '}
+              <strong className="font-semibold">prototipa</strong> interfaces dinámicas y <strong className="font-semibold">lanza</strong>{' '}
+              proyectos web con calidad top.
             </p>
           </div>
 

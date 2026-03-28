@@ -2,21 +2,20 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Gift, Ticket, Sparkles, Video } from 'lucide-react';
+import { Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import PixelCard from '@/components/PixelCard';
 
 const modules = [
   {
     title: "Visuales que Paran el Scroll",
-    description: "Domina AI image gen tools como Midjourney, Reve y Nano Banana para crear imágenes y videos que capturen la atención — desde landing pages hasta flyers y posters.",
     topics: [
-      "Prompting efectivo para imagen y video",
-      "Flujos con Midjourney, Reve y Nano Banana",
-      "Assets para landings, flyers y posters",
+      "Crea prompts claros para imágenes y videos con intención creativa",
+      "Arma un flujo práctico con Midjourney, Reve y Nano Banana",
+      "Entrega assets listos para landings, flyers y posters",
     ],
     bonus: "Catálogo con prompts y +100 style references incluido",
-    date: "ABR 16 · 5PM - 7PM",
+    date: "Jueves, Mayo 14",
     price: "$1,499 MXN",
     status: "ABIERTO",
     spots: "10 lugares",
@@ -24,14 +23,13 @@ const modules = [
   },
   {
     title: "Tu Landing Page en Minutos",
-    description: "Arma tu primera landing con v0 + Cursor — el combo más poderoso para crear páginas responsivas y dinámicas sin el AI smell de gradientes morados, intercambiando entre modelos de Gemini y Anthropic.",
     topics: [
-      "Setup de v0 + Cursor desde cero",
-      "Prototipar, iterar y refinar con AI",
-      "Cómo evitar el look genérico de AI",
+      "De v0 a Cursor: monta Next.js y construye productos web reales con IA",
+      "Itera y aprende a usar plan & agent mode en ciclos cortos",
+      "Aprende a elegir el modelo correcto para la tarea adecuada",
     ],
     bonus: "Lista de +30 recursos para tus proyectos incluida",
-    date: "ABR 23 · 5PM - 7PM",
+    date: "Jueves, Mayo 21",
     price: "$1,499 MXN",
     status: "ABIERTO",
     spots: "10 lugares",
@@ -39,14 +37,13 @@ const modules = [
   },
   {
     title: "Ship It: De Código a Producción",
-    description: "Integra componentes de React, conecta herramientas vía MCP para agilizar tu workflow con librerías de íconos, componentes y animaciones. Cierra lanzando tu proyecto online con deployment en Vercel, GitHub y tu propio dominio.",
     topics: [
-      "Conecta tu dominio personalizado",
-      "Conexiones MCP para íconos y animaciones",
-      "Deploy en Vercel + GitHub",
+      "Integra componentes de React y acelera el workflow con MCP",
+      "Versiona en GitHub con un flujo sólido para publicar sin fricción",
+      "Despliega en Vercel y conecta tu dominio personalizado",
     ],
     bonus: "Lista de +20 componentes de React y librerías UI",
-    date: "ABR 29 · 5PM - 7PM",
+    date: "Jueves, Mayo 28",
     price: "$1,499 MXN",
     status: "ABIERTO",
     spots: "10 lugares",
@@ -67,10 +64,25 @@ export default function ModulesSection() {
           </p>
         </div>
 
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-10 sm:mb-12">
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
+            <Video className="size-3.5" />
+            Live Zoom & Grabaciones
+          </span>
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
+            <Users className="size-3.5" />
+            Limitado a 10 personas
+          </span>
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
+            <Clock className="size-3.5" />
+            5:00 – 7:00 PM
+          </span>
+        </div>
+
         <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
           {modules.map((mod, index) => (
             <Card key={index} className="group relative overflow-hidden bg-white border border-black/10 rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg flex flex-col">
-              <CardContent className="p-6 sm:p-8 flex flex-col flex-1 gap-5">
+              <CardContent className="p-6 sm:p-8 flex flex-col flex-1 gap-5 pb-4 sm:pb-5">
                 <div className="flex items-center justify-between gap-4">
                   <div className="size-10 sm:size-12 rounded-lg bg-black/[0.03] border border-black/5 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-500">
                     <span className="font-mono text-lg font-bold">0{index + 1}</span>
@@ -81,38 +93,13 @@ export default function ModulesSection() {
                 </div>
 
                 <div>
-                  <h3 className="font-instrument text-2xl sm:text-3xl mb-2 text-black">
+                  <h3 className="font-instrument text-3xl sm:text-3xl mb-2 text-black">
                     {mod.title}
                   </h3>
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-black/40">
-                      {mod.date}
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider text-blue-700">
-                      <Video className="size-2.5" />
-                      Live Zoom
-                    </span>
-                  </div>
-                  <p className="mb-7 text-sm text-black/60 font-light">
-                    {mod.description}
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-black/5">
-                  <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1">
-                      <div className="size-1.5 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-green-700 font-medium">
-                        {mod.status}
-                      </span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-black/[0.02] px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-black/50 font-medium">
-                      <Ticket className="size-3" />
-                      <span>{mod.spots}</span>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-3">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-black/40 mb-3 block">
+                    {mod.date}
+                  </span>
+                  <ul className="space-y-3 mb-4">
                     {mod.topics.map((topic, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-black/70">
                         <span className="text-green-500 mt-0.5">•</span>
@@ -120,7 +107,10 @@ export default function ModulesSection() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 flex items-start gap-2 rounded-lg bg-green-500/5 border border-green-500/10 px-3 py-2.5">
+                </div>
+
+                <div className="mt-auto pt-0">
+                  <div className="mt-1 flex items-start gap-2 rounded-lg bg-green-500/5 border border-green-500/10 px-3 py-2.5">
                     <Gift className="size-3.5 text-green-600 mt-0.5 shrink-0" />
                     <span className="text-xs text-green-700 font-medium">{mod.bonus}</span>
                   </div>
@@ -128,14 +118,15 @@ export default function ModulesSection() {
               </CardContent>
 
               <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0 mt-auto">
-                <div className="pt-6 border-t border-black/5">
+                <div className="pt-2 border-t border-black/5">
                   <Link
                     href={mod.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full rounded-full h-12 bg-black text-white font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-black/80 hover:shadow-lg hover:shadow-black/5 transition-all duration-300"
+                    className="group/btn flex items-center justify-center gap-0 w-full rounded-full h-12 bg-black text-white font-mono text-xs font-bold uppercase tracking-[0.2em] hover:shadow-lg hover:shadow-black/5 transition-all duration-300"
                   >
                     Registrarme
+                    <span className="inline-block max-w-0 overflow-hidden opacity-0 group-hover/btn:max-w-[1.5em] group-hover/btn:opacity-100 group-hover/btn:ml-2 transition-all duration-300">→</span>
                   </Link>
                 </div>
               </div>
@@ -198,7 +189,7 @@ export default function ModulesSection() {
                 </Link>
                 <div className="flex items-center gap-2 text-white/40 text-[10px] font-mono tracking-wider uppercase">
                   <Ticket className="size-3" />
-                  <span>Cupo limitado</span>
+                  <span>Solo 5 promos</span>
                 </div>
               </div>
             </div>
