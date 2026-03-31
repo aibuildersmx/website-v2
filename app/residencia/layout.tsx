@@ -1,8 +1,8 @@
 import React from 'react'
 import type { Metadata } from 'next'
 
-import ResidencyFooter from '@/app/residency/components/footer'
-import { ResidencyHeader } from '@/app/residency/components/header'
+import ResidencyFooter from '@/app/residencia/components/footer'
+import { ResidencyHeader } from '@/app/residencia/components/header'
 
 export const metadata: Metadata = {
     title: 'La Residencia — AI Builders MX',
