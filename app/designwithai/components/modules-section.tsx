@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
+import { AlertCircle, Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import PixelCard from '@/components/PixelCard';
 
@@ -93,6 +93,9 @@ export default function ModulesSection() {
                 </div>
 
                 <div>
+                  <div className="mb-4 inline-flex items-center rounded-full border border-red-500/15 bg-red-500/6 px-3 py-1 text-[10px] font-mono uppercase tracking-[0.24em] text-red-600">
+                    Only 7 spots left
+                  </div>
                   <h3 className="font-instrument text-3xl sm:text-3xl mb-2 text-black">
                     {mod.title}
                   </h3>
@@ -142,20 +145,20 @@ export default function ModulesSection() {
             speed={40}
             colors="#ffffff,#a1a1aa,#52525b"
             noFocus
-            className="group !h-auto !w-full !aspect-auto bg-black !border-black/20 !rounded-2xl"
+            className="group !h-auto !w-full !aspect-auto bg-black !border-black/20 !rounded-2xl shadow-[0_25px_80px_rgba(0,0,0,0.28)]"
           >
-            <div className="relative z-10 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 w-full">
+            <div className="relative z-10 p-8 sm:p-12 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 w-full">
               <div className="flex-1 text-center md:text-left">
-                <div className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-[10px] font-mono uppercase tracking-wider mb-6 overflow-hidden isolate">
+                <div className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-[10px] font-mono uppercase tracking-wider mb-4 overflow-hidden isolate">
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:300%_100%] animate-[gradient-shift_4s_ease_infinite] bg-gradient-to-r from-purple-500/30 via-cyan-400/30 via-50% to-pink-500/30" />
                   <Sparkles className="relative size-3" />
                   <span className="relative">Mejor Valor</span>
                 </div>
-                <h3 className="font-instrument text-3xl sm:text-4xl md:text-5xl mb-4 text-white">
+                <h3 className="font-instrument text-4xl sm:text-5xl md:text-6xl mb-4 text-white">
                   El Bootcamp Completo
                 </h3>
                 <p className="text-white/60 text-sm sm:text-base font-light max-w-xl mx-auto md:mx-0 mb-8">
-                  Asegura tu lugar en los 3 módulos, obtén acceso a las grabaciones de por vida, comunidad privada y acceso a soporte directo de los instructores incluso después de las sesiones.
+                  Asegura tu lugar en los 3 módulos antes de que se agoten las promos completas. Obtén acceso a las grabaciones de por vida, comunidad privada y soporte directo de los instructores incluso después de las sesiones.
                 </p>
                 
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-sm text-white/80 font-medium">
@@ -172,10 +175,14 @@ export default function ModulesSection() {
               </div>
 
               <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-5">
+                <div className="flex items-center gap-2 rounded-full border border-red-400/25 bg-red-500/10 px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] text-red-100">
+                  <AlertCircle className="size-3.5" />
+                  Ultimos 2 paquetes completos
+                </div>
                 <div className="flex flex-col items-center gap-1">
                   <span className="text-white/40 text-sm line-through decoration-white/20">$4,497 MXN</span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-instrument text-4xl sm:text-5xl text-white">$4,000</span>
+                    <span className="font-instrument text-5xl sm:text-6xl text-white">$4,000</span>
                     <span className="text-sm font-mono text-white/60">MXN</span>
                   </div>
                 </div>
@@ -183,13 +190,13 @@ export default function ModulesSection() {
                   href="https://buy.stripe.com/cNi3cp2bn1Iz5D9gsZgnK03"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-full md:w-auto rounded-full px-10 h-14 bg-white text-black font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 hover:scale-105 transition-all duration-300"
+                  className="flex items-center justify-center w-full md:w-auto rounded-full px-10 h-14 bg-white text-black font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-[0_0_35px_rgba(255,255,255,0.12)]"
                 >
                   Inscribirme al Bootcamp
                 </Link>
-                <div className="flex items-center gap-2 text-white/40 text-[10px] font-mono tracking-wider uppercase">
+                <div className="flex items-center gap-2 text-red-200/90 text-[10px] font-mono tracking-[0.24em] uppercase">
                   <Ticket className="size-3" />
-                  <span>Solo 5 promos</span>
+                  <span>Solo quedan 2 de 5 promos</span>
                 </div>
               </div>
             </div>
