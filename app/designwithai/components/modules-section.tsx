@@ -18,7 +18,7 @@ const modules = [
     date: "Jueves, Mayo 14",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "10 lugares",
+    spots: "6 lugares",
     link: "https://buy.stripe.com/3cIeV7cQ1af50iPgsZgnK00",
   },
   {
@@ -32,7 +32,7 @@ const modules = [
     date: "Jueves, Mayo 21",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "10 lugares",
+    spots: "6 lugares",
     link: "https://buy.stripe.com/5kQaER9DP5YP4z590xgnK02",
   },
   {
@@ -46,7 +46,7 @@ const modules = [
     date: "Jueves, Mayo 28",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "10 lugares",
+    spots: "6 lugares",
     link: "https://buy.stripe.com/7sYdR3eY99b1ghNgsZgnK01",
   }
 ];
@@ -71,7 +71,7 @@ export default function ModulesSection() {
           </span>
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
             <Users className="size-3.5" />
-            Limitado a 10 personas
+            Solo 6 lugares por modulo
           </span>
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
             <Clock className="size-3.5" />
@@ -94,7 +94,7 @@ export default function ModulesSection() {
 
                 <div>
                   <div className="mb-4 inline-flex items-center rounded-full border border-red-500/15 bg-red-500/6 px-3 py-1 text-[10px] font-mono uppercase tracking-[0.24em] text-red-600">
-                    Only 7 spots left
+                    Solo {mod.spots}
                   </div>
                   <h3 className="font-instrument text-3xl sm:text-3xl mb-2 text-black">
                     {mod.title}
@@ -175,9 +175,9 @@ export default function ModulesSection() {
               </div>
 
               <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-5">
-                <div className="flex items-center gap-2 rounded-full border border-red-400/25 bg-red-500/10 px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] text-red-100">
-                  <AlertCircle className="size-3.5" />
-                  Ultimos 2 paquetes completos
+                <div className="flex items-center gap-2 rounded-full border border-red-300/60 bg-red-500/20 px-5 py-2.5 text-xs font-mono uppercase tracking-[0.22em] text-white shadow-[0_0_30px_rgba(239,68,68,0.28)] ring-1 ring-red-300/40 animate-pulse">
+                  <AlertCircle className="size-4" />
+                  Ultima promo disponible
                 </div>
                 <div className="flex flex-col items-center gap-1">
                   <span className="text-white/40 text-sm line-through decoration-white/20">$4,497 MXN</span>
@@ -194,9 +194,9 @@ export default function ModulesSection() {
                 >
                   Inscribirme al Bootcamp
                 </Link>
-                <div className="flex items-center gap-2 text-red-200/90 text-[10px] font-mono tracking-[0.24em] uppercase">
-                  <Ticket className="size-3" />
-                  <span>Solo quedan 2 de 5 promos</span>
+                <div className="flex items-center gap-2 rounded-full border border-red-300/40 bg-red-500/15 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-red-50 shadow-[0_0_25px_rgba(239,68,68,0.2)]">
+                  <Ticket className="size-3.5 text-red-200" />
+                  <span>Solo queda 1 de 5 promos</span>
                 </div>
               </div>
             </div>
