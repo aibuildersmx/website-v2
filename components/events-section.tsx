@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Users, ArrowUpRight, Ticket } from "lucide-react";
 import Link from "next/link";
 
+const isExternalLink = (link?: string) => Boolean(link?.startsWith("http"));
+const eventTypeStyles: Record<string, string> = {
+  Workshop: "border-blue-500/20 bg-blue-500/8 text-blue-700",
+  Meetup: "border-emerald-500/20 bg-emerald-500/8 text-emerald-700",
+  Webinar: "border-amber-500/20 bg-amber-500/8 text-amber-700",
+};
+
 const events = [
   {
     title: "How I Use AI #5: Image Manipulation",
@@ -17,7 +24,7 @@ const events = [
     price: "Gratis",
     buttonText: "Registrarme",
     buttonDisabled: false,
-    tags: ["Workshop", "AI"],
+    tags: ["Webinar", "AI"],
     logo: "/favicon.svg",
     link: "https://luma.com/wsj293yt",
   },
@@ -49,7 +56,7 @@ const events = [
     price: "Gratis",
     buttonText: "Registrarme",
     buttonDisabled: false,
-    tags: ["Workshop", "AI"],
+    tags: ["Webinar", "AI"],
     logo: "/favicon.svg",
     link: "https://luma.com/11fz6ef5",
   },
@@ -65,8 +72,24 @@ const events = [
     price: "Coming Soon",
     buttonText: "Notificarme",
     buttonDisabled: true,
-    tags: ["Hackathon", "AI"],
+    tags: ["Meetup", "AI"],
     logo: "/gemini-logo-event.svg",
+  },
+  {
+    title: "Build with AI Workshop",
+    description:
+      "Workshop virtual para aprender a disenar con AI, prototipar mas rapido y construir una landing funcional paso a paso.",
+    month: "MAY",
+    day: "14",
+    location: "Virtual, Zoom",
+    attendees: "7 spots left",
+    status: "ABIERTO",
+    price: "Disponible",
+    buttonText: "Ver workshop",
+    buttonDisabled: false,
+    tags: ["Workshop", "AI"],
+    logo: "/favicon.svg",
+    link: "/designwithai",
   },
 ];
 
@@ -246,6 +269,16 @@ export default function EventsSection() {
                       <span>{event.attendees.split(" ")[0]}</span>
                     </div>
                   </div>
+                  <div className="mt-2 sm:mt-3">
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.18em] ${
+                        eventTypeStyles[event.tags[0]] ??
+                        "border-black/10 bg-black/[0.03] text-black/60"
+                      }`}
+                    >
+                      {event.tags[0]}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="shrink-0">
@@ -260,7 +293,15 @@ export default function EventsSection() {
                     }`}
                   >
                     {event.link && !event.buttonDisabled ? (
-                      <Link href={event.link} target="_blank">
+                      <Link
+                        href={event.link}
+                        target={isExternalLink(event.link) ? "_blank" : undefined}
+                        rel={
+                          isExternalLink(event.link)
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                      >
                         <ArrowUpRight className="size-3.5 sm:size-4" />
                       </Link>
                     ) : (
@@ -329,24 +370,46 @@ export default function EventsSection() {
                       <Ticket className="size-4" />
                       <span>{event.attendees}</span>
                     </div>
+                    <div>
+                      <span
+                        className={`inline-flex items-center rounded-full border px-3 py-1.5 text-[10px] font-mono uppercase tracking-[0.18em] ${
+                          eventTypeStyles[event.tags[0]] ??
+                          "border-black/10 bg-black/[0.03] text-black/60"
+                        }`}
+                      >
+                        {event.tags[0]}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Action Footer */}
                 <div className="p-6 border-t border-black/5 bg-black/[0.01]">
-                  <div className="flex items-center justify-start">
+                  <div className="flex items-center">
                     <Button
                       asChild={!!event.link && !event.buttonDisabled}
                       disabled={event.buttonDisabled}
-                      className={`rounded-full h-12 px-10 font-mono text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
+                      className={`w-full rounded-full h-12 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
                         event.buttonDisabled
                           ? "bg-transparent border border-black/10 text-black/20 cursor-default"
                           : "bg-black text-white hover:bg-black/80 hover:shadow-lg hover:shadow-black/5 cursor-pointer"
                       }`}
                     >
                       {event.link && !event.buttonDisabled ? (
-                        <Link href={event.link} target="_blank">
-                          {event.buttonText}
+                        <Link
+                          href={event.link}
+                          target={isExternalLink(event.link) ? "_blank" : undefined}
+                          rel={
+                            isExternalLink(event.link)
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                          className="group/cta flex w-full items-center justify-center"
+                        >
+                          <span>{event.buttonText}</span>
+                          <span className="inline-block max-w-0 overflow-hidden opacity-0 group-hover/cta:max-w-[1.5em] group-hover/cta:opacity-100 group-hover/cta:ml-2 transition-all duration-300">
+                            →
+                          </span>
                         </Link>
                       ) : (
                         event.buttonText
