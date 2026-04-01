@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AlertCircle, Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
+import { Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import PixelCard from '@/components/PixelCard';
 
@@ -18,7 +18,7 @@ const modules = [
     date: "Jueves, Mayo 14",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "6 lugares",
+    spots: "5 lugares",
     link: "https://buy.stripe.com/3cIeV7cQ1af50iPgsZgnK00",
   },
   {
@@ -32,7 +32,7 @@ const modules = [
     date: "Jueves, Mayo 21",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "6 lugares",
+    spots: "5 lugares",
     link: "https://buy.stripe.com/5kQaER9DP5YP4z590xgnK02",
   },
   {
@@ -46,7 +46,7 @@ const modules = [
     date: "Jueves, Mayo 28",
     price: "$1,499 MXN",
     status: "ABIERTO",
-    spots: "6 lugares",
+    spots: "5 lugares",
     link: "https://buy.stripe.com/7sYdR3eY99b1ghNgsZgnK01",
   }
 ];
@@ -71,7 +71,7 @@ export default function ModulesSection() {
           </span>
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
             <Users className="size-3.5" />
-            Solo 6 lugares por modulo
+            Solo 5 lugares por modulo
           </span>
           <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-4 py-2 text-[11px] font-mono uppercase tracking-wider text-black/60">
             <Clock className="size-3.5" />
@@ -152,13 +152,13 @@ export default function ModulesSection() {
                 <div className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-[10px] font-mono uppercase tracking-wider mb-4 overflow-hidden isolate">
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:300%_100%] animate-[gradient-shift_4s_ease_infinite] bg-gradient-to-r from-purple-500/30 via-cyan-400/30 via-50% to-pink-500/30" />
                   <Sparkles className="relative size-3" />
-                  <span className="relative">Mejor Valor</span>
+                  <span className="relative">Combo Completo</span>
                 </div>
                 <h3 className="font-instrument text-4xl sm:text-5xl md:text-6xl mb-4 text-white">
                   El Bootcamp Completo
                 </h3>
                 <p className="text-white/60 text-sm sm:text-base font-light max-w-xl mx-auto md:mx-0 mb-8">
-                  Asegura tu lugar en los 3 módulos antes de que se agoten las promos completas. Obtén acceso a las grabaciones de por vida, comunidad privada y soporte directo de los instructores incluso después de las sesiones.
+                  Asegura tu lugar en los 3 módulos antes de que se agoten. Obtén acceso a las grabaciones de por vida, comunidad privada y soporte directo de los instructores incluso después de las sesiones.
                 </p>
                 
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-sm text-white/80 font-medium">
@@ -175,19 +175,14 @@ export default function ModulesSection() {
               </div>
 
               <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-5">
-                <div className="flex items-center gap-2 rounded-full border border-red-300/60 bg-red-500/20 px-5 py-2.5 text-xs font-mono uppercase tracking-[0.22em] text-white shadow-[0_0_30px_rgba(239,68,68,0.28)] ring-1 ring-red-300/40 animate-pulse">
-                  <AlertCircle className="size-4" />
-                  Ultima promo disponible
-                </div>
                 <div className="flex flex-col items-center gap-1">
-                  <span className="text-white/40 text-sm line-through decoration-white/20">$4,497 MXN</span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-instrument text-5xl sm:text-6xl text-white">$4,000</span>
+                    <span className="font-instrument text-5xl sm:text-6xl text-white">$4,497</span>
                     <span className="text-sm font-mono text-white/60">MXN</span>
                   </div>
                 </div>
                 <Link
-                  href="https://buy.stripe.com/cNi3cp2bn1Iz5D9gsZgnK03"
+                  href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-full md:w-auto rounded-full px-10 h-14 bg-white text-black font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-[0_0_35px_rgba(255,255,255,0.12)]"
@@ -196,7 +191,7 @@ export default function ModulesSection() {
                 </Link>
                 <div className="flex items-center gap-2 rounded-full border border-red-300/40 bg-red-500/15 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-red-50 shadow-[0_0_25px_rgba(239,68,68,0.2)]">
                   <Ticket className="size-3.5 text-red-200" />
-                  <span>Solo queda 1 de 5 promos</span>
+                  <span>Solo quedan 5 lugares</span>
                 </div>
               </div>
             </div>

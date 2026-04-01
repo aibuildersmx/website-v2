@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, MessageCircle, Sparkles, Ticket } from 'lucide-react';
 import PixelCard from '@/components/PixelCard';
 
 export default function CTASection() {
@@ -28,7 +28,7 @@ export default function CTASection() {
                 Empieza a diseñar con el poder de la Inteligencia Artificial
               </h2>
               <p className="text-base sm:text-lg text-white/60 max-w-xl mx-auto font-light">
-                Reserva tu lugar hoy. Cupos limitados.
+                Reserva tu lugar hoy. Solo quedan 5 lugares.
               </p>
             </div>
 
@@ -39,7 +39,7 @@ export default function CTASection() {
                 className="w-full sm:w-auto rounded-xl bg-white text-black hover:bg-white/90 font-mono uppercase tracking-widest px-8 h-14"
               >
                 <Link
-                  href="https://buy.stripe.com/cNi3cp2bn1Iz5D9gsZgnK03"
+                  href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -47,6 +47,11 @@ export default function CTASection() {
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
+            </div>
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-red-300/40 bg-red-500/15 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-red-50 shadow-[0_0_25px_rgba(239,68,68,0.2)]">
+              <Ticket className="size-3.5 text-red-200" />
+              <span>Solo quedan 5 lugares</span>
             </div>
             
             <Link

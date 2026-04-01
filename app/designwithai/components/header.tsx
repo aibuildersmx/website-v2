@@ -68,7 +68,7 @@ export const HeroHeader = () => {
                         className="rounded-full bg-black text-white hover:bg-black/80 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
                     >
                         <Link
-                            href="https://buy.stripe.com/cNi3cp2bn1Iz5D9gsZgnK03"
+                            href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
