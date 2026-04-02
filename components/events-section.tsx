@@ -11,23 +11,48 @@ const eventTypeStyles: Record<string, string> = {
   Webinar: "border-amber-500/20 bg-amber-500/8 text-amber-700",
 };
 
+function EventLogo({
+  logo,
+  alt,
+  className,
+}: {
+  logo: string;
+  alt: string;
+  className: string;
+}) {
+  if (logo === "/v0-logo-black.svg") {
+    return (
+      <div
+        aria-label={alt}
+        role="img"
+        className={className}
+        style={{
+          aspectRatio: "39.914 / 20.658",
+          backgroundColor: "#2d2d2d",
+          WebkitMaskImage: `url(${logo})`,
+          maskImage: `url(${logo})`,
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+        }}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={logo}
+      alt={alt}
+      className={className}
+      onError={(e) => (e.currentTarget.style.display = "none")}
+    />
+  );
+}
+
 const events = [
-  {
-    title: "How I Use AI #5: Image Manipulation",
-    description:
-      "En esta sesión exploramos cómo crear, manipular y editar imágenes desde cero con herramientas de AI.",
-    month: "ABR",
-    day: "01",
-    location: "Virtual, Google Meet",
-    attendees: "∞",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Webinar", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/wsj293yt",
-  },
   {
     title: "OpenAI Codex – Mexico City",
     description:
@@ -76,6 +101,22 @@ const events = [
     logo: "/gemini-logo-event.svg",
   },
   {
+    title: "Zero to Agent",
+    description:
+      "Meetup de AI Builders Mexico para lanzar agentes de IA reales con v0 y conectar con builders en Ciudad de Mexico.",
+    month: "MAY",
+    day: "02",
+    location: "CDMX, SANDBOX HUB",
+    attendees: "50 lugares",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Meetup", "AI"],
+    logo: "/v0-logo-black.svg",
+    link: "https://luma.com/wp947zvj",
+  },
+  {
     title: "Build with AI Workshop",
     description:
       "Workshop virtual para aprender a disenar con AI, prototipar mas rapido y construir una landing funcional paso a paso.",
@@ -94,6 +135,14 @@ const events = [
 ];
 
 const pastEvents = [
+  {
+    title: "How I Use AI #5: Image Manipulation",
+    month: "ABR",
+    day: "01",
+    location: "Virtual, Google Meet",
+    logo: "/favicon.svg",
+    link: "https://luma.com/wsj293yt",
+  },
   {
     title: "Build with Cursor Mexico City",
     month: "MAR",
@@ -243,13 +292,10 @@ export default function EventsSection() {
 
                   {event.logo && (
                     <div className="h-4 sm:h-5 w-fit mb-2 sm:mb-3">
-                      <img
-                        src={event.logo}
+                      <EventLogo
+                        logo={event.logo}
                         alt={`${event.title} logo`}
                         className="h-full w-auto grayscale opacity-80"
-                        onError={(e) =>
-                          (e.currentTarget.style.display = "none")
-                        }
                       />
                     </div>
                   )}
@@ -346,13 +392,10 @@ export default function EventsSection() {
                   <div className="space-y-6">
                     {event.logo && (
                       <div className="h-8 w-fit">
-                        <img
-                          src={event.logo}
+                        <EventLogo
+                          logo={event.logo}
                           alt={`${event.title} logo`}
                           className="h-full w-auto grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-                          onError={(e) =>
-                            (e.currentTarget.style.display = "none")
-                          }
                         />
                       </div>
                     )}

@@ -4,7 +4,6 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HeroHeader } from "./header";
-import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import Dither from "@/components/Dither";
 import SplitText from "@/components/SplitText";
 import { Linkedin } from "lucide-react";
@@ -162,100 +161,6 @@ export default function HeroSection() {
                     <Linkedin className="size-5 sm:size-6" />
                   </Link>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Logo Banner - at the very bottom (hidden on mobile, shown in stats section instead) */}
-        <div className="relative z-10 pb-3 sm:pb-6 md:pb-8 shrink-0 hidden md:block">
-          <div className="group relative m-auto max-w-6xl px-4 sm:px-6">
-            <div className="flex flex-col items-center md:flex-row">
-              <div className="md:max-w-44 md:border-r md:border-white/20 md:pr-6">
-                <p className="text-end text-xs sm:text-sm text-white/70">
-                  Partners:
-                </p>
-              </div>
-              <div className="relative py-2 sm:py-4 md:w-[calc(100%-11rem)] pointer-events-auto">
-                <InfiniteSlider speedOnHover={20} speed={40} gap={112}>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-6 w-fit"
-                      src="/cursor-logo-dark.svg"
-                      alt="Cursor Logo"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-7 w-fit invert"
-                      src="/reve-logo-black.svg"
-                      alt="Reve Logo"
-                      height="28"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-8 w-fit"
-                      src="/rbr logo.svg"
-                      alt="RBR Logo"
-                      height="32"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-6 w-fit"
-                      src="/stripe-logo.png"
-                      alt="Stripe Logo"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <img
-                      className="mx-auto h-6 w-fit invert"
-                      src="/v0-logo-black.svg"
-                      alt="v0 Logo"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <img
-                      className="h-6 w-fit invert"
-                      src="/openai.svg"
-                      alt="OpenAI Logo"
-                      height="24"
-                      width="auto"
-                    />
-                    <img
-                      className="h-6 w-fit invert"
-                      src="/openai-text.svg"
-                      alt="OpenAI"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <img
-                      className="h-6 w-fit invert"
-                      src="/gemini.svg"
-                      alt="Gemini Logo"
-                      height="24"
-                      width="auto"
-                    />
-                    <img
-                      className="h-6 w-fit invert"
-                      src="/gemini-text.svg"
-                      alt="Gemini"
-                      height="24"
-                      width="auto"
-                    />
-                  </div>
-                </InfiniteSlider>
               </div>
             </div>
           </div>

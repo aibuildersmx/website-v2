@@ -20,6 +20,11 @@ const stats = [
   },
 ];
 
+const partnerLogoStyle = {
+  filter: "brightness(0) saturate(100%)",
+  opacity: 0.824,
+};
+
 export default function StatsSection() {
   return (
     <section className="relative py-12 sm:py-16 md:py-32 bg-white text-black border-t border-black/5 overflow-hidden">
@@ -54,89 +59,96 @@ export default function StatsSection() {
           ))}
         </div>
 
-        {/* Mobile Partners Banner */}
-        <div className="md:hidden pt-2">
-          <div className="flex flex-col items-center space-y-4">
-            <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-black/40 font-medium">
-              Partners
-            </p>
-            <div className="w-full overflow-hidden">
-              <InfiniteSlider speedOnHover={15} speed={25} gap={32}>
-                <img
-                  className="h-5 w-auto shrink-0 opacity-50"
-                  src="/cursor-logo-dark.svg"
-                  alt="Cursor Logo"
-                  height="20"
-                  width="80"
-                  style={{ filter: "invert(1)" }}
-                />
-                <img
-                  className="h-6 w-auto shrink-0 opacity-50"
-                  src="/rbr logo.svg"
-                  alt="RBR Logo"
-                  height="24"
-                  width="80"
-                  style={{ filter: "invert(1)" }}
-                />
-                <img
-                  className="h-5 w-auto shrink-0 opacity-50"
-                  src="/stripe-logo.png"
-                  alt="Stripe Logo"
-                  height="20"
-                  width="80"
-                  style={{ filter: "invert(1)" }}
-                />
-                <img
-                  className="h-5 w-auto shrink-0 opacity-50"
-                  src="/v0-logo-black.svg"
-                  alt="v0 Logo"
-                  height="20"
-                  width="80"
-                />
-                <img
-                  className="h-5 w-auto shrink-0 opacity-50"
-                  src="/vercel-logo.svg"
-                  alt="Vercel Logo"
-                  height="20"
-                  width="80"
-                  style={{ filter: "invert(1)" }}
-                />
-                <div className="flex items-center gap-1.5 shrink-0 opacity-50">
+        <div className="pt-2 md:pt-4">
+          <div className="flex flex-col items-center gap-4 pt-6 md:flex-row md:gap-6 md:pt-8">
+            <div className="md:max-w-44 md:border-r md:border-black/10 md:pr-6">
+              <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-black/40 font-medium md:text-right">
+                Partners
+              </p>
+            </div>
+            <div className="w-full overflow-hidden md:w-[calc(100%-11rem)]">
+              <InfiniteSlider speedOnHover={20} speed={40} gap={96}>
+                <div className="flex items-center">
                   <img
-                    className="h-5 w-auto"
-                    src="/openai.svg"
-                    alt="OpenAI Logo"
-                    height="20"
-                    width="20"
-                  />
-                  <img
-                    className="h-5 w-auto"
-                    src="/openai-text.svg"
-                    alt="OpenAI"
-                    height="20"
-                    width="80"
+                    className="mx-auto h-5 w-fit sm:h-6"
+                    src="/cursor-logo-dark.svg"
+                    alt="Cursor Logo"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
                   />
                 </div>
-                <div className="flex items-center gap-1.5 shrink-0 opacity-50">
+                <div className="flex items-center">
                   <img
-                    className="h-5 w-auto"
-                    src="/gemini.svg"
-                    alt="Gemini Logo"
-                    height="20"
-                    width="20"
+                    className="mx-auto h-6 w-fit sm:h-7"
+                    src="/reve-logo-black.svg"
+                    alt="Reve Logo"
+                    height="28"
+                    width="auto"
+                    style={partnerLogoStyle}
+                  />
+                </div>
+                <div className="flex items-center">
+                  <img
+                    className="mx-auto h-5 w-fit sm:h-6"
+                    src="/stripe-logo.png"
+                    alt="Stripe Logo"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
+                  />
+                </div>
+                <div className="flex items-center">
+                  <img
+                    className="mx-auto h-5 w-fit sm:h-6"
+                    src="/v0-logo-black.svg"
+                    alt="v0 Logo"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    className="h-5 w-fit sm:h-6"
+                    src="/openai.svg"
+                    alt="OpenAI Logo"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
                   />
                   <img
-                    className="h-5 w-auto"
+                    className="h-5 w-fit sm:h-6"
+                    src="/openai-text.svg"
+                    alt="OpenAI"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    className="h-5 w-fit sm:h-6"
+                    src="/gemini.svg"
+                    alt="Gemini Logo"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
+                  />
+                  <img
+                    className="h-5 w-fit sm:h-6"
                     src="/gemini-text.svg"
                     alt="Gemini"
-                    height="20"
-                    width="80"
+                    height="24"
+                    width="auto"
+                    style={partnerLogoStyle}
                   />
                 </div>
               </InfiniteSlider>
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Subtle background gradient */}
