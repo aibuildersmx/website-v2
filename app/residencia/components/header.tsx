@@ -36,17 +36,17 @@ export const ResidencyHeader = () => {
                 className={cn(
                     'pointer-events-auto flex items-center justify-between p-1.5 sm:p-2 rounded-full border transition-all duration-500 ease-in-out w-full max-w-6xl',
                     scrolled
-                        ? 'bg-black/80 backdrop-blur-xl border-white/10 shadow-2xl shadow-black/20'
-                        : 'bg-black/50 backdrop-blur-md border-white/5 shadow-lg'
+                        ? 'bg-white/80 backdrop-blur-xl border-[#5a9fd4]/15 shadow-2xl shadow-[#1a2a3a]/10'
+                        : 'bg-white/50 backdrop-blur-md border-[#5a9fd4]/10 shadow-lg'
                 )}
             >
                 <Link
                     href="/"
                     aria-label="home"
-                    className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-white/10 transition-colors"
+                    className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-[#1a2a3a]/5 transition-colors"
                 >
                     <Image
-                        src="/AIBM-logo-dark.svg"
+                        src="/AIBM-logo-light-bg.svg"
                         alt="AI Builders Mexico"
                         width={112}
                         height={20}
@@ -60,7 +60,7 @@ export const ResidencyHeader = () => {
                             key={item.name}
                             href={item.href}
                             onClick={scrollTo(item.href.slice(1))}
-                            className="text-white/60 hover:text-white text-[10px] sm:text-xs font-mono uppercase tracking-widest px-3 py-2 rounded-full hover:bg-white/10 transition-colors"
+                            className="text-[#1a2a3a]/60 hover:text-[#1a2a3a] text-[10px] sm:text-xs font-mono uppercase tracking-widest px-3 py-2 rounded-full hover:bg-[#1a2a3a]/5 transition-colors"
                         >
                             {item.name}
                         </a>
@@ -71,7 +71,7 @@ export const ResidencyHeader = () => {
                     <Button
                         asChild
                         size="sm"
-                        className="rounded-full bg-white text-black hover:bg-white/90 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
+                        className="rounded-full bg-[#1a2a3a] text-white hover:bg-[#2a3a4a] px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
                     >
                         <a href="#aplica" onClick={scrollTo('aplica')}>
                             Aplica ahora
