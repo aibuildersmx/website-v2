@@ -160,7 +160,7 @@ export default function ResidencyPage() {
                 <div className="mx-auto max-w-6xl">
                     <div className="flex flex-col items-center gap-5 text-center">
                         <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#5a9fd4]">
-                            Patrocinado por
+                            Con apoyo de
                         </p>
                         <div className="inline-flex items-center text-[#1a2a3a]">
                             <Image
