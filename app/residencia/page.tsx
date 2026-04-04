@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import {
     ArrowUpRight,
@@ -28,9 +29,10 @@ const benefits = [
         description: 'Coworking gratis en Haab, en Condesa, con tiempo protegido y foco total para avanzar tu proyecto.',
     },
     {
-        icon: Monitor,
-        title: 'Oficina privada 24/7',
-        description: 'Incluye widescreen monitor y Mac mini para que llegues a construir, no a improvisar setup.',
+        icon: Sparkles,
+        title: 'Credits y apoyo adicional',
+        description:
+            'OpenAI ya confirmó credits para builders seleccionados. Dependiendo del caso, también puede haber web hosting y un posible stipend de $500 USD.',
     },
     {
         icon: MessageSquareText,
@@ -48,9 +50,10 @@ const benefits = [
         description: 'Conexiones con personas y equipos que pueden acelerar reach en México y Estados Unidos.',
     },
     {
-        icon: Sparkles,
-        title: 'Posibles credits y apoyo adicional',
-        description: 'Dependiendo del caso: credits con frontier labs, web hosting y un posible stipend de $500 USD.',
+        icon: Monitor,
+        title: 'Digital Track',
+        description:
+            'Además de la residencia presencial, también ofreceremos una residencia digital para un cohorte pequeño, con un meet semanal.',
     },
 ]
 
@@ -153,6 +156,32 @@ export default function ResidencyPage() {
                 </div>
             </section>
 
+            <section className="relative px-6 pb-12 sm:pb-16">
+                <div className="mx-auto max-w-6xl">
+                    <div className="flex flex-col items-center gap-5 text-center">
+                        <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#5a9fd4]">
+                            Patrocinado por
+                        </p>
+                        <div className="inline-flex items-center text-[#1a2a3a]">
+                            <Image
+                                src="/openai.svg"
+                                alt="OpenAI"
+                                width={28}
+                                height={28}
+                                className="mr-3 h-7 w-7"
+                            />
+                            <Image
+                                src="/openai-text.svg"
+                                alt="OpenAI wordmark"
+                                width={96}
+                                height={28}
+                                className="h-6 w-auto"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Benefits */}
             <section id="programa" className="relative px-6 py-24 sm:py-32 bg-white">
                 <div className="mx-auto max-w-6xl">
@@ -191,12 +220,12 @@ export default function ResidencyPage() {
                             },
                             ...transitionVariants,
                         }}
-                        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                        className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
                         >
                         {benefits.map((benefit) => (
                             <div
                                 key={benefit.title}
-                                className="flex min-h-[270px] flex-col rounded-2xl border border-[#5a9fd4]/10 bg-[#f0f4f8]/60 p-8 hover:bg-[#e8eff6] transition-colors"
+                                className="flex h-full min-h-[270px] flex-col rounded-2xl border border-[#5a9fd4]/10 bg-[#f0f4f8]/60 p-8 transition-colors hover:bg-[#e8eff6]"
                             >
                                 <benefit.icon className="mb-6 size-8 text-[#5a9fd4]" strokeWidth={1.5} />
                                 <h3 className="min-h-[4.25rem] text-xl font-medium leading-tight text-[#1a2a3a]">

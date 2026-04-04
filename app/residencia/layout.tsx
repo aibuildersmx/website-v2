@@ -7,7 +7,7 @@ import { ResidencyHeader } from '@/app/residencia/components/header'
 export const metadata: Metadata = {
     title: 'La Residencia — AI Builders MX',
     description:
-        '6 semanas de coworking gratis en Haab para builders excepcionales. Oficina privada 24/7, apoyo de AIBM y acceso a mentores, partners y posibles credits.',
+        '6 semanas de coworking gratis en Haab para builders excepcionales, apoyo de AIBM, acceso a mentores y partners, y un Digital Track para un cohorte pequeño.',
     icons: {
         icon: [
             {
