@@ -32,7 +32,7 @@ const benefits = [
         icon: Sparkles,
         title: 'Credits y apoyo adicional',
         description:
-            'OpenAI ya confirmó credits para builders seleccionados. Dependiendo del caso, también puede haber web hosting y un posible stipend de $500 USD.',
+            'Credits de OpenAI, hosting web gratis y un posible stipend de $500 USD, dependiendo del caso.',
     },
     {
         icon: MessageSquareText,
@@ -160,7 +160,7 @@ export default function ResidencyPage() {
                 <div className="mx-auto max-w-6xl">
                     <div className="flex flex-col items-center gap-5 text-center">
                         <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#5a9fd4]">
-                            Con apoyo de
+                            Partners
                         </p>
                         <div className="inline-flex items-center text-[#1a2a3a]">
                             <Image
