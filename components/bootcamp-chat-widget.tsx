@@ -21,7 +21,7 @@ export function BootcampChatWidget() {
     return (
         <Link
             href={bootcampHref}
-            className="group fixed right-4 bottom-4 z-[120] flex items-end sm:right-6 sm:bottom-6"
+            className="group fixed right-4 bottom-4 z-[120] hidden items-end sm:flex sm:right-6 sm:bottom-6"
             aria-label="Abrir información del Vibecoding Bootcamp"
         >
             <div className="pointer-events-none absolute right-0 bottom-20 w-[280px] translate-y-2 rounded-3xl border border-white/10 bg-black/92 p-4 text-white opacity-0 shadow-2xl shadow-black/40 backdrop-blur-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:w-[340px] sm:p-5">
