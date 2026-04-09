@@ -5,7 +5,7 @@ const members = [
   {
     name: "Ben Kim",
     role: "Co-Founder",
-    avatar: "https://unavatar.io/x/benkimbuilds",
+    avatar: "/ben.avif",
     link: "https://ben-k.im",
   },
   {

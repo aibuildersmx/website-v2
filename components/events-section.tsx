@@ -54,22 +54,6 @@ function EventLogo({
 
 const events = [
   {
-    title: "OpenAI Codex – Mexico City",
-    description:
-      "Meetup en Ciudad de México para conectar con builders y experimentar con OpenAI Codex en casos reales.",
-    month: "ABR",
-    day: "08",
-    location: "CDMX, Plaza Carso",
-    attendees: "70 lugares",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Meetup", "AI"],
-    logo: "/openai-logo-event.svg",
-    link: "https://luma.com/suipk589",
-  },
-  {
     title: "How I Use AI #6: Scaling to 1M users",
     description:
       "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
@@ -84,21 +68,6 @@ const events = [
     tags: ["Webinar", "AI"],
     logo: "/favicon.svg",
     link: "https://luma.com/11fz6ef5",
-  },
-  {
-    title: "Gemini 3 Hackathon",
-    description:
-      "Hackathon oficial de Gemini3 en México. Construye proyectos innovadores, compite por premios y conecta con otros builders.",
-    month: "ABR",
-    day: "27",
-    location: "CDMX, TBD",
-    attendees: "50 lugares",
-    status: "PRÓXIMO",
-    price: "Coming Soon",
-    buttonText: "Notificarme",
-    buttonDisabled: true,
-    tags: ["Meetup", "AI"],
-    logo: "/gemini-logo-event.svg",
   },
   {
     title: "Zero to Agent",
@@ -135,6 +104,14 @@ const events = [
 ];
 
 const pastEvents = [
+  {
+    title: "OpenAI Codex – Mexico City",
+    month: "ABR",
+    day: "08",
+    location: "CDMX, Plaza Carso",
+    logo: "/openai-logo-event.svg",
+    link: "https://luma.com/suipk589",
+  },
   {
     title: "How I Use AI #5: Image Manipulation",
     month: "ABR",
