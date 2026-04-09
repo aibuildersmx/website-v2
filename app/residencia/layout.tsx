@@ -9,21 +9,8 @@ export const metadata: Metadata = {
     description:
         '6 semanas de coworking gratis en Haab para builders excepcionales, apoyo de AIBM, acceso a mentores y partners, y un Digital Track para un cohorte pequeño.',
     icons: {
-        icon: [
-            {
-                url: '/icon-light-32x32.png',
-                media: '(prefers-color-scheme: light)',
-            },
-            {
-                url: '/icon-dark-32x32.png',
-                media: '(prefers-color-scheme: dark)',
-            },
-            {
-                url: '/icon.svg',
-                type: 'image/svg+xml',
-            },
-        ],
-        apple: '/apple-icon.png',
+        icon: '/favicon.svg',
+        shortcut: '/favicon.svg',
     },
 }
 

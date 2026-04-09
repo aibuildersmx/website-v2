@@ -236,17 +236,6 @@ export default function ResidencyPage() {
                         ))}
                     </AnimatedGroup>
 
-                    <TextEffect
-                        triggerOnView
-                        per="line"
-                        preset="fade-in-blur"
-                        speedSegment={0.3}
-                        delay={0.3}
-                        as="p"
-                        className="mt-10 text-sm font-mono uppercase tracking-[0.25em] text-[#5a9fd4]/60"
-                    >
-                        La residencia sucede en Haab, CDMX.
-                    </TextEffect>
                 </div>
             </section>
 

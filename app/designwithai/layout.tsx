@@ -21,21 +21,8 @@ export const metadata: Metadata = {
     title: 'Diseña con AI - AI Builders Mexico',
     description: 'Aprende a diseñar y prototipar con Inteligencia Artificial',
     icons: {
-        icon: [
-            {
-                url: '/icon-light-32x32.png',
-                media: '(prefers-color-scheme: light)',
-            },
-            {
-                url: '/icon-dark-32x32.png',
-                media: '(prefers-color-scheme: dark)',
-            },
-            {
-                url: '/icon.svg',
-                type: 'image/svg+xml',
-            },
-        ],
-        apple: '/apple-icon.png',
+        icon: '/favicon.svg',
+        shortcut: '/favicon.svg',
     },
 }
 

@@ -86,7 +86,7 @@ const events = [
     link: "https://luma.com/wp947zvj",
   },
   {
-    title: "Build with AI Workshop",
+    title: "AIBM Vibe Coding Bootcamp",
     description:
       "Workshop virtual para aprender a disenar con AI, prototipar mas rapido y construir una landing funcional paso a paso.",
     month: "MAY",
@@ -95,7 +95,7 @@ const events = [
     attendees: "7 spots left",
     status: "ABIERTO",
     price: "Disponible",
-    buttonText: "Ver workshop",
+    buttonText: "Ver bootcamp",
     buttonDisabled: false,
     tags: ["Workshop", "AI"],
     logo: "/favicon.svg",
