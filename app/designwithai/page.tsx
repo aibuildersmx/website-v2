@@ -8,7 +8,7 @@ import CTASection from './components/cta-section';
 
 export default function DesignWithAIPage() {
   return (
-    <main>
+    <main className="bg-[#212121]">
       <HeroSection />
       <div className="relative z-10 bg-white">
         <ShowcaseSection />

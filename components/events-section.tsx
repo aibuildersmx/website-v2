@@ -92,10 +92,10 @@ const events = [
     month: "MAY",
     day: "14",
     location: "Virtual, Zoom",
-    attendees: "7 spots left",
-    status: "ABIERTO",
-    price: "Disponible",
-    buttonText: "Ver bootcamp",
+    attendees: "Agotado",
+    status: "AGOTADO",
+    price: "Agotado",
+    buttonText: "Lista de espera",
     buttonDisabled: false,
     tags: ["Workshop", "AI"],
     logo: "/favicon.svg",
@@ -257,7 +257,7 @@ export default function EventsSection() {
                       className={`size-1.5 rounded-full ${
                         event.status === "ABIERTO"
                           ? "bg-green-500 animate-pulse"
-                          : event.status === "CUPO LLENO"
+                          : event.status === "CUPO LLENO" || event.status === "AGOTADO"
                             ? "bg-red-500"
                             : "bg-black/20"
                       }`}
@@ -347,17 +347,31 @@ export default function EventsSection() {
                     </span>
                   </div>
                   <div className="flex-1 flex items-center justify-end px-5 py-2">
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-black/5 bg-white">
+                    <div
+                      className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
+                        event.status === "ABIERTO"
+                          ? "border-black/5 bg-white"
+                          : event.status === "AGOTADO"
+                            ? "border-red-200 bg-red-50"
+                            : "border-black/5 bg-white"
+                      }`}
+                    >
                       <div
                         className={`size-1.5 rounded-full ${
                           event.status === "ABIERTO"
                             ? "bg-green-500 animate-pulse"
-                            : event.status === "CUPO LLENO"
+                            : event.status === "CUPO LLENO" || event.status === "AGOTADO"
                               ? "bg-red-500"
                               : "bg-black/20"
                         }`}
                       />
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-black/60 font-medium">
+                      <span
+                        className={`text-[10px] font-mono uppercase tracking-wider font-medium ${
+                          event.status === "AGOTADO"
+                            ? "text-red-600"
+                            : "text-black/60"
+                        }`}
+                      >
                         {event.status}
                       </span>
                     </div>

@@ -17,7 +17,7 @@ export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
 export type PerType = 'word' | 'char' | 'line';
 
 export type TextEffectProps = {
-    children: string;
+    children?: string | null;
     per?: PerType;
     as?: keyof React.JSX.IntrinsicElements;
     variants?: {
@@ -232,7 +232,10 @@ export function TextEffect({
                                triggerOnView = false,
                                viewportOptions = { once: true, amount: 0.3 },
                            }: TextEffectProps) {
-    const segments = splitText(children, per);
+    const content = typeof children === 'string' ? children : '';
+    if (!content) return null;
+
+    const segments = splitText(content, per);
     const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
 
     const baseVariants = preset

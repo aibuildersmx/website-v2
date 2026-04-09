@@ -6,6 +6,7 @@ import ContentSection from "@/components/content-3";
 import EventsSection from "@/components/events-section";
 import TeamSection from "@/components/team";
 import CTASection from "@/components/cta-section";
+import { BootcampChatWidget } from "@/components/bootcamp-chat-widget";
 import { useEffect, useRef } from "react";
 
 export default function Home() {
@@ -40,6 +41,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-black">
+      <BootcampChatWidget />
       <div ref={heroWrapperRef} className="fixed inset-0 -z-10 transition-opacity duration-75 ease-linear will-change-opacity">
         <HeroSection />
       </div>

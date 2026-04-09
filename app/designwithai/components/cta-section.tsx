@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, MessageCircle, Sparkles, Ticket } from 'lucide-react';
 import PixelCard from '@/components/PixelCard';
 
+const waitlistHref = 'https://forms.gle/CaFtNkzjTRxCeprU7'
+
 export default function CTASection() {
   return (
     <section id="registro" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-white overflow-hidden relative">
@@ -20,7 +22,7 @@ export default function CTASection() {
             <div className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-[10px] sm:text-xs font-mono uppercase tracking-widest overflow-hidden isolate">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:300%_100%] animate-[gradient-shift_4s_ease_infinite] bg-gradient-to-r from-purple-500/30 via-cyan-400/30 via-50% to-pink-500/30" />
               <Sparkles className="relative size-3 sm:size-3.5" />
-              <span className="relative">Inscripciones Abiertas</span>
+              <span className="relative">Agotado</span>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -28,7 +30,7 @@ export default function CTASection() {
                 Empieza a diseñar con el poder de la Inteligencia Artificial
               </h2>
               <p className="text-base sm:text-lg text-white/60 max-w-xl mx-auto font-light">
-                Reserva tu lugar hoy. Solo quedan 5 lugares.
+                El bootcamp está agotado por ahora.
               </p>
             </div>
 
@@ -38,20 +40,16 @@ export default function CTASection() {
                 size="lg"
                 className="w-full sm:w-auto rounded-xl bg-white text-black hover:bg-white/90 font-mono uppercase tracking-widest px-8 h-14"
               >
-                <Link
-                  href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Reserva tu lugar
+                <Link href={waitlistHref} target="_blank" rel="noopener noreferrer">
+                  Lista de espera
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
             </div>
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-red-300/40 bg-red-500/15 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-red-50 shadow-[0_0_25px_rgba(239,68,68,0.2)]">
-              <Ticket className="size-3.5 text-red-200" />
-              <span>Solo quedan 5 lugares</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-white/55">
+              <Ticket className="size-3.5 text-white/45" />
+              <span>Bootcamp agotado</span>
             </div>
             
             <Link

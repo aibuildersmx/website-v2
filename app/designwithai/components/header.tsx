@@ -9,6 +9,8 @@ const menuItems = [
     { name: 'Testimonios', href: '#testimonios' },
 ]
 
+const waitlistHref = 'https://forms.gle/CaFtNkzjTRxCeprU7'
+
 export const HeroHeader = () => {
     const [scrolled, setScrolled] = useState(false)
 
@@ -67,12 +69,8 @@ export const HeroHeader = () => {
                         size="sm"
                         className="rounded-full bg-black text-white hover:bg-black/80 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
                     >
-                        <Link
-                            href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Inscribirme
+                        <Link href={waitlistHref} target="_blank" rel="noopener noreferrer">
+                            Lista de espera
                         </Link>
                     </Button>
                 </div>

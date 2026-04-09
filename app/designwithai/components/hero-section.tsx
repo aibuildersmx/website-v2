@@ -8,6 +8,8 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import DitherBackground from './dither-background';
 import RoleTicker from './role-ticker';
 
+const waitlistHref = 'https://forms.gle/CaFtNkzjTRxCeprU7'
+
 export default function HeroSection() {
   const { scrollY } = useScroll();
   
@@ -16,11 +18,13 @@ export default function HeroSection() {
   const scale = useTransform(scrollY, [0, 800], [1, 0.95]);
 
   return (
-    <section className="sticky top-0 h-[100dvh] bg-[#212121] overflow-hidden">
+    <section className="sticky top-0 h-[100dvh] overflow-hidden bg-[#212121]">
       <motion.div 
         style={{ opacity, scale }}
         className="w-full h-full flex items-center justify-center pt-20 pb-12 px-4 sm:px-6 relative"
       >
+        <div className="absolute inset-0 bg-[#212121]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_45%)]" />
         <DitherBackground />
 
         <div className="w-full lg:w-[75vw] mx-auto flex flex-col items-center text-center gap-14 sm:gap-20 relative z-10">
@@ -43,8 +47,8 @@ export default function HeroSection() {
               size="lg"
               className="w-full sm:w-auto rounded-xl bg-white text-black hover:bg-white/90 font-mono uppercase tracking-widest px-8"
             >
-              <Link href="#programa">
-                Ver el programa
+              <Link href={waitlistHref} target="_blank" rel="noopener noreferrer">
+                Lista de espera
                 <ArrowRight className="ml-2 size-4" />
               </Link>
             </Button>

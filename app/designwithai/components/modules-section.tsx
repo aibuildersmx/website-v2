@@ -6,6 +6,8 @@ import { Clock, Gift, Sparkles, Ticket, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import PixelCard from '@/components/PixelCard';
 
+const waitlistHref = 'https://forms.gle/CaFtNkzjTRxCeprU7'
+
 const modules = [
   {
     title: "Visuales que Paran el Scroll",
@@ -17,8 +19,8 @@ const modules = [
     bonus: "Catálogo con prompts y +100 style references incluido",
     date: "Jueves, Mayo 14",
     price: "$1,499 MXN",
-    status: "ABIERTO",
-    spots: "5 lugares",
+    status: "AGOTADO",
+    spots: "Agotado",
     link: "https://buy.stripe.com/3cIeV7cQ1af50iPgsZgnK00",
   },
   {
@@ -31,8 +33,8 @@ const modules = [
     bonus: "Lista de +30 recursos para tus proyectos incluida",
     date: "Jueves, Mayo 21",
     price: "$1,499 MXN",
-    status: "ABIERTO",
-    spots: "5 lugares",
+    status: "AGOTADO",
+    spots: "Agotado",
     link: "https://buy.stripe.com/5kQaER9DP5YP4z590xgnK02",
   },
   {
@@ -45,8 +47,8 @@ const modules = [
     bonus: "Lista de +20 componentes de React y librerías UI",
     date: "Jueves, Mayo 28",
     price: "$1,499 MXN",
-    status: "ABIERTO",
-    spots: "5 lugares",
+    status: "AGOTADO",
+    spots: "Agotado",
     link: "https://buy.stripe.com/7sYdR3eY99b1ghNgsZgnK01",
   }
 ];
@@ -93,8 +95,8 @@ export default function ModulesSection() {
                 </div>
 
                 <div>
-                  <div className="mb-4 inline-flex items-center rounded-full border border-red-500/15 bg-red-500/6 px-3 py-1 text-[10px] font-mono uppercase tracking-[0.24em] text-red-600">
-                    Solo {mod.spots}
+                  <div className="mb-4 inline-flex items-center rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[10px] font-mono uppercase tracking-[0.24em] text-red-600">
+                    {mod.status}
                   </div>
                   <h3 className="font-instrument text-3xl sm:text-3xl mb-2 text-black">
                     {mod.title}
@@ -123,13 +125,12 @@ export default function ModulesSection() {
               <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0 mt-auto">
                 <div className="pt-2 border-t border-black/5">
                   <Link
-                    href={mod.link}
+                    href={waitlistHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/btn flex items-center justify-center gap-0 w-full rounded-full h-12 bg-black text-white font-mono text-xs font-bold uppercase tracking-[0.2em] hover:shadow-lg hover:shadow-black/5 transition-all duration-300"
+                    className="flex items-center justify-center w-full rounded-full h-12 bg-black text-white font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-black/80 transition-colors"
                   >
-                    Registrarme
-                    <span className="inline-block max-w-0 overflow-hidden opacity-0 group-hover/btn:max-w-[1.5em] group-hover/btn:opacity-100 group-hover/btn:ml-2 transition-all duration-300">→</span>
+                    Lista de espera
                   </Link>
                 </div>
               </div>
@@ -152,13 +153,13 @@ export default function ModulesSection() {
                 <div className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-[10px] font-mono uppercase tracking-wider mb-4 overflow-hidden isolate">
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:300%_100%] animate-[gradient-shift_4s_ease_infinite] bg-gradient-to-r from-purple-500/30 via-cyan-400/30 via-50% to-pink-500/30" />
                   <Sparkles className="relative size-3" />
-                  <span className="relative">Combo Completo</span>
+                  <span className="relative">Agotado</span>
                 </div>
                 <h3 className="font-instrument text-4xl sm:text-5xl md:text-6xl mb-4 text-white">
                   El Bootcamp Completo
                 </h3>
                 <p className="text-white/60 text-sm sm:text-base font-light max-w-xl mx-auto md:mx-0 mb-8">
-                  Asegura tu lugar en los 3 módulos antes de que se agoten. Obtén acceso a las grabaciones de por vida, comunidad privada y soporte directo de los instructores incluso después de las sesiones.
+                  El bootcamp completo está agotado. Obtén acceso a las grabaciones de por vida, comunidad privada y soporte directo de los instructores en futuras ediciones.
                 </p>
                 
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-sm text-white/80 font-medium">
@@ -182,16 +183,16 @@ export default function ModulesSection() {
                   </div>
                 </div>
                 <Link
-                  href="https://buy.stripe.com/fZufZb6rDevlaXta4BgnK04"
+                  href={waitlistHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-full md:w-auto rounded-full px-10 h-14 bg-white text-black font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-[0_0_35px_rgba(255,255,255,0.12)]"
+                  className="flex items-center justify-center w-full md:w-auto rounded-full px-10 h-14 bg-white text-black font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 transition-colors"
                 >
-                  Inscribirme al Bootcamp
+                  Lista de espera
                 </Link>
-                <div className="flex items-center gap-2 rounded-full border border-red-300/40 bg-red-500/15 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-red-50 shadow-[0_0_25px_rgba(239,68,68,0.2)]">
-                  <Ticket className="size-3.5 text-red-200" />
-                  <span>Solo quedan 5 lugares</span>
+                <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[10px] font-mono tracking-[0.24em] uppercase text-white/55">
+                  <Ticket className="size-3.5 text-white/45" />
+                  <span>Bootcamp agotado</span>
                 </div>
               </div>
             </div>
