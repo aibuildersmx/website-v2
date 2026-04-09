@@ -24,7 +24,7 @@ export const HeroHeader = () => {
     }, [])
 
     return (
-        <header className="fixed top-14 sm:top-14 inset-x-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6">
+        <header className="fixed top-4 sm:top-6 inset-x-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6">
             <nav className={cn(
                 "pointer-events-auto flex items-center justify-between p-1.5 sm:p-2 rounded-full border transition-all duration-500 ease-in-out w-full max-w-6xl",
                 scrolled
