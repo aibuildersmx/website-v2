@@ -20,7 +20,7 @@ import { TextEffect } from '@/app/launch/components/motion-primitives/text-effec
 import { Button } from '@/app/launch/components/ui/button'
 import { transitionVariants } from '@/lib/utils'
 
-const applicationHref = 'mailto:talent@aibuilders.mx?subject=La%20Residencia%20Application'
+const applicationHref = 'https://forms.gle/Bga8XyuNzsHnk6cQA'
 
 const benefits = [
     {
@@ -385,7 +385,7 @@ export default function ResidencyPage() {
                         </AnimatedGroup>
 
                         <p className="mt-8 text-[#5a9fd4]/60 text-xs font-mono uppercase tracking-widest">
-                            APLICACIÓN POR EMAIL · SUBJECT: LA RESIDENCIA APPLICATION
+                            APLICACIÓN VÍA GOOGLE FORM
                         </p>
                     </div>
                 </div>
