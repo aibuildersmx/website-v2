@@ -73,8 +73,8 @@ const events = [
     title: "Zero to Agent",
     description:
       "Meetup de AI Builders Mexico para lanzar agentes de IA reales con v0 y conectar con builders en Ciudad de Mexico.",
-    month: "MAY",
-    day: "02",
+    month: "ABR",
+    day: "25",
     location: "CDMX, SANDBOX HUB",
     attendees: "50 lugares",
     status: "ABIERTO",
