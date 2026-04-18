@@ -5,7 +5,7 @@ import { InfiniteSlider } from "@/components/ui/infinite-slider";
 const stats = [
   {
     label: "Builders",
-    value: "2500+",
+    value: "3,880+",
     icon: Users,
   },
   {

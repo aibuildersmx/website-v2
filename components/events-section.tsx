@@ -54,22 +54,6 @@ function EventLogo({
 
 const events = [
   {
-    title: "How I Use AI #6: Scaling to 1M users",
-    description:
-      "Sesión virtual sobre estrategias y playbooks para escalar productos con AI a millones de usuarios.",
-    month: "ABR",
-    day: "16",
-    location: "Virtual, Google Meet",
-    attendees: "∞",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Webinar", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/11fz6ef5",
-  },
-  {
     title: "Zero to Agent",
     description:
       "Meetup de AI Builders Mexico para lanzar agentes de IA reales con v0 y conectar con builders en Ciudad de Mexico.",
@@ -101,9 +85,33 @@ const events = [
     logo: "/favicon.svg",
     link: "/designwithai",
   },
+  {
+    title: "How I Use AI #7: WhatsApp Voicebots",
+    description:
+      "Daniel Torres nos enseñará como programa su agente de voz \"Geeky\" para resumir los mensajes en forma de voicenote de grupos de WhatsApp.",
+    month: "JUN",
+    day: "18",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Webinar", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/vhwcyvjr",
+  },
 ];
 
 const pastEvents = [
+  {
+    title: "How I Use AI #6: Scaling to 1M users",
+    month: "ABR",
+    day: "16",
+    location: "Virtual, Google Meet",
+    logo: "/favicon.svg",
+    link: "https://luma.com/11fz6ef5",
+  },
   {
     title: "OpenAI Codex – Mexico City",
     month: "ABR",
