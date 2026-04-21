@@ -162,20 +162,75 @@ export default function ResidencyPage() {
                         <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#5a9fd4]">
                             Partners
                         </p>
-                        <div className="inline-flex items-center text-[#1a2a3a]">
-                            <Image
-                                src="/openai.svg"
-                                alt="OpenAI"
-                                width={28}
-                                height={28}
-                                className="mr-3 h-7 w-7"
+                        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-[#1a2a3a]">
+                            <div className="inline-flex items-center" aria-label="OpenAI">
+                                <Image
+                                    src="/openai.svg"
+                                    alt=""
+                                    aria-hidden
+                                    width={28}
+                                    height={28}
+                                    className="mr-3 h-7 w-7"
+                                />
+                                <Image
+                                    src="/openai-text.svg"
+                                    alt=""
+                                    aria-hidden
+                                    width={96}
+                                    height={28}
+                                    className="h-6 w-auto"
+                                />
+                            </div>
+                            <div
+                                role="img"
+                                aria-label="v0"
+                                className="h-6"
+                                style={{
+                                    aspectRatio: '39.914 / 20.658',
+                                    backgroundColor: 'currentColor',
+                                    WebkitMaskImage: 'url(/v0-logo-black.svg)',
+                                    maskImage: 'url(/v0-logo-black.svg)',
+                                    WebkitMaskRepeat: 'no-repeat',
+                                    maskRepeat: 'no-repeat',
+                                    WebkitMaskPosition: 'center',
+                                    maskPosition: 'center',
+                                    WebkitMaskSize: 'contain',
+                                    maskSize: 'contain',
+                                }}
                             />
-                            <Image
-                                src="/openai-text.svg"
-                                alt="OpenAI wordmark"
-                                width={96}
-                                height={28}
-                                className="h-6 w-auto"
+                            <div
+                                role="img"
+                                aria-label="Cursor"
+                                className="h-6"
+                                style={{
+                                    aspectRatio: '2238.7 / 532.09',
+                                    backgroundColor: 'currentColor',
+                                    WebkitMaskImage: 'url(/cursor-logo-dark.svg)',
+                                    maskImage: 'url(/cursor-logo-dark.svg)',
+                                    WebkitMaskRepeat: 'no-repeat',
+                                    maskRepeat: 'no-repeat',
+                                    WebkitMaskPosition: 'center',
+                                    maskPosition: 'center',
+                                    WebkitMaskSize: 'contain',
+                                    maskSize: 'contain',
+                                }}
+                            />
+                            <div
+                                role="img"
+                                aria-label="Reve"
+                                className="h-7"
+                                style={{
+                                    aspectRatio: '776 / 259',
+                                    backgroundColor: 'currentColor',
+                                    WebkitMaskImage: 'url(/reve-logo-black.svg)',
+                                    maskImage: 'url(/reve-logo-black.svg)',
+                                    WebkitMaskRepeat: 'no-repeat',
+                                    maskRepeat: 'no-repeat',
+                                    WebkitMaskPosition: 'center',
+                                    maskPosition: 'center',
+                                    WebkitMaskSize: 'contain',
+                                    maskSize: 'contain',
+                                }}
                             />
                         </div>
                     </div>
