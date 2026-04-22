@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-const bootcampHref = '/designwithai'
+const bootcampHref = '/residencia'
 const widgetCutoff = '2026-05-02T00:00:00-06:00'
 
 export function BootcampChatWidget() {
@@ -22,7 +22,7 @@ export function BootcampChatWidget() {
         <Link
             href={bootcampHref}
             className="group fixed right-4 bottom-4 z-[120] hidden items-end sm:flex sm:right-6 sm:bottom-6"
-            aria-label="Abrir información del Vibecoding Bootcamp"
+            aria-label="Abrir información de la Residencia AIBM"
         >
             <div className="pointer-events-none absolute right-0 bottom-20 w-[280px] translate-y-2 rounded-3xl border border-white/10 bg-black/92 p-4 text-white opacity-0 shadow-2xl shadow-black/40 backdrop-blur-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:w-[340px] sm:p-5">
                 <div className="space-y-2">
@@ -31,9 +31,9 @@ export function BootcampChatWidget() {
                     </p>
                     <p className="text-sm leading-relaxed text-white/85 sm:text-[15px]">
                         ¡Hey! Soy Ben, cofundador de AIBM. Nos emociona lanzar
-                        nuestro nuevo programa, el AIBM Vibecoding Bootcamp, la
-                        mejor forma de pasar de cero a lanzar tus propias apps
-                        usando IA. Haz clic aquí para saber más.
+                        la Residencia AIBM: 6 semanas de coworking gratis en
+                        Condesa con tiempo protegido para acelerar tu proyecto.
+                        Haz clic aquí para saber más.
                     </p>
                 </div>
                 <div className="absolute right-6 -bottom-2 h-4 w-4 rotate-45 border-r border-b border-white/10 bg-black/92" />
