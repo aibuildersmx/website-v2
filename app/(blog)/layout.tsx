@@ -74,7 +74,12 @@ function BlogThemeProvider({ children }: { children: React.ReactNode }) {
 /* ── Header ── */
 
 const menuItems = [
-    { name: 'Home', href: '/' },
+    { name: 'Manifesto', href: '/#manifesto' },
+    { name: 'Events', href: '/#events' },
+    { name: 'Team', href: '/#team' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Bootcamp', href: '/designwithai', isNew: true },
+    { name: 'Residencia', href: '/residencia', isNew: true },
 ]
 
 function BlogHeader() {
@@ -123,13 +128,24 @@ function BlogHeader() {
                             <Link
                                 href={item.href}
                                 className={cn(
-                                    "px-5 py-2.5 text-xs font-mono uppercase tracking-widest transition-colors rounded-full",
+                                    "relative rounded-full px-5 py-2.5 text-xs font-mono uppercase tracking-widest transition-colors",
                                     isDark
                                         ? "text-white/50 hover:text-white hover:bg-white/5"
-                                        : "text-black/50 hover:text-black hover:bg-black/5"
+                                        : "text-black/50 hover:text-black hover:bg-black/5",
+                                    item.isNew && "pr-8"
                                 )}
                             >
                                 {item.name}
+                                {item.isNew && (
+                                    <span
+                                        className={cn(
+                                            "pointer-events-none absolute right-2 bottom-1.5 text-[8px] font-medium lowercase tracking-[0.18em]",
+                                            isDark ? "text-[#b8d9a9]" : "text-[#5a8a48]"
+                                        )}
+                                    >
+                                        new
+                                    </span>
+                                )}
                             </Link>
                         </li>
                     ))}

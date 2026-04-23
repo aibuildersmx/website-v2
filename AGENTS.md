@@ -42,6 +42,44 @@ When you're done, run the pre-merge checklist in docs/design/validation.md and r
 
 Open [docs/design/validation.md](docs/design/validation.md), copy the scoring prompt under "Part 2 — Agent Scoring Prompt", paste it into the agent along with the file you want audited, and ask for a pass/fail report per rule.
 
+## Blog Posts (Required Reading)
+
+The blog at `/blog` uses an **MDX-based content system** — each post is a `.mdx` file under [`content/blog/`](content/blog/). This is how anyone (including an agent) can safely add an article without editing page routes, copying ad-hoc styles, or inventing new components. **Never** create a `.tsx` file under `app/(blog)/<slug>/` for a new post; that old pattern has been retired.
+
+**Before you create, edit, or refactor any blog post, read the blog docs in order:**
+
+1. [docs/blog/CONTRIBUTING.md](docs/blog/CONTRIBUTING.md) — the 5-step "add a post" flow and contributor rules.
+2. [docs/blog/frontmatter.md](docs/blog/frontmatter.md) — every YAML field explained.
+3. [docs/blog/components.md](docs/blog/components.md) — every MDX component (`Callout`, `StepList`, `CheckList`, `CommandReference`, …) and when to use it vs plain markdown.
+4. [docs/blog/_template.mdx](docs/blog/_template.mdx) — copy-and-rename starter.
+
+**The rules, in three sentences:**
+
+- Posts are auto-discovered from `content/blog/*.mdx` (filename minus `.mdx` = URL slug). No registry or route to update.
+- Always try plain markdown first. Only reach for a JSX component that is **documented in [components.md](docs/blog/components.md)** — don't invent new components or inline styles inside the MDX.
+- Every `<SectionTitle id="…">` in the body needs a matching entry in the frontmatter's `tocItems` array, and images for the post live under `public/images/blog/<slug>/`.
+
+**How to ask an agent to add a blog post:**
+
+```txt
+You are adding a blog post to aibuilders.mx. Before writing anything:
+
+1. Read docs/blog/CONTRIBUTING.md, docs/blog/frontmatter.md, and
+   docs/blog/components.md in full.
+2. Copy docs/blog/_template.mdx to content/blog/<slug>.mdx where <slug>
+   is kebab-case (no .mdx in the slug).
+3. Fill in the frontmatter using ONLY fields documented in frontmatter.md.
+4. Prefer plain markdown. Only reach for a JSX component that is listed
+   in components.md. Do not invent new components or ad-hoc styles inside
+   the MDX file. Do not add dark: Tailwind classes — the components are
+   already theme-aware.
+5. Every <SectionTitle id="..."> must have a matching tocItems entry.
+6. Images go under public/images/blog/<slug>/ and are referenced with
+   <PostImage /> or plain markdown.
+7. Run pnpm run build to catch MDX parse errors and server/client
+   boundary issues before marking the task complete.
+```
+
 ## What This Project Is
 
 - Public website for AI Builders (`/`)

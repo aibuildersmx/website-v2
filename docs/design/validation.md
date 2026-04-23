@@ -6,12 +6,14 @@
 
 ## Part 1 — Pre-Merge Checklist
 
-Run this on any new or modified section before considering it done. Each item is **binary** (pass/fail). Anything less than 100% pass is a blocker or requires an explicit, documented waiver.
+Run this on any new or modified **marketing-page** section before considering it done. Each item is **binary** (pass/fail). Anything less than 100% pass is a blocker or requires an explicit, documented waiver.
+
+> **Blog posts have their own rules.** `/blog/*` is an approved variant (see [§ 3.6](#36-blog--approved-variant)) — apply the authoring checklist in [docs/blog/CONTRIBUTING.md](../blog/CONTRIBUTING.md), not this one.
 
 ### 1.1 Structure
 
 - [ ] Section wraps in `<section>` (not a bare `<div>`).
-- [ ] Section uses one of the five canonical templates in [sections.md](./sections.md).
+- [ ] Section uses one of the canonical templates in [sections.md](./sections.md) (templates 1–5 for marketing sections).
 - [ ] Section uses `py-16 sm:py-24 md:py-32` (or the documented compact variant `py-12 sm:py-16 md:py-32` for stats).
 - [ ] Inner container is `mx-auto max-w-6xl px-4 sm:px-6` — never `max-w-7xl`, never full-bleed.
 - [ ] If the section is a navigable landmark, it has an `id` (`manifesto`, `events`, `team`, or a new one added to [components/header.tsx](../../components/header.tsx) nav items).
@@ -199,6 +201,25 @@ Minor deviations only:
 - No footer. Photo marquee fills the viewport.
 
 **Reconciliation actions:** Accept as-is. Document the light-pill-nav variant in [components.md § 3.3](./components.md#33-variants). No structural work needed.
+
+### 3.6 `/blog` — approved variant
+
+**Source:** [app/(blog)/](../../app/(blog)/) (route group) + [components/blog/](../../components/blog/) (post shell, TOC, code block, terminal, MDX components) + [content/blog/](../../content/blog/) (authored `.mdx` files) + [docs/blog/](../blog/) (authoring guide).
+
+`/blog/*` is a **documented, approved variant** — the deviations below are intentional and must not be "fixed" to match the marketing-page templates. The marketing-page pre-merge checklist in [Part 1](#part-1--pre-merge-checklist) **does not apply** to blog posts; use the authoring checklist in [docs/blog/CONTRIBUTING.md](../blog/CONTRIBUTING.md) instead.
+
+- **Deviation (approved):** Scoped light/dark theme toggle via `useBlogTheme()` in [app/(blog)/layout.tsx](../../app/(blog)/layout.tsx), separate from the global `next-themes`. This is the only place on the site with a user-facing theme switcher.
+- **Deviation (approved):** Catppuccin Mocha / Latte palettes for prose, callouts, code blocks, and the terminal — not the core black/white palette. Reading UI benefits from a warmer, higher-contrast surface; brand anchors (header, nav, hero CTAs) remain black/white.
+- **Deviation (approved):** Dedicated `BlogHeader` in [app/(blog)/layout.tsx](../../app/(blog)/layout.tsx). Same pill shape and semantics as the shared header, but theme-aware for the blog's dark/light toggle.
+- **Deviation (approved):** Reading column with a sticky right-rail TOC (`components/blog/post-shell.tsx`) inside the usual `max-w-6xl` container. Marketing-page grid rules don't apply inside a post body.
+- **Rules still enforced:** `max-w-6xl` container, Instrument Serif for display (`<SectionTitle>`), Geist Mono for meta (date, readTime, TOC labels), Geist Sans for body, Spanish copy (`es_MX`), pill nav shape, `lucide-react` icons.
+
+**Authoring rule (enforced by [docs/blog/CONTRIBUTING.md](../blog/CONTRIBUTING.md)):**
+
+- Posts are MDX files in [`content/blog/`](../../content/blog/) — filename (minus `.mdx`) is the slug. Auto-discovered by [`lib/blog/posts.ts`](../../lib/blog/posts.ts). **Never** create a `.tsx` file under `app/(blog)/<slug>/` for a new post.
+- MDX bodies use plain markdown first; reach for JSX components **only** from the documented set in [docs/blog/components.md](../blog/components.md).
+
+**Reconciliation actions:** None needed. Keep the variant in sync by updating [docs/blog/](../blog/) and [components/blog/](../../components/blog/) together whenever the shape changes. When introducing a new MDX component, document it in [docs/blog/components.md](../blog/components.md) and register it in [mdx-components.tsx](../../mdx-components.tsx) in the same commit.
 
 ---
 

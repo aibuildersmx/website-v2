@@ -35,6 +35,51 @@ Before creating any new section, feature, or visual change, read the design syst
 
 ---
 
+## Blog Posts (Required Reading)
+
+The blog lives at `/blog` and its posts are **MDX files** in [`content/blog/`](content/blog/) — one file per post. This is how contributors (humans and agents) add articles safely without touching page routes or copy-pasting ad-hoc styles. **Never** create a `.tsx` file under `app/(blog)/<slug>/` for a new post; that pattern has been retired.
+
+Before you create, edit, or refactor any blog post, read the blog docs in order:
+
+1. [docs/blog/CONTRIBUTING.md](docs/blog/CONTRIBUTING.md) — the 5-step "add a post" flow, folder layout, golden rules, and common pitfalls.
+2. [docs/blog/frontmatter.md](docs/blog/frontmatter.md) — every YAML field, required vs optional, with examples.
+3. [docs/blog/components.md](docs/blog/components.md) — every MDX component (`Callout`, `StepList`, `CheckList`, `CommandReference`, …), its props, and when to use it vs plain markdown.
+4. [docs/blog/_template.mdx](docs/blog/_template.mdx) — copy-and-rename starter.
+
+**TL;DR:**
+
+- Posts are auto-discovered from `content/blog/*.mdx` by [`lib/blog/posts.ts`](lib/blog/posts.ts) — no registry to update.
+- The filename (minus `.mdx`) is the slug: `mi-post.mdx` → `/blog/mi-post`.
+- Plain markdown first. Reach for a JSX component **only when it's documented in [components.md](docs/blog/components.md)**.
+- Every `<SectionTitle id="…">` in the body needs a matching `tocItems` entry in the frontmatter.
+- Images for a post go under `public/images/blog/<slug>/`.
+- Run `pnpm run build` before marking work complete — the dev server is more forgiving than the production build (MDX parse errors, server/client boundary issues).
+
+### Copy-paste agent prompt for "add a blog post"
+
+Use this to start any blog-post task so the agent doesn't invent new patterns:
+
+```txt
+You are adding a blog post to aibuilders.mx. Before writing anything:
+
+1. Read docs/blog/CONTRIBUTING.md, docs/blog/frontmatter.md, and
+   docs/blog/components.md in full.
+2. Copy docs/blog/_template.mdx to content/blog/<slug>.mdx where <slug>
+   is kebab-case (no .mdx in the slug).
+3. Fill in the frontmatter using ONLY fields documented in frontmatter.md.
+4. Prefer plain markdown. Only reach for a JSX component that is listed
+   in components.md. Do not invent new components or ad-hoc styles inside
+   the MDX file. Do not add dark: Tailwind classes — the components are
+   already theme-aware.
+5. Every <SectionTitle id="..."> must have a matching tocItems entry.
+6. Images go under public/images/blog/<slug>/ and are referenced with
+   <PostImage /> or plain markdown.
+7. Run pnpm run build to catch MDX parse errors and server/client
+   boundary issues before marking the task complete.
+```
+
+---
+
 ## What Is This Project?
 
 This is the **AI Builders Mexico** community website ([aibuilders.mx](https://aibuilders.mx)). It's built with:
@@ -457,6 +502,9 @@ The project deploys on **Vercel**. Key points:
 | Change global styles/colors | `app/globals.css` |
 | Update site metadata (SEO) | `app/layout.tsx` → `metadata` object |
 | Add a new image/asset | Place file in `/public`, reference as `"/filename.ext"` |
+| Add a new blog post | Copy `docs/blog/_template.mdx` → `content/blog/<slug>.mdx`; read [docs/blog/CONTRIBUTING.md](docs/blog/CONTRIBUTING.md) first |
+| Edit an existing blog post | Edit the matching `content/blog/<slug>.mdx`; check [components.md](docs/blog/components.md) before inventing styles |
+| Add a new blog MDX component | Create in `components/blog/mdx/<name>.tsx`, register in `mdx-components.tsx`, document in `docs/blog/components.md` — all in the same commit |
 
 ---
 
