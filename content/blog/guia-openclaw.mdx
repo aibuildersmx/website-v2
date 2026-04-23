@@ -67,35 +67,49 @@ Si ya tienes Node 22+, también puedes instalar directo con npm:
 
 OpenClaw soporta **más de 20 proveedores** de modelos. Solo necesitas autenticarte con uno, elegir modelo, y listo. Los modelos se referencian como `proveedor/modelo`.
 
-Los más populares:
+Los más populares (abril 2026):
 
-| Proveedor       | Modelo ejemplo                              | Auth                         |
-| --------------- | ------------------------------------------- | ---------------------------- |
-| GitHub Copilot  | `github-copilot/gpt-5-mini`                 | Device flow (desde $10/mes)  |
-| Anthropic       | `anthropic/claude-sonnet-4-5`               | API key o setup-token        |
-| OpenAI          | `openai/gpt-5.2`                            | API key                      |
-| OpenAI Codex    | `openai-codex/gpt-5.3-codex`                | OAuth (suscripción)          |
-| OpenRouter      | `openrouter/anthropic/claude-sonnet-4-5`    | API key                      |
-| Ollama          | `ollama/llama3.3`                           | Local (sin auth)             |
+| Proveedor       | Modelo ejemplo                              | Auth                               |
+| --------------- | ------------------------------------------- | ---------------------------------- |
+| GitHub Copilot  | `github-copilot/gpt-5-mini`                 | Device flow (desde $10/mes)        |
+| Anthropic       | `anthropic/claude-sonnet-4-6`               | API key (recomendado)              |
+| OpenAI          | `openai/gpt-5.4`                            | API key                            |
+| OpenAI Codex    | `openai-codex/gpt-5.4`                      | OAuth (suscripción ChatGPT)        |
+| OpenRouter      | `openrouter/anthropic/claude-sonnet-4-6`    | API key                            |
+| Ollama          | `ollama/llama3.3`                           | Local (sin auth)                   |
+
+<Callout type="info">
+    **Sobre los nombres:** Los modelos de Anthropic más recientes son **Claude Opus 4.7** (flagship, abril 2026), **Claude Sonnet 4.6** (febrero 2026) y **Claude Haiku 4.5**. Los de OpenAI son **GPT-5.5** / **GPT-5.5 Pro** (lanzados el 23 de abril de 2026), **GPT-5.4** y **GPT-5.4-mini**. Los modelos `claude-sonnet-4-0` y `claude-opus-4-0` (sin versión menor) se **deprecan el 15 de junio de 2026** — si los tienes hardcodeados en algún lado, actualiza.
+</Callout>
 
 <SectionTitle id="copilot">GitHub Copilot</SectionTitle>
 
-GitHub Copilot es una de las formas más accesibles de darle modelos a OpenClaw. Con el plan **Copilot Pro** ($10 USD/mes) obtienes **300 premium requests mensuales** y acceso a una lista enorme de modelos — incluyendo Claude y GPT. Con **Pro+** ($39/mes) suben a 1,500.
+GitHub Copilot es una de las formas más accesibles de darle modelos a OpenClaw. Con el plan **Copilot Pro** ($10 USD/mes) obtienes **300 premium requests mensuales** y acceso a una lista enorme de modelos — incluyendo Claude, Gemini y GPT. Con **Pro+** ($39/mes) suben a 1,500 y desbloqueas los modelos Opus.
+
+<Callout type="warning">
+    **Heads-up (abril 2026):** GitHub **pausó los nuevos signups** a Copilot Pro, Pro+ y Student a partir del 20 de abril de 2026 mientras ajustan capacidad. Si ya tienes plan, sigue funcionando sin cambios. Si no alcanzaste a registrarte, revisa [el anuncio oficial](https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/) para saber cuándo reabren.
+</Callout>
 
 Lo interesante es el sistema de **multiplicadores**. Algunos modelos cuestan más premium requests que otros, y tres modelos son completamente **gratis** (multiplicador 0x) dentro de cualquier plan de pago:
 
-| Modelo             | Multiplicador | Qué significa                                       |
-| ------------------ | ------------- | --------------------------------------------------- |
-| `GPT-5 mini`       | 0x ✨          | Incluido — no consume premium requests              |
-| `GPT-4.1`          | 0x ✨          | Incluido — no consume premium requests              |
-| `GPT-4o`           | 0x ✨          | Incluido — no consume premium requests              |
-| `Claude Haiku 4.5` | 0.33x         | 3 requests por el precio de 1 (900 con Pro)         |
-| `Gemini 3 Flash`   | 0.33x         | 3 requests por el precio de 1                       |
-| `Claude Sonnet 4.5`| 1x            | 1 premium request cada una (300 con Pro)            |
-| `GPT-5.2`          | 1x            | 1 premium request cada una                          |
-| `Claude Opus 4.5`  | 3x            | 3 premium requests cada una (100 con Pro)           |
+| Modelo                  | Multiplicador | Qué significa                                           |
+| ----------------------- | ------------- | ------------------------------------------------------- |
+| `GPT-5 mini`            | 0x ✨         | Incluido — no consume premium requests                  |
+| `GPT-4.1`               | 0x ✨         | Incluido — no consume premium requests                  |
+| `GPT-4o`                | 0x ✨         | Incluido — no consume premium requests                  |
+| `Claude Haiku 4.5`      | 0.33x         | 3 requests por el precio de 1 (≈900 con Pro)            |
+| `Gemini 3 Flash`        | 0.33x         | 3 requests por el precio de 1                           |
+| `Claude Sonnet 4.6`     | 1x            | 1 premium request cada una (300 con Pro)                |
+| `Gemini 3.1 Pro`        | 1x            | 1 premium request cada una                              |
+| `GPT-5.4` / `GPT-5.5`   | 1x            | 1 premium request cada una                              |
+| `Claude Opus 4.6`       | 3x            | 3 premium requests cada una — **solo Pro+ y superior**  |
+| `Claude Opus 4.7`       | 7.5x ⚡       | Promocional hasta 30 abril 2026 — **solo Pro+**         |
 
-**En la práctica:** con Copilot Pro por $10/mes puedes usar `GPT-5 mini` y `GPT-4.1` de forma **ilimitada** para el día a día de tu asistente — preguntas, tareas, automatizaciones. Son modelos excelentes para uso general. Y cuando necesites algo más fuerte (Claude Sonnet para razonamiento complejo, o GPT-5.2 para tareas pesadas), tienes 300 premium requests para esos momentos.
+**En la práctica:** con Copilot Pro por $10/mes puedes usar `GPT-5 mini` y `GPT-4.1` de forma **ilimitada** para el día a día de tu asistente — preguntas, tareas, automatizaciones. Son modelos excelentes para uso general. Y cuando necesites algo más fuerte (Claude Sonnet 4.6 para razonamiento complejo, o GPT-5.4/5.5 para tareas pesadas), tienes 300 premium requests para esos momentos.
+
+<Callout type="info">
+    **Cambio importante en Pro:** Los modelos **Claude Opus ya no están disponibles en el plan Pro** ($10/mes). Si quieres usar Opus 4.6 o 4.7 dentro de Copilot, necesitas **Pro+** ($39/mes). El *auto model selection* tiene **10% de descuento** en el multiplicador, y los premium requests extra se cobran a **$0.04 cada uno**.
+</Callout>
 
 Incluso puedes pedirle a tu agente que te ayude a configurar herramientas de desarrollo en tu VPS — usar **Claude Code**, **Cursor**, o el **Codex CLI** si los tienes instalados. El agente tiene acceso a tu terminal y puede ejecutar comandos por ti.
 
@@ -111,7 +125,7 @@ Incluso puedes pedirle a tu agente que te ayude a configurar herramientas de des
         { type: 'command', text: 'openclaw models auth login-github-copilot' },
         { type: 'output', text: '→ Open https://github.com/login/device\n→ Enter code: ABCD-1234\n✓ Authenticated as @tuusuario\n✓ Copilot token stored' },
         { type: 'empty', text: '' },
-        { type: 'comment', text: '# Usa GPT-5 mini como default (0x — ilimitado)' },
+        { type: 'comment', text: '# Usa GPT-5 mini como default (0x — ilimitado en Pro)' },
         { type: 'command', text: 'openclaw models set github-copilot/gpt-5-mini', delay: 600 },
         { type: 'output', text: '✓ Default model set to github-copilot/gpt-5-mini' },
     ]}
@@ -123,18 +137,18 @@ Incluso puedes pedirle a tu agente que te ayude a configurar herramientas de des
 
 <SectionTitle id="anthropic">Anthropic (Claude)</SectionTitle>
 
-Anthropic ofrece dos formas de autenticación:
+Anthropic ofrece dos formas de autenticación. **A partir del 4 de abril de 2026** ya no son equivalentes en costo: la API key es el camino limpio, y la suscripción requiere activar *Extra Usage* que se cobra aparte a tarifas de API.
 
-<SubSection title="Opción A: API Key (recomendado)">
+<SubSection title="Opción A: API Key (recomendado sin discusión)">
 
-La forma más segura y estable. Creas una API key en [console.anthropic.com](https://console.anthropic.com) y pagas por uso. Es el path recomendado por Anthropic y por OpenClaw.
+La forma más segura y estable — y desde abril 2026, también la más sencilla económicamente. Creas una API key en [console.anthropic.com](https://console.anthropic.com) y pagas por uso. Es el path recomendado por Anthropic y por OpenClaw.
 
 <Terminal
     title="~/anthropic-api"
     className="my-6"
     lines={[
         { type: 'command', text: 'openclaw onboard --anthropic-api-key "$ANTHROPIC_API_KEY"' },
-        { type: 'output', text: '✓ Anthropic API key configured\n✓ Default model: anthropic/claude-sonnet-4-5' },
+        { type: 'output', text: '✓ Anthropic API key configured\n✓ Default model: anthropic/claude-sonnet-4-6' },
     ]}
 />
 
@@ -148,23 +162,47 @@ O en el config directamente:
   env: { ANTHROPIC_API_KEY: "sk-ant-..." },
   agents: {
     defaults: {
-      model: { primary: "anthropic/claude-sonnet-4-5" }
+      model: { primary: "anthropic/claude-sonnet-4-6" }
     }
   }
 }`}
 />
 
+**Modelos disponibles vía API (abril 2026):** `claude-opus-4-7` (flagship, para tareas complejas), `claude-sonnet-4-6` (default recomendado — equilibra velocidad e inteligencia), `claude-haiku-4-5` (rápido y barato, ideal para alto volumen).
+
 </SubSection>
 
-<SubSection title="Opción B: Setup Token (suscripción Claude)">
+<SubSection title="Opción B: Setup Token (suscripción Claude) — ahora requiere Extra Usage">
 
 <Callout type="warning">
-    **Disclaimer:** El uso de setup-token con suscripción Claude fuera de Claude Code es compatibilidad técnica, no una garantía de política. Anthropic ha bloqueado uso de suscripción fuera de Claude Code en el pasado para algunos usuarios. Verifica los términos actuales de Anthropic y decide según tu tolerancia al riesgo.
+    **Cambio de política importante (4 de abril de 2026):** Anthropic ya **no deja que la suscripción Claude (Pro o Max) se use en harnesses de terceros como OpenClaw**. Tu suscripción ahora solo cubre los productos *first-party* de Anthropic — **Claude.ai, Claude Code y Claude Cowork**. Para usar OpenClaw, Cline, Roo Code, aider o cualquier otro harness con tu login de Claude, tienes que activar **Extra Usage**, un pay-as-you-go que se cobra **aparte** de tu suscripción mensual y a **tarifas de API estándar**.
 
-    OpenClaw recomienda **API key** como el camino seguro.
+    En la práctica: el "truco" de aprovechar tu Max 20x para tener un asistente 24/7 barato con OpenClaw **ya no existe**. Cualquier token que OpenClaw consuma con tu setup-token se factura al precio de la API.
+
+    Fuentes: [Manage extra usage for paid Claude plans](https://support.claude.com/en/articles/12429409-manage-extra-usage-for-paid-claude-plans) · [Tell HN: Anthropic no longer allowing Claude Code subscriptions to use OpenClaw](https://news.ycombinator.com/item?id=47633396).
 </Callout>
 
-Si tienes suscripción a Claude (Max), puedes generar un setup-token desde la CLI de Claude Code:
+**¿Qué pasa si lo intentas sin Extra Usage?** Las requests simplemente fallan. OpenClaw no tiene forma de darle la vuelta — es control del lado de Anthropic.
+
+**Para activar Extra Usage:**
+
+<StepList steps={[
+    'Entrar a claude.ai/settings/usage',
+    'Sección "Extra Usage" → click en "Enable"',
+    '(Opcional) Definir un tope mensual de gasto — recomendado si no quieres sorpresas',
+    '(Opcional) Configurar auto-reload o pre-comprar bundles (hay descuentos de hasta 30%)',
+]} />
+
+**Tarifas actuales (abril 2026)** para el path de suscripción + extra usage:
+
+| Modelo            | Input (por 1M tokens) | Output (por 1M tokens) |
+| ----------------- | --------------------- | ---------------------- |
+| `claude-opus-4-6` | $5                    | $25                    |
+| `claude-sonnet-4-6` | $3                  | $15                    |
+
+Nota: **Haiku no está disponible** por esta ruta — si lo quieres, necesitas una API key directa de Anthropic.
+
+Con Extra Usage activo, el setup-token sigue funcionando igual que antes:
 
 <Terminal
     title="~/claude-setup-token"
@@ -176,15 +214,19 @@ Si tienes suscripción a Claude (Max), puedes generar un setup-token desde la CL
         { type: 'empty', text: '' },
         { type: 'comment', text: '# En tu máquina con OpenClaw' },
         { type: 'command', text: 'openclaw models auth paste-token --provider anthropic', delay: 600 },
-        { type: 'output', text: '✓ Token stored for profile anthropic:default' },
+        { type: 'output', text: '✓ Token stored for profile anthropic:default\n⚠️  Remember: usage bills to Extra Usage (pay-as-you-go)' },
     ]}
 />
+
+<Callout type="info">
+    **¿Entonces para qué sigue sirviendo el setup-token?** Principalmente para gente que ya tiene su setup montado y quiere centralizar el billing en la cuenta de su suscripción (un solo estado de cuenta) en lugar de llevar una API key aparte. Financieramente es casi equivalente a la API key. Si empiezas desde cero hoy, **ve directo a Opción A**.
+</Callout>
 
 </SubSection>
 
 <SectionTitle id="codex">OpenAI Codex (suscripción ChatGPT)</SectionTitle>
 
-Si pagas ChatGPT Plus/Team/Pro, puedes usar tu suscripción como proveedor en OpenClaw vía OAuth. OpenAI explícitamente soporta este uso en herramientas externas.
+Si pagas ChatGPT Plus/Pro/Business/Enterprise/Edu, puedes usar tu suscripción como proveedor en OpenClaw vía OAuth. A diferencia de Anthropic, **OpenAI sí soporta explícitamente** este uso de tu suscripción en herramientas externas — Codex viene incluido en todos los planes de ChatGPT (incluso Free y Go, con trial limitado).
 
 <Terminal
     title="~/codex-setup"
@@ -199,6 +241,16 @@ Si pagas ChatGPT Plus/Team/Pro, puedes usar tu suscripción como proveedor en Op
     **¿VPS sin browser?** No hay problema. Corre el comando en tu VPS — te va a dar una URL con `localhost:1455`. Pégala en el browser de tu máquina local tal cual. Aunque diga localhost, el flow de OAuth completa y OpenClaw captura los tokens automáticamente. Después, corre `openclaw configure` en el VPS y te ayuda a validar que todo quedó bien.
 </Callout>
 
+**Modelos disponibles en Codex (abril 2026):**
+
+| Modelo                   | Disponible en         | Uso recomendado                                                   |
+| ------------------------ | --------------------- | ----------------------------------------------------------------- |
+| `gpt-5.5` / `gpt-5.5-pro`| Plus / Pro / Business | Recién lanzados (23 abril 2026) — lo más inteligente para código  |
+| `gpt-5.4`                | Plus y superior       | Flagship estable — coding, razonamiento y computer-use            |
+| `gpt-5.4-mini`           | Plus y superior       | Rápido y eficiente — para subagents o tareas rutinarias           |
+| `gpt-5.3-codex`          | Plus y superior       | Estándar de industria para software engineering                   |
+| `gpt-5.3-codex-spark`    | Solo Pro ($100+/mes)  | Research preview — iteración casi en tiempo real                  |
+
 Config para usar Codex:
 
 <CodeBlock
@@ -208,11 +260,15 @@ Config para usar Codex:
     code={`{
   agents: {
     defaults: {
-      model: { primary: "openai-codex/gpt-5.3-codex" }
+      model: { primary: "openai-codex/gpt-5.4" }
     }
   }
 }`}
 />
+
+<Callout type="info">
+    **¿Plus ($20/mes) o Pro ($100+/mes)?** Para un asistente personal con OpenClaw, **Plus es más que suficiente** — te da `gpt-5.4` y `gpt-5.3-codex` con límites generosos. Pro tiene sentido si planeas correr loops agénticos agresivos (cron cada 30 seg, batches grandes) o necesitas `gpt-5.5-pro` / `gpt-5.3-codex-spark`. Si tu flujo es "pregunta, espera respuesta, siguiente", Plus te sobra.
+</Callout>
 
 <SectionTitle id="canales">Canales: Telegram y WhatsApp</SectionTitle>
 
