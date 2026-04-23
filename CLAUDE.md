@@ -13,6 +13,28 @@ If a task is only for the job board, follow `JOB-BOARD.md` first.
 
 ---
 
+## Design System (Required Reading)
+
+Before creating any new section, feature, or visual change, read the design system. It is the single source of truth for how the site looks, feels, and composes.
+
+**TL;DR:**
+
+- **Palette is binary.** Black (`#212121`) and white only. Neutrals are `black/5`, `/10`, `/20`, `/40`, `/60`. Status is `green-500` / `red-500`. No other colors.
+- **Typography is fixed.** Instrument Serif for every heading (`font-instrument font-medium`), Geist Mono for eyebrows/labels (`font-mono uppercase tracking-widest`), Geist Sans for body.
+- **Layout is fixed.** Every section wraps in `py-16 sm:py-24 md:py-32` with a `mx-auto max-w-6xl px-4 sm:px-6` container and — on light backgrounds — a `border-t border-black/5`. The nav is always the fixed, centered, `rounded-full` pill.
+
+**Read in this order:**
+
+1. [docs/design/README.md](docs/design/README.md) — mission, golden rules, type hierarchy diagram, TOC.
+2. [docs/design/tokens.md](docs/design/tokens.md) — raw values (colors, fonts, spacing, radii, shadows, motion).
+3. [docs/design/components.md](docs/design/components.md) — canonical class strings for Button, Card, Pill Navigation, Eyebrow, Status Dot, Infinite Slider, Section Anchor, Footer, Input.
+4. [docs/design/sections.md](docs/design/sections.md) — five ready-to-copy section templates (Hero, Content With Media, Grid Of Cards, CTA With Inset, Stats Grid).
+5. [docs/design/validation.md](docs/design/validation.md) — pre-merge checklist, agent scoring prompt, and the known-deviations backlog for `/launch`, `/collab`, `/designwithai`, `/job-board`.
+
+**When building a new section:** `tokens.md` → `sections.md` → `components.md` → validate with `validation.md`. When auditing an existing page, paste the scoring prompt in `validation.md § Part 2` into the agent.
+
+---
+
 ## What Is This Project?
 
 This is the **AI Builders Mexico** community website ([aibuilders.mx](https://aibuilders.mx)). It's built with:

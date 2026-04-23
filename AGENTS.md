@@ -11,6 +11,37 @@ If your request is job-board-only, start with `JOB-BOARD.md`.
 - Use it as the primary guide for `/job-board/demo` and `/job-board/dashboard`
 - Keep changes scoped to job-board files unless a shared dependency requires otherwise
 
+## Design System (Required Reading)
+
+Before you ask an agent to build, change, or test any visual part of the site, point the agent at the design system. It is the "what does the site look like, and how do we keep it consistent" rulebook.
+
+**The rules, in three sentences:**
+
+- The site is black and white only. Black is `#212121`. The only other colors are green for "open" and red for "full" or "closed".
+- Headings use Instrument Serif. Small labels (eyebrows, nav items, metadata) use Geist Mono in uppercase with wide letter spacing. Body text uses Geist Sans.
+- Every section is the same width (`max-w-6xl`) with the same vertical padding (`py-16 sm:py-24 md:py-32`) and the same pill-shaped navigation at the top of the page.
+
+**Where the rules live:**
+
+- [docs/design/README.md](docs/design/README.md) — the start here page, with the mission and golden rules.
+- [docs/design/tokens.md](docs/design/tokens.md) — the "colors, fonts, sizes, spacing" reference.
+- [docs/design/components.md](docs/design/components.md) — the "buttons, cards, nav, eyebrows" reference.
+- [docs/design/sections.md](docs/design/sections.md) — five ready-to-copy section templates (Hero, Content With Media, Grid Of Cards, CTA With Inset, Stats Grid).
+- [docs/design/validation.md](docs/design/validation.md) — a checklist to tell the agent "make sure this passes", plus a copy-paste prompt to score any existing page.
+
+**How to ask an agent to use it:**
+
+```txt
+Before you build or edit anything visual, read docs/design/README.md and the linked files.
+Follow the rules in docs/design/tokens.md and docs/design/components.md.
+Use one of the five templates in docs/design/sections.md as your starting point.
+When you're done, run the pre-merge checklist in docs/design/validation.md and report pass/fail for each rule.
+```
+
+**How to test existing pages:**
+
+Open [docs/design/validation.md](docs/design/validation.md), copy the scoring prompt under "Part 2 — Agent Scoring Prompt", paste it into the agent along with the file you want audited, and ask for a pass/fail report per rule.
+
 ## What This Project Is
 
 - Public website for AI Builders (`/`)
