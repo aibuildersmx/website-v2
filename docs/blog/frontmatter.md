@@ -20,6 +20,7 @@ The canonical TypeScript shape is [`BlogPostMeta`](../../lib/blog/posts.ts) — 
 | `tags`      | optional | string[]                   | Free-form. Shown on the index card as mono chips. |
 | `cover`     | optional | string (path in `/public`) | Hero image for OG card and index thumbnail. |
 | `author`    | optional | string                     | Defaults to the AIBM collective byline when omitted. |
+| `source`    | optional | `{ url, label }`           | Attribution pill in the article header pointing to the original publication (e.g. a tweet). |
 | `draft`     | optional | `true` (omit otherwise)    | When `true`, the post is excluded from the index and sitemap but still routable. |
 
 Field order inside the YAML doesn't affect rendering, but the table order above is the convention we follow across existing posts — keep it consistent.
@@ -141,6 +142,23 @@ cover: "/images/blog/mi-post/cover.jpg"
 ### `author` *(optional)*
 
 String, shown in the post header next to the date. Omit for the default AIBM byline.
+
+### `source` *(optional)*
+
+Attribution to the original publication the post was derived from — a tweet, a thread, an article, a talk. Renders as a small pill above the header meta row (date · readTime · author) with an external-link arrow, and opens the `url` in a new tab.
+
+Required keys:
+
+- `url` — absolute URL to the original source.
+- `label` — short display string (kept in mono uppercase in the pill).
+
+```yaml
+source:
+  url: "https://x.com/ricgarcas/status/2046980838550577618"
+  label: "Extraído de X"
+```
+
+Omit the whole block when the post is original to the blog. If `url` is missing the pill is skipped entirely; when only `label` is missing we fall back to `"Fuente original"`.
 
 ### `draft` *(optional)*
 

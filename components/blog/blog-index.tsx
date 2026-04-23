@@ -3,6 +3,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+// Note: the cover image is intentionally NOT shown on the blog index cards —
+// we keep the grid typographic and only surface the hero image once the
+// reader opens the full article in `PostShell`.
 import { useBlogTheme } from '@/app/(blog)/layout'
 import { cn } from '@/lib/utils'
 import { getAuthor, type BlogAuthor } from '@/lib/blog/authors'
@@ -81,23 +84,6 @@ function PostCard({ post, isDark }: { post: BlogIndexPost; isDark: boolean }) {
                         : 'border-black/10 hover:border-black/20 hover:shadow-lg hover:shadow-black/5 bg-white',
                 )}
             >
-                {post.cover && (
-                    <div
-                        className={cn(
-                            'relative aspect-[16/9] w-full overflow-hidden border-b',
-                            isDark ? 'border-white/10' : 'border-black/10',
-                        )}
-                    >
-                        <Image
-                            src={post.cover}
-                            alt=""
-                            fill
-                            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                        />
-                    </div>
-                )}
-
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4">
                         <span

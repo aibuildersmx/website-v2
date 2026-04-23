@@ -3,10 +3,11 @@
 import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { useBlogTheme } from '@/app/(blog)/layout'
 import { StickyTOC, MobileTOC } from '@/components/blog/shared'
 import type { BlogAuthor } from '@/lib/blog/authors'
+import type { BlogPostSource } from '@/lib/blog/posts'
 import { cn } from '@/lib/utils'
 
 /* ── Types ── */
@@ -36,6 +37,11 @@ export type PostShellProps = {
      * is picked up by `generateMetadata` for OG/Twitter previews.
      */
     cover?: string
+    /**
+     * Optional attribution pill shown above the meta row — links back to
+     * the original publication the post was derived from (tweet, article…).
+     */
+    source?: BlogPostSource
     /** Where the top-left back link points. Defaults to `/blog`. */
     backHref?: string
     /** Label for the back link. Defaults to `Blog`. */
@@ -67,6 +73,7 @@ export default function PostShell({
     tocItems = [],
     author,
     cover,
+    source,
     backHref = '/blog',
     backLabel = 'Blog',
     children,
@@ -91,6 +98,7 @@ export default function PostShell({
 
             {/* Header */}
             <header className={cn('text-center', cover ? 'mb-10' : 'mb-16')}>
+                {source && <SourcePill source={source} isDark={isDark} />}
                 <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-6">
                     <span className={`font-mono text-xs ${textDimmed}`}>{date}</span>
                     <span className={isDark ? 'text-white/20' : 'text-black/20'}>·</span>
@@ -138,11 +146,21 @@ export default function PostShell({
 
             {hasToc && <MobileTOC items={tocItems} />}
 
-            {/* Layout: sidebar + content */}
+            {/* Layout: sidebar + content.
+                When the post has a TOC we keep the two-column grid (sidebar
+                left, article right). Without a TOC the sidebar disappears
+                and we center the article inside the 6xl shell so it lines
+                up with the centered header above instead of hugging the
+                left edge. */}
             <div className="flex gap-16">
                 {hasToc && <StickyTOC items={tocItems} />}
 
-                <article className="post-content min-w-0 flex-1 max-w-3xl">
+                <article
+                    className={cn(
+                        'post-content min-w-0 flex-1 max-w-3xl',
+                        !hasToc && 'mx-auto',
+                    )}
+                >
                     {/* Theme-aware CSS for markdown-generated elements.
                         Custom components (Callout/CodeBlock/Terminal) own their
                         own styling and are unaffected. */}
@@ -191,6 +209,33 @@ function AuthorByline({ author, isDark }: { author: BlogAuthor; isDark: boolean 
         >
             {content}
         </Link>
+    )
+}
+
+/* ── Source pill (e.g. "Extraído de X") ── */
+
+/**
+ * Small attribution pill that links to the post's source. Kept tiny and
+ * visually secondary so it never competes with the H1.
+ */
+function SourcePill({ source, isDark }: { source: BlogPostSource; isDark: boolean }) {
+    return (
+        <div className="mb-5 flex justify-center">
+            <Link
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                    'group inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors',
+                    isDark
+                        ? 'border-white/10 text-[#6c7086] hover:border-white/20 hover:text-[#cdd6f4]'
+                        : 'border-black/10 text-black/50 hover:border-black/20 hover:text-black',
+                )}
+            >
+                <span>{source.label}</span>
+                <ArrowUpRight className="size-3 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
+            </Link>
+        </div>
     )
 }
 

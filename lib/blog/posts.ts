@@ -15,6 +15,18 @@ import matter from 'gray-matter'
 
 export type BlogTocItem = [id: string, label: string]
 
+/**
+ * Attribution pointing the reader to the original publication this post was
+ * derived from (e.g. a tweet, thread, or external article). Rendered as a
+ * small pill in the article header by [PostShell](/components/blog/post-shell.tsx).
+ */
+export type BlogPostSource = {
+    /** External URL the post is derived from. */
+    url: string
+    /** Display label, e.g. "Directamente extraído de X". */
+    label: string
+}
+
 export type BlogPostMeta = {
     slug: string
     title: string
@@ -27,6 +39,8 @@ export type BlogPostMeta = {
     /** Cover image path in /public, e.g. "/images/blog/foo/cover.png" */
     cover?: string
     author?: string
+    /** Optional attribution to the original source (tweet, article, etc.) */
+    source?: BlogPostSource
     /** When true the post is excluded from `getAllPosts()` and the index */
     draft?: boolean
     /** Table of contents pairs `[id, label]` in display order */
@@ -48,6 +62,14 @@ function safeReaddir(dir: string): string[] {
     } catch {
         return []
     }
+}
+
+function toSource(raw: unknown): BlogPostSource | undefined {
+    if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined
+    const r = raw as { url?: unknown; label?: unknown }
+    if (typeof r.url !== 'string' || r.url.length === 0) return undefined
+    const label = typeof r.label === 'string' && r.label.length > 0 ? r.label : 'Fuente original'
+    return { url: r.url, label }
 }
 
 function toTocItems(raw: unknown): BlogTocItem[] {
@@ -91,6 +113,7 @@ function parsePost(slug: string): BlogPost | null {
         tags: Array.isArray(data.tags) ? data.tags.map(String) : undefined,
         cover: typeof data.cover === 'string' ? data.cover : undefined,
         author: typeof data.author === 'string' ? data.author : undefined,
+        source: toSource(data.source),
         draft: data.draft === true ? true : undefined,
         tocItems: toTocItems(data.tocItems),
     }
