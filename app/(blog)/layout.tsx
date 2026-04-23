@@ -74,9 +74,7 @@ function BlogThemeProvider({ children }: { children: React.ReactNode }) {
 /* ── Header ── */
 
 const menuItems = [
-    { name: 'Manifesto', href: '/#manifesto' },
     { name: 'Events', href: '/#events' },
-    { name: 'Team', href: '/#team' },
     { name: 'Blog', href: '/blog' },
     { name: 'Bootcamp', href: '/designwithai', isNew: true },
     { name: 'Residencia', href: '/residencia', isNew: true },
