@@ -26,7 +26,11 @@ const instrumentSans = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = "https://aibuilders.mx";
+const socialImage = "/twitter-card.png";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "AI Builders Mexico",
   description: "La Comunidad de AI en México",
   icons: {
@@ -40,9 +44,9 @@ export const metadata: Metadata = {
     siteName: "AI Builders Mexico",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: socialImage,
+        width: 1024,
+        height: 535,
         alt: "AI Builders Mexico",
       },
     ],
@@ -51,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Builders Mexico",
     description: "La Comunidad de AI en México",
-    images: ["/og-image.png"],
+    images: [socialImage],
   },
 };
 
