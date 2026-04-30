@@ -54,22 +54,6 @@ function EventLogo({
 
 const events = [
   {
-    title: "Zero to Agent",
-    description:
-      "Meetup de AI Builders Mexico para lanzar agentes de IA reales con v0 y conectar con builders en Ciudad de Mexico.",
-    month: "ABR",
-    day: "25",
-    location: "CDMX, SANDBOX HUB",
-    attendees: "50 lugares",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Meetup", "AI"],
-    logo: "/v0-logo-black.svg",
-    link: "https://luma.com/wp947zvj",
-  },
-  {
     title: "AIBM Vibe Coding Bootcamp",
     description:
       "Workshop virtual para aprender a disenar con AI, prototipar mas rapido y construir una landing funcional paso a paso.",
@@ -104,6 +88,14 @@ const events = [
 ];
 
 const pastEvents = [
+  {
+    title: "Zero to Agent",
+    month: "ABR",
+    day: "25",
+    location: "CDMX, SANDBOX HUB",
+    logo: "/v0-logo-black.svg",
+    link: "https://luma.com/wp947zvj",
+  },
   {
     title: "How I Use AI #6: Scaling to 1M users",
     month: "ABR",
