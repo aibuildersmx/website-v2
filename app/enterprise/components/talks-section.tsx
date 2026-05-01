@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { TALKS_COPY, TALKS_LOGOS, buildMailto } from './enterprise-data'
-import { PartnerLogoStrip } from './partner-logo-strip'
+import { TALKS_COPY, buildMailto } from './enterprise-data'
 
 export function TalksSection() {
     return (
@@ -51,10 +50,6 @@ export function TalksSection() {
                             ))}
                         </ul>
                     </div>
-                </div>
-
-                <div className="mt-12 sm:mt-16">
-                    <PartnerLogoStrip logos={TALKS_LOGOS} variant="light" size="md" />
                 </div>
             </div>
         </section>

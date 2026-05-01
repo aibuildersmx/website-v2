@@ -30,23 +30,6 @@ export const HERO_LOGOS: PartnerLogo[] = [
     PARTNER_LOGOS['grupo-gigante'],
 ]
 
-export const WORKSHOPS_LOGOS: PartnerLogo[] = [
-    PARTNER_LOGOS.bbva,
-    PARTNER_LOGOS.walmart,
-    PARTNER_LOGOS.pwc,
-]
-
-export const RECRUITING_LOGOS: PartnerLogo[] = [
-    PARTNER_LOGOS.rappi,
-    PARTNER_LOGOS.t1,
-    PARTNER_LOGOS['grupo-gigante'],
-]
-
-export const TALKS_LOGOS: PartnerLogo[] = [
-    PARTNER_LOGOS['grupo-gigante'],
-    PARTNER_LOGOS.t1,
-]
-
 // ----- Section copy -----
 
 export const HERO_COPY = {

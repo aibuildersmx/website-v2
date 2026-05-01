@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { RECRUITING_COPY, RECRUITING_LOGOS, buildMailto } from './enterprise-data'
-import { PartnerLogoStrip } from './partner-logo-strip'
+import { RECRUITING_COPY, buildMailto } from './enterprise-data'
 
 export function RecruitingSection() {
     return (
@@ -37,8 +36,7 @@ export function RecruitingSection() {
                     ))}
                 </ul>
 
-                <div className="mt-12 sm:mt-16 flex flex-col items-center gap-6 sm:gap-8">
-                    <PartnerLogoStrip logos={RECRUITING_LOGOS} variant="light" size="md" />
+                <div className="mt-12 sm:mt-16 flex justify-center">
                     <Button
                         asChild
                         size="lg"

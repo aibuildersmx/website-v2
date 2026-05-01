@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { WORKSHOPS_COPY, WORKSHOPS_LOGOS, buildMailto } from './enterprise-data'
-import { PartnerLogoStrip } from './partner-logo-strip'
+import { WORKSHOPS_COPY, buildMailto } from './enterprise-data'
 
 export function WorkshopsSection() {
     return (
@@ -46,9 +45,6 @@ export function WorkshopsSection() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                 </div>
-
-                {/* Logo strip */}
-                <PartnerLogoStrip logos={WORKSHOPS_LOGOS} variant="light" size="md" />
             </div>
         </section>
     )
