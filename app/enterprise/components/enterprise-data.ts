@@ -36,7 +36,7 @@ export const HERO_COPY = {
     eyebrow: 'PARA EMPRESAS',
     headline: 'Lleva la inteligencia artificial al corazón de tu organización.',
     subhead:
-        'Somos la comunidad de IA más grande de México. Diseñamos workshops, asesoría estratégica, reclutamiento técnico y talks corporativos para equipos que están construyendo con IA en serio.',
+        'Diseñamos workshops, asesoría estratégica, reclutamiento técnico y talks corporativos para equipos que están construyendo con IA en serio.',
     primaryCtaLabel: 'Hablemos',
     primaryCtaSubject: 'Consulta Enterprise',
     secondaryCtaLabel: 'Ver servicios',
