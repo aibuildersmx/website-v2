@@ -72,7 +72,7 @@ export const CONSULTING_COPY = {
         { title: '4 sesiones estratégicas / mes', description: 'Acceso directo con los founders' },
         { title: 'WhatsApp directo', description: 'Respuestas en horas, no en semanas' },
         { title: 'Asesoría técnica + estratégica', description: 'Producto, contratación, arquitectura' },
-        { title: 'Intros a la red de builders', description: 'Acceso a +1,500 builders en México y EE.UU.' },
+        { title: 'Intros a la red de builders', description: 'Acceso a +3,000 builders en México y EE.UU.' },
     ],
     ctaLabel: 'Agendar conversación',
     ctaSubject: 'Consulta Enterprise — Consultoría',
@@ -83,7 +83,7 @@ export const RECRUITING_COPY = {
     eyebrow: 'RECLUTAMIENTO',
     headline: 'Reclutamiento técnico para equipos de IA.',
     subhead:
-        'Acceso a +1,500 builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.',
+        'Acceso a +3,000 builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.',
     cards: [
         {
             title: 'Sourcing',
