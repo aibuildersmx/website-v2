@@ -8,7 +8,7 @@ export function ConsultingSection() {
     return (
         <section
             id={CONSULTING_COPY.id}
-            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5"
+            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
@@ -22,7 +22,10 @@ export function ConsultingSection() {
 
                         {/* Pricing pill */}
                         <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.02] px-4 py-2">
-                            <span className="size-1.5 rounded-full bg-black animate-pulse" />
+                            <span className="relative flex size-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/40 opacity-75" />
+                                <span className="relative inline-flex size-1.5 rounded-full bg-black" />
+                            </span>
                             <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest font-bold text-black/70">
                                 {CONSULTING_COPY.pricing}
                             </span>

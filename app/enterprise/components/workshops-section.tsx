@@ -8,7 +8,7 @@ export function WorkshopsSection() {
     return (
         <section
             id={WORKSHOPS_COPY.id}
-            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5"
+            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6 space-y-12 sm:space-y-16">
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">

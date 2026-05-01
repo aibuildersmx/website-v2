@@ -17,7 +17,10 @@ export function EnterpriseCTA() {
                     {/* Left: pill + headline + service mailto list */}
                     <div className="flex flex-col items-start space-y-5 sm:space-y-6">
                         <div className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-black/[0.02] px-3 py-1.5">
-                            <span className="size-1.5 rounded-full bg-black animate-pulse" />
+                            <span className="relative flex size-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/40 opacity-75" />
+                                <span className="relative inline-flex size-1.5 rounded-full bg-black" />
+                            </span>
                             <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest font-bold text-black/60">
                                 {CTA_COPY.eyebrow}
                             </span>

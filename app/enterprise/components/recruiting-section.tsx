@@ -8,7 +8,7 @@ export function RecruitingSection() {
     return (
         <section
             id={RECRUITING_COPY.id}
-            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5"
+            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <header className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
@@ -24,14 +24,11 @@ export function RecruitingSection() {
                 </header>
 
                 <ul className="mt-12 sm:mt-16 md:mt-20 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
-                    {RECRUITING_COPY.cards.map((card, i) => (
+                    {RECRUITING_COPY.cards.map((card) => (
                         <li
                             key={card.title}
                             className="group relative border border-black/10 rounded-xl sm:rounded-2xl bg-white hover:border-black/20 hover:shadow-lg hover:shadow-black/5 transition-all duration-500 p-6 sm:p-8"
                         >
-                            <span className="hidden md:block absolute top-4 right-4 text-xs font-mono text-black/20">
-                                / {String(i + 1).padStart(2, '0')}
-                            </span>
                             <h3 className="text-xl sm:text-2xl font-instrument font-medium">{card.title}</h3>
                             <p className="mt-3 text-sm sm:text-base text-black/60 leading-relaxed">
                                 {card.description}

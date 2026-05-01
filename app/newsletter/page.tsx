@@ -82,7 +82,7 @@ export default function NewsletterPage() {
             {/* Subscribe */}
             <section
                 id="subscribe"
-                className="relative py-16 sm:py-24 md:py-32 border-t border-black/5"
+                className="relative py-16 sm:py-24 md:py-32 border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
             >
                 <div className="mx-auto max-w-2xl px-4 sm:px-6">
                     <div className="bg-black text-white p-8 sm:p-12 rounded-2xl sm:rounded-3xl overflow-hidden relative">
