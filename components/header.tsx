@@ -10,6 +10,7 @@ const menuItems = [
     { name: 'Blog', href: '/blog' },
     { name: 'Bootcamp', href: '/designwithai', isNew: true },
     { name: 'Residencia', href: '/residencia', isNew: true },
+    { name: 'Enterprise', href: '/enterprise', isNew: true },
 ]
 
 export const HeroHeader = () => {
