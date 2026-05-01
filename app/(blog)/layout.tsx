@@ -2,11 +2,10 @@
 
 import React from "react"
 import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { Linkedin, Sun, Moon } from 'lucide-react'
-import { useState, useEffect, useSyncExternalStore, createContext, useContext } from 'react'
+import { useSyncExternalStore, createContext, useContext } from 'react'
 import { cn } from '@/lib/utils'
+import { HeroHeader } from '@/components/header'
 
 /* ── Blog theme context (scoped, not global next-themes) ── */
 
@@ -34,7 +33,6 @@ function getThemeServerSnapshot(): BlogTheme {
 
 function subscribeTheme(listener: () => void) {
     themeListeners.push(listener)
-    // Initialize from localStorage on first subscribe (client only)
     if (themeListeners.length === 1 && typeof window !== 'undefined') {
         const stored = localStorage.getItem('blog-theme') as BlogTheme | null
         if (stored === 'dark' || stored === 'light') {
@@ -71,129 +69,25 @@ function BlogThemeProvider({ children }: { children: React.ReactNode }) {
     )
 }
 
-/* ── Header ── */
+/* ── Floating theme toggle (replaces the in-header toggle) ── */
 
-const menuItems = [
-    { name: 'Events', href: '/#events' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Bootcamp', href: '/designwithai', isNew: true },
-    { name: 'Residencia', href: '/residencia', isNew: true },
-]
-
-function BlogHeader() {
-    const [scrolled, setScrolled] = useState(false)
+function BlogThemeToggle() {
     const { theme, toggle } = useBlogTheme()
     const isDark = theme === 'dark'
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20)
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-
     return (
-        <header className="fixed top-4 sm:top-6 inset-x-0 z-[100] flex justify-center pointer-events-none px-3 sm:px-6">
-            <nav className={cn(
-                "pointer-events-auto flex items-center justify-between p-1.5 sm:p-2 rounded-full border transition-all duration-500 ease-in-out w-full max-w-6xl",
+        <button
+            onClick={toggle}
+            aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            className={cn(
+                "fixed bottom-6 right-6 z-[90] flex items-center justify-center size-11 sm:size-12 rounded-full border backdrop-blur-md shadow-lg transition-all duration-300",
                 isDark
-                    ? scrolled
-                        ? "bg-[#0a0a12]/80 backdrop-blur-xl border-white/10 shadow-2xl shadow-black/30"
-                        : "bg-[#0a0a12]/50 backdrop-blur-md border-white/5 shadow-lg"
-                    : scrolled
-                        ? "bg-white/80 backdrop-blur-xl border-black/10 shadow-2xl shadow-black/5"
-                        : "bg-white/50 backdrop-blur-md border-black/5 shadow-lg"
-            )}>
-                <Link
-                    href="/"
-                    aria-label="home"
-                    className={cn(
-                        "flex items-center justify-center h-9 sm:h-10 px-2 rounded-full transition-colors",
-                        isDark ? "hover:bg-white/5" : "hover:bg-black/5"
-                    )}
-                >
-                    <Image
-                        src={isDark ? "/AIBM-logo-dark.svg" : "/AIBM-logo-light-bg.svg"}
-                        alt="AI Builders Mexico"
-                        width={120}
-                        height={20}
-                        className="h-4 sm:h-5 w-auto"
-                    />
-                </Link>
-
-                <ul className="hidden sm:flex items-center gap-1">
-                    {menuItems.map((item, index) => (
-                        <li key={index}>
-                            <Link
-                                href={item.href}
-                                className={cn(
-                                    "relative rounded-full px-5 py-2.5 text-xs font-mono uppercase tracking-widest transition-colors",
-                                    isDark
-                                        ? "text-white/50 hover:text-white hover:bg-white/5"
-                                        : "text-black/50 hover:text-black hover:bg-black/5",
-                                    item.isNew && "pr-8"
-                                )}
-                            >
-                                {item.name}
-                                {item.isNew && (
-                                    <span
-                                        className={cn(
-                                            "pointer-events-none absolute right-2 bottom-1.5 text-[8px] font-medium lowercase tracking-[0.18em]",
-                                            isDark ? "text-[#b8d9a9]" : "text-[#5a8a48]"
-                                        )}
-                                    >
-                                        new
-                                    </span>
-                                )}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="flex items-center gap-1 sm:gap-1.5">
-                    {/* Theme toggle */}
-                    <button
-                        onClick={toggle}
-                        className={cn(
-                            "flex items-center justify-center size-9 sm:size-10 rounded-full transition-colors",
-                            isDark
-                                ? "text-white/50 hover:text-white hover:bg-white/5"
-                                : "text-black/50 hover:text-black hover:bg-black/5"
-                        )}
-                        aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-                    >
-                        {isDark ? <Sun className="size-3.5 sm:size-4" /> : <Moon className="size-3.5 sm:size-4" />}
-                    </button>
-
-                    <Link
-                        href="https://www.linkedin.com/company/aibuildersmexico"
-                        target="_blank"
-                        className={cn(
-                            "flex items-center justify-center size-9 sm:size-10 rounded-full transition-colors",
-                            isDark
-                                ? "text-white/50 hover:text-white hover:bg-white/5"
-                                : "text-black/50 hover:text-black hover:bg-black/5"
-                        )}
-                        aria-label="LinkedIn"
-                    >
-                        <Linkedin className="size-3.5 sm:size-4" />
-                    </Link>
-                    <Button
-                        asChild
-                        size="sm"
-                        className={cn(
-                            "rounded-full px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10",
-                            isDark
-                                ? "bg-white text-[#12121b] hover:bg-white/90"
-                                : "bg-black text-white hover:bg-black/90"
-                        )}
-                    >
-                        <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank">
-                            Únete
-                        </Link>
-                    </Button>
-                </div>
-            </nav>
-        </header>
+                    ? "bg-[#0a0a12]/80 border-white/10 text-white/70 hover:text-white hover:bg-[#0a0a12]"
+                    : "bg-white/80 border-black/10 text-black/60 hover:text-black hover:bg-white"
+            )}
+        >
+            {isDark ? <Sun className="size-4 sm:size-5" /> : <Moon className="size-4 sm:size-5" />}
+        </button>
     )
 }
 
@@ -208,13 +102,13 @@ function BlogShell({ children }: { children: React.ReactNode }) {
             "min-h-screen transition-colors duration-300",
             isDark ? "bg-[#12121b] text-[#cdd6f4]" : "bg-white text-black"
         )}>
-            <BlogHeader />
+            <HeroHeader />
+            <BlogThemeToggle />
 
             <main className="pt-24 sm:pt-28">
                 {children}
             </main>
 
-            {/* Footer */}
             <footer className={cn(
                 "py-12 mt-24 transition-colors duration-300",
                 isDark ? "bg-[#0a0a12]" : "bg-[#212121]"
