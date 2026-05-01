@@ -65,7 +65,7 @@ export const CONSULTING_COPY = {
     headline: 'Asesoría estratégica mensual con acceso semanal.',
     pricing: 'Desde $5,000 USD / mes',
     body: [
-        'Trabajamos como retainer mensual, no por proyecto ni por hora. Tu equipo de liderazgo recibe acceso directo a los founders de AI Builders cada semana — sin scope creep, sin facturas sorpresa.',
+        'Trabajamos como retainer mensual, no por proyecto ni por hora. Tu equipo de liderazgo recibe acceso directo a los founders de AI Builders cada semana.',
         'Ideal para C-levels y heads of product/engineering que necesitan un partner constante mientras adoptan IA: priorización, arquitectura, contratación y conexiones a la red de builders.',
     ],
     deliverables: [
