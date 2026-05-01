@@ -37,7 +37,7 @@ export const HERO_COPY = {
     headline: 'Lleva la inteligencia artificial al corazón de tu organización.',
     subhead:
         'Diseñamos workshops, asesoría estratégica, reclutamiento técnico y talks corporativos para equipos que están construyendo con IA en serio.',
-    primaryCtaLabel: 'Hablemos',
+    primaryCtaLabel: 'Contáctanos',
     primaryCtaSubject: 'Consulta Enterprise',
     secondaryCtaLabel: 'Ver servicios',
     secondaryCtaHref: '#workshops',
