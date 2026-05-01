@@ -68,7 +68,7 @@ export default function StatsSection() {
               </p>
             </div>
             <div className="w-full overflow-hidden md:w-[calc(100%-11rem)]">
-              <InfiniteSlider speedOnHover={20} speed={40} gap={96}>
+              <InfiniteSlider speedOnHover={20} speed={40} gap={40}>
                 <div className="flex items-center">
                   <img
                     className="mx-auto h-5 w-fit sm:h-6"

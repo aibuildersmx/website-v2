@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Users, ArrowUpRight, Ticket } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const isExternalLink = (link?: string) => Boolean(link?.startsWith("http"));
 const eventTypeStyles: Record<string, string> = {
@@ -467,7 +468,7 @@ export default function EventsSection() {
 
           <div className="grid auto-rows-fr gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {pastEvents.map((event, index) => (
-              <div key={index} className="h-full">
+              <div key={index} className={cn("h-full", index >= 5 && "hidden sm:block")}>
                 {event.link ? (
                   <Link
                     href={event.link}
