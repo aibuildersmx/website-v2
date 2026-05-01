@@ -1,7 +1,10 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Calendar, UserCheck } from "lucide-react";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { BUILDER_COUNT_FORMATTED } from "@/lib/constants";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const stats = [
   {
@@ -27,6 +30,7 @@ const partnerLogoStyle = {
 };
 
 export default function StatsSection() {
+  const isMobile = useIsMobile();
   return (
     <section className="relative py-12 sm:py-16 md:py-32 bg-white text-black border-t border-black/5 overflow-hidden">
       <div className="mx-auto max-w-6xl space-y-8 sm:space-y-10 px-4 sm:px-6 md:space-y-20 relative z-10">
@@ -68,7 +72,7 @@ export default function StatsSection() {
               </p>
             </div>
             <div className="w-full overflow-hidden md:w-[calc(100%-11rem)]">
-              <InfiniteSlider speedOnHover={20} speed={40} gap={40}>
+              <InfiniteSlider speedOnHover={20} speed={40} gap={isMobile ? 40 : 96}>
                 <div className="flex items-center">
                   <img
                     className="mx-auto h-5 w-fit sm:h-6"
