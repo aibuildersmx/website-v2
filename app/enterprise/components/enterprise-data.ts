@@ -49,7 +49,7 @@ export const HERO_COPY = {
 export const WORKSHOPS_COPY = {
     id: 'workshops',
     eyebrow: 'WORKSHOPS',
-    headline: 'Workshops de IA hechos a la medida.',
+    headline: 'Workshops corporativos de IA, hechos a la medida.',
     body: [
         'Sesiones de 1 a 3 días, presenciales o remotas, diseñadas alrededor de los retos reales que tu equipo enfrenta. Sin slides genéricos.',
         'Trabajamos con líderes, managers y equipos técnicos. Cada workshop combina teoría aplicada, manos en código y un framework concreto para llevar lo aprendido al día a día.',
