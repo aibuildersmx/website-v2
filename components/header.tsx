@@ -7,10 +7,10 @@ import { Linkedin } from 'lucide-react'
 
 const menuItems = [
     { name: 'Events', href: '#events' },
+    { name: 'Enterprise', href: '/enterprise' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Bootcamp', href: '/designwithai', isNew: true },
-    { name: 'Residencia', href: '/residencia', isNew: true },
-    { name: 'Enterprise', href: '/enterprise', isNew: true },
+    { name: 'Bootcamp', href: '/designwithai' },
+    { name: 'Residencia', href: '/residencia' },
 ]
 
 export const HeroHeader = () => {
@@ -49,17 +49,9 @@ export const HeroHeader = () => {
                         <li key={index}>
                             <Link
                                 href={item.href}
-                                className={cn(
-                                    "relative rounded-full px-5 py-2.5 text-xs font-mono uppercase tracking-widest text-white/70 transition-colors hover:bg-white/10 hover:text-white",
-                                    item.isNew && "pr-8"
-                                )}
+                                className="rounded-full px-5 py-2.5 text-xs font-mono uppercase tracking-widest text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                             >
                                 {item.name}
-                                {item.isNew && (
-                                    <span className="pointer-events-none absolute right-2 bottom-1.5 text-[8px] font-medium lowercase tracking-[0.18em] text-[#b8d9a9]">
-                                        new
-                                    </span>
-                                )}
                             </Link>
                         </li>
                     ))}
