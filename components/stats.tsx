@@ -1,11 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Calendar, UserCheck } from "lucide-react";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { BUILDER_COUNT_FORMATTED } from "@/lib/constants";
 
 const stats = [
   {
     label: "Builders",
-    value: "3,880+",
+    value: `${BUILDER_COUNT_FORMATTED}+`,
     icon: Users,
   },
   {

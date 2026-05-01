@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, MessageCircle, Mail, Send, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import SplitText from '@/components/SplitText';
+import { BUILDER_COUNT_FORMATTED } from '@/lib/constants';
 
 export default function CTASection() {
   return (
@@ -107,7 +108,7 @@ export default function CTASection() {
                 </form>
                 
                 <p className="mt-4 sm:mt-6 text-[9px] sm:text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
-                  Únete a +1,000 builders hoy
+                  Únete a +{BUILDER_COUNT_FORMATTED} builders hoy
                 </p>
               </div>
             </div>

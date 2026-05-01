@@ -1,3 +1,5 @@
+import { BUILDER_COUNT_FORMATTED } from '@/lib/constants'
+
 export const ENTERPRISE_EMAIL = '1996byk@gmail.com'
 
 export const buildMailto = (subject: string): string =>
@@ -72,7 +74,7 @@ export const CONSULTING_COPY = {
         { title: '4 sesiones estratégicas / mes', description: 'Acceso directo con los founders' },
         { title: 'WhatsApp directo', description: 'Respuestas en horas, no en semanas' },
         { title: 'Asesoría técnica + estratégica', description: 'Producto, contratación, arquitectura' },
-        { title: 'Intros a la red de builders', description: 'Acceso a +3,000 builders en México y EE.UU.' },
+        { title: 'Intros a la red de builders', description: `Acceso a +${BUILDER_COUNT_FORMATTED} builders en México y EE.UU.` },
     ],
     ctaLabel: 'Agendar conversación',
     ctaSubject: 'Consulta Enterprise — Consultoría',
@@ -83,7 +85,7 @@ export const RECRUITING_COPY = {
     eyebrow: 'RECLUTAMIENTO',
     headline: 'Reclutamiento técnico para equipos de IA.',
     subhead:
-        'Acceso a +3,000 builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.',
+        `Acceso a +${BUILDER_COUNT_FORMATTED} builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.`,
     cards: [
         {
             title: 'Sourcing',
@@ -135,5 +137,5 @@ export const CTA_COPY = {
     newsletterHeadline: 'Recibe updates semanales.',
     newsletterBody:
         'Herramientas, papers, eventos y vacantes del ecosistema de IA en México. Sin spam, solo valor.',
-    newsletterProof: 'Únete a +1,000 builders hoy',
+    newsletterProof: `Únete a +${BUILDER_COUNT_FORMATTED} builders hoy`,
 }

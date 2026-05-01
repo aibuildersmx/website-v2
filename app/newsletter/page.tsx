@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Briefcase, Mail, Newspaper, Send, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { HeroHeader } from '@/components/header'
+import { BUILDER_COUNT_FORMATTED } from '@/lib/constants'
 
 const VALUE_CARDS = [
     {
@@ -125,7 +126,7 @@ export default function NewsletterPage() {
                                 </Button>
                             </form>
                             <p className="mt-6 text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
-                                Únete a +1,000 builders hoy
+                                Únete a +{BUILDER_COUNT_FORMATTED} builders hoy
                             </p>
                         </div>
                     </div>
