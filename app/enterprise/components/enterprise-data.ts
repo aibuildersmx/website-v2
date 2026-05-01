@@ -111,12 +111,12 @@ export const TALKS_COPY = {
     headline: 'Talks y engagement corporativo.',
     body: [
         'Keynotes, paneles y sesiones de AI literacy para boards y equipos de liderazgo. Llevamos la conversación de IA del hype a las decisiones reales que tu organización tiene que tomar este año.',
-        'Tres temas que pedimos seguido: estrategia de IA para líderes no técnicos, el panorama de talento de IA en México, y ética + gobernanza para equipos en escala.',
+        'Tres temas que pedimos seguido: estrategia de IA para líderes no técnicos, el panorama de talento de IA en México, y prácticas avanzadas de ingeniería para apalancar IA.',
     ],
     topics: [
         'Estrategia de IA para líderes',
         'Talento e IA en México',
-        'Ética y gobernanza',
+        'Prácticas avanzadas de ingeniería para apalancar IA',
     ],
     ctaLabel: 'Invitar a hablar',
     ctaSubject: 'Consulta Enterprise — Talks',
