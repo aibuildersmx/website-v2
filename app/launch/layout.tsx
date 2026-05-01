@@ -1,7 +1,7 @@
 import React from "react"
 import type {Metadata} from 'next'
 import FooterSection from "@/app/launch/components/footer"
-import {HeroHeader} from "@/app/launch/components/header"
+import {HeroHeader} from "@/components/header"
 
 export const metadata: Metadata = {
     title: 'Launch — AI Builders MX',

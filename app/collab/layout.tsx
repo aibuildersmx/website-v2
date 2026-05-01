@@ -3,7 +3,7 @@ import type {Metadata} from 'next'
 import {Geist, Geist_Mono, Instrument_Serif} from 'next/font/google'
 import DitherWrapper from "@/app/collab/components/DitherWrapper";
 import FooterSection from "@/app/collab/components/footer";
-import {HeroHeader} from "@/app/collab/components/header";
+import {HeroHeader} from "@/components/header";
 
 const geist = Geist({
     subsets: ["latin"],

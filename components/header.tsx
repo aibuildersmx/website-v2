@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Linkedin } from 'lucide-react'
 
 const menuItems = [
-    { name: 'Events', href: '#events' },
+    { name: 'Home', href: '/' },
     { name: 'Enterprise', href: '/enterprise' },
     { name: 'Blog', href: '/blog' },
     { name: 'Bootcamp', href: '/designwithai' },

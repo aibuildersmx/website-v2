@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { PhotosHeader } from "./components/header"
+import { HeroHeader } from "@/components/header"
 
 export const metadata: Metadata = {
     title: 'AI Builders MX - Fotos',
@@ -14,7 +14,7 @@ export default function PhotosLayout({
 }>) {
     return (
         <div className="min-h-screen bg-background text-foreground">
-            <PhotosHeader />
+            <HeroHeader />
             {children}
         </div>
     )

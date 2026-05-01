@@ -1,7 +1,7 @@
 import React from "react"
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono, Instrument_Serif} from 'next/font/google'
-import {HeroHeader} from "@/app/designwithai/components/header"
+import {HeroHeader} from "@/components/header"
 
 const geist = Geist({
     subsets: ["latin"],

@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 
 import ResidencyFooter from '@/app/residencia/components/footer'
-import { ResidencyHeader } from '@/app/residencia/components/header'
+import { HeroHeader } from '@/components/header'
 
 export const metadata: Metadata = {
     title: 'La Residencia — AI Builders MX',
@@ -21,7 +21,7 @@ export default function ResidencyLayout({
 }>) {
     return (
         <div className="min-h-screen bg-[#f0f4f8] text-[#1a2a3a]">
-            <ResidencyHeader />
+            <HeroHeader />
             {children}
             <ResidencyFooter />
         </div>
