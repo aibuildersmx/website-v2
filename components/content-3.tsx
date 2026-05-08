@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import PartnerStrip from '@/components/partner-strip'
 
 export default function ContentSection() {
     return (
@@ -31,6 +31,8 @@ export default function ContentSection() {
                         
                     </div>
                 </div>
+
+                <PartnerStrip />
             </div>
         </section>
     )

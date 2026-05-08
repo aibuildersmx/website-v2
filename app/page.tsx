@@ -4,6 +4,7 @@ import HeroSection from "@/components/hero-section";
 import StatsSection from "@/components/stats";
 import ContentSection from "@/components/content-3";
 import EventsSection from "@/components/events-section";
+import OfferingSection from "@/components/offering-section";
 import TeamSection from "@/components/team";
 import CTASection from "@/components/cta-section";
 import { BootcampChatWidget } from "@/components/bootcamp-chat-widget";
@@ -50,6 +51,7 @@ export default function Home() {
         <StatsSection />
         <ContentSection />
         <EventsSection />
+        <OfferingSection />
         <TeamSection />
         <CTASection />
       </div>
