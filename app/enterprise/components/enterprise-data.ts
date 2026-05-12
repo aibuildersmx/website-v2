@@ -1,36 +1,14 @@
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants'
+import { ENTERPRISE_PARTNER_LOGOS, PARTNER_LOGOS, type PartnerLogo } from '@/lib/enterprise-partners'
 
 export const ENTERPRISE_EMAIL = '1996byk@gmail.com'
 
 export const buildMailto = (subject: string): string =>
     `mailto:${ENTERPRISE_EMAIL}?subject=${encodeURIComponent(subject)}`
 
-export interface PartnerLogo {
-    src: string         // path under /public, e.g. '/logos/enterprise/bbva.svg'
-    alt: string         // brand name, used as fallback text if image fails
-    name: string        // mono-uppercase label for text-fallback rendering
-}
+export { PARTNER_LOGOS, type PartnerLogo }
 
-// Replace any logo whose src points to a placeholder SVG with the same shape.
-// Keep `alt` and `name` correct so the text fallback renders cleanly.
-// Placeholder SVGs (text-only, no real wordmark): t1, grupo-gigante.
-export const PARTNER_LOGOS: Record<string, PartnerLogo> = {
-    bbva: { src: '/logos/enterprise/bbva.svg', alt: 'BBVA', name: 'BBVA' },
-    walmart: { src: '/logos/enterprise/walmart.svg', alt: 'Walmart', name: 'WALMART' },
-    pwc: { src: '/logos/enterprise/pwc.svg', alt: 'PwC', name: 'PWC' },
-    rappi: { src: '/logos/enterprise/rappi.svg', alt: 'Rappi', name: 'RAPPI' },
-    t1: { src: '/logos/enterprise/t1.svg', alt: 'T1', name: 'T1' },
-    'grupo-gigante': { src: '/logos/enterprise/grupo-gigante.svg', alt: 'Grupo Gigante', name: 'GRUPO GIGANTE' },
-}
-
-export const HERO_LOGOS: PartnerLogo[] = [
-    PARTNER_LOGOS.bbva,
-    PARTNER_LOGOS.walmart,
-    PARTNER_LOGOS.pwc,
-    PARTNER_LOGOS.rappi,
-    PARTNER_LOGOS.t1,
-    PARTNER_LOGOS['grupo-gigante'],
-]
+export const HERO_LOGOS: PartnerLogo[] = ENTERPRISE_PARTNER_LOGOS
 
 // ----- Section copy -----
 
@@ -48,12 +26,22 @@ export const HERO_COPY = {
 
 export const WORKSHOPS_COPY = {
     id: 'workshops',
-    eyebrow: 'WORKSHOPS',
-    headline: 'Workshops corporativos de IA, hechos a la medida.',
+    eyebrow: '01 / WORKSHOPS CORPORATIVOS DE IA, HECHOS A LA MEDIDA',
+    headline: 'Workshops',
     body: [
         'Sesiones de 1 a 3 días, presenciales o remotas, diseñadas alrededor de los retos reales que tu equipo enfrenta. Sin slides genéricos.',
         'Trabajamos con líderes, managers y equipos técnicos. Cada workshop combina teoría aplicada, manos en código y un framework concreto para llevar lo aprendido al día a día.',
         'Te entregamos un playbook post-workshop con los flujos y herramientas que tu equipo va a usar después de que nos vayamos.',
+    ],
+    tools: [
+        { title: 'Claude Code', description: 'agentes para código real.' },
+        { title: 'Cursor', description: 'programación asistida.' },
+        { title: 'GPT Enterprise', description: 'flujos seguros para equipos.' },
+    ],
+    outcomes: [
+        { title: 'Flujos adoptables', description: 'listos para usar.' },
+        { title: 'Prototipos funcionales', description: 'sobre retos reales.' },
+        { title: 'Criterios claros', description: 'qué automatizar y medir.' },
     ],
     ctaLabel: 'Solicitar workshop',
     ctaSubject: 'Consulta Enterprise — Workshops',
@@ -63,12 +51,12 @@ export const WORKSHOPS_COPY = {
 
 export const CONSULTING_COPY = {
     id: 'consulting',
-    eyebrow: 'CONSULTORÍA',
-    headline: 'Asesoría estratégica mensual con acceso semanal.',
+    eyebrow: '02 / ASESORÍA ESTRATÉGICA MENSUAL CON ACCESO SEMANAL',
+    headline: 'Consultoría',
     pricing: 'Desde $5,000 USD / mes',
     body: [
-        'Trabajamos como retainer mensual, no por proyecto ni por hora. Tu equipo de liderazgo recibe acceso directo a los founders de AI Builders cada semana.',
-        'Ideal para C-levels y heads of product/engineering que necesitan un partner constante mientras adoptan IA: priorización, arquitectura, contratación y conexiones a la red de builders.',
+        'Trabajamos con pocos partners a la vez. Solo tomamos equipos con la flexibilidad, urgencia y sponsorship interno para transformar con IA de forma real.',
+        'El modelo es un retainer mensual con acceso semanal a los founders de AI Builders: priorización, arquitectura, contratación y conexiones a la red de builders.',
     ],
     deliverables: [
         { title: '4 sesiones estratégicas / mes', description: 'Acceso directo con los founders' },
@@ -76,21 +64,21 @@ export const CONSULTING_COPY = {
         { title: 'Asesoría técnica + estratégica', description: 'Producto, contratación, arquitectura' },
         { title: 'Intros a la red de builders', description: `Acceso a +${BUILDER_COUNT_FORMATTED} builders en México y EE.UU.` },
     ],
-    ctaLabel: 'Agendar conversación',
+    ctaLabel: 'Ver si somos fit',
     ctaSubject: 'Consulta Enterprise — Consultoría',
 }
 
 export const RECRUITING_COPY = {
     id: 'recruiting',
-    eyebrow: 'RECLUTAMIENTO',
-    headline: 'Reclutamiento técnico para equipos de IA.',
+    eyebrow: '03 / RECLUTAMIENTO TÉCNICO PARA EQUIPOS DE IA',
+    headline: 'Reclutamiento',
     subhead:
         `Acceso a +${BUILDER_COUNT_FORMATTED} builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.`,
     cards: [
         {
             title: 'Sourcing',
             description:
-                'Tapamos en la comunidad y en la red curada. No CVs spam — perfiles que ya tienen contexto en el ecosistema de IA.',
+                'Activamos la comunidad y nuestra red curada. No CVs spam — perfiles que ya tienen contexto en el ecosistema de IA.',
         },
         {
             title: 'Screening',
@@ -109,8 +97,8 @@ export const RECRUITING_COPY = {
 
 export const TALKS_COPY = {
     id: 'talks',
-    eyebrow: 'TALKS Y ENGAGEMENT',
-    headline: 'Talks y engagement corporativo.',
+    eyebrow: '04 / TALKS Y ENGAGEMENT CORPORATIVO',
+    headline: 'Talks y engagement',
     body: [
         'Keynotes, paneles y sesiones de AI literacy para boards y equipos de liderazgo. Llevamos la conversación de IA del hype a las decisiones reales que tu organización tiene que tomar este año.',
         'Tres temas que pedimos seguido: estrategia de IA para líderes no técnicos, el panorama de talento de IA en México, y prácticas avanzadas de ingeniería para apalancar IA.',
@@ -133,9 +121,9 @@ export const CTA_COPY = {
         { label: 'Reclutamiento →', subject: RECRUITING_COPY.ctaSubject },
         { label: 'Talks →', subject: TALKS_COPY.ctaSubject },
     ],
-    newsletterEyebrow: 'NEWSLETTER',
-    newsletterHeadline: 'Recibe updates semanales.',
-    newsletterBody:
-        'Herramientas, papers, eventos y vacantes del ecosistema de IA en México. Sin spam, solo valor.',
-    newsletterProof: `Únete a +${BUILDER_COUNT_FORMATTED} builders hoy`,
+    contactEyebrow: 'CONTACTO',
+    contactHeadline: 'Acelera la transformación digital con IA en tu organización.',
+    contactBody: '',
+    contactCtaLabel: 'Contáctanos',
+    contactCtaSubject: 'Consulta Enterprise',
 }

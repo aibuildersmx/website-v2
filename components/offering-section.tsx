@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { PartnerLogoStrip } from "@/components/partner-logo-strip";
+import { ENTERPRISE_PARTNER_LOGOS } from "@/lib/enterprise-partners";
 import { useEffect, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
@@ -101,7 +103,7 @@ export default function OfferingSection() {
         </header>
 
         <div
-          className="mt-12 flex flex-col gap-4 sm:mt-16 sm:gap-6 md:mt-20 lg:grid lg:items-stretch lg:transition-[grid-template-columns] lg:duration-500 lg:ease-out"
+          className="mt-10 flex flex-col gap-4 sm:mt-12 sm:gap-6 md:mt-14 lg:grid lg:items-stretch lg:transition-[grid-template-columns] lg:duration-500 lg:ease-out"
           style={
             {
               gridTemplateColumns: OFFERING_COLUMN_LAYOUTS[activeIndex],
@@ -192,7 +194,15 @@ export default function OfferingSection() {
           })}
         </div>
 
-        <div className="mt-8 flex justify-center sm:mt-10">
+        <PartnerLogoStrip
+          logos={ENTERPRISE_PARTNER_LOGOS}
+          eyebrow="HAN CONFIADO EN NOSOTROS"
+          variant="light"
+          size="sm"
+          className="mt-10 sm:mt-12"
+        />
+
+        <div className="mt-6 flex justify-center sm:mt-8">
           <Link
             href="/enterprise"
             className="inline-flex h-12 items-center justify-center rounded-xl bg-black px-8 text-sm font-medium text-white transition-colors duration-300 hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20"

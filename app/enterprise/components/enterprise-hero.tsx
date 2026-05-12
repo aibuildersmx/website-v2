@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
 import { HeroHeader } from '@/components/header'
+import { PartnerLogoStrip } from '@/components/partner-logo-strip'
 import { Button } from '@/components/ui/button'
 import { HERO_COPY, HERO_LOGOS, buildMailto } from './enterprise-data'
-import { PartnerLogoStrip } from './partner-logo-strip'
 
 export function EnterpriseHero() {
     return (
-        <div className="relative bg-white text-black">
+        <div className="relative bg-black/[0.035] text-black">
             <HeroHeader />
             <section className="relative pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-16 md:pb-20">
                 <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center space-y-5 sm:space-y-6">

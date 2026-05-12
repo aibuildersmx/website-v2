@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Mail, Send } from 'lucide-react'
+import { ArrowRight, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CTA_COPY, buildMailto } from './enterprise-data'
 
@@ -45,7 +45,7 @@ export function EnterpriseCTA() {
                         </ul>
                     </div>
 
-                    {/* Right: dark inset newsletter card */}
+                    {/* Right: dark inset contact card */}
                     <div className="relative">
                         <div className="bg-black text-white p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl overflow-hidden relative">
                             <div
@@ -61,37 +61,28 @@ export function EnterpriseCTA() {
                                     <Mail className="size-5 sm:size-6 text-white" />
                                 </div>
                                 <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-white/60 mb-3">
-                                    {CTA_COPY.newsletterEyebrow}
+                                    {CTA_COPY.contactEyebrow}
                                 </p>
                                 <h3 className="text-xl sm:text-2xl md:text-3xl font-instrument font-medium mb-3 sm:mb-4">
-                                    {CTA_COPY.newsletterHeadline}
+                                    {CTA_COPY.contactHeadline}
                                 </h3>
-                                <p className="text-white/60 mb-6 sm:mb-8 text-balance text-sm sm:text-base">
-                                    {CTA_COPY.newsletterBody}
-                                </p>
-                                <form
-                                    className="space-y-3 sm:space-y-4"
-                                    action="https://aibuildersmx.beehiiv.com/"
-                                    method="GET"
-                                    target="_blank"
+                                {CTA_COPY.contactBody ? (
+                                    <p className="text-white/60 mb-6 sm:mb-8 text-balance text-sm sm:text-base">
+                                        {CTA_COPY.contactBody}
+                                    </p>
+                                ) : null}
+                                <Button
+                                    asChild
+                                    className="mt-6 sm:mt-8 w-full bg-white text-black hover:bg-white/90 py-5 sm:py-6 text-sm sm:text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 group"
                                 >
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="tu@email.com"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
-                                    />
-                                    <Button
-                                        type="submit"
-                                        className="w-full bg-white text-black hover:bg-white/90 py-5 sm:py-6 text-sm sm:text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 group"
+                                    <Link
+                                        href={buildMailto(CTA_COPY.contactCtaSubject)}
+                                        className="flex items-center justify-center gap-2"
                                     >
-                                        <span>Suscribirme</span>
-                                        <Send className="size-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                                    </Button>
-                                </form>
-                                <p className="mt-4 sm:mt-6 text-[9px] sm:text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
-                                    {CTA_COPY.newsletterProof}
-                                </p>
+                                        <span>{CTA_COPY.contactCtaLabel}</span>
+                                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                                    </Link>
+                                </Button>
                             </div>
                         </div>
                     </div>
