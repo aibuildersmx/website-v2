@@ -7,7 +7,7 @@ export function TalksSection() {
     return (
         <section
             id={TALKS_COPY.id}
-            className="relative py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
+            className="relative py-16 sm:py-24 md:py-32 bg-black/[0.035] text-black border-t border-black/5 scroll-mt-20 sm:scroll-mt-24"
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
