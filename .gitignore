@@ -49,3 +49,6 @@ Thumbs.db
 
 # env
 .env
+
+# Newsletter local secrets
+scripts/newsletter/.env
