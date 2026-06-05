@@ -33,8 +33,15 @@ async function main() {
   console.log(`  sent_at:     ${d.sent_at ?? "—"}`);
   // Resend exposes engagement counts on the broadcast object when available;
   // print any present, and always point to the dashboard for the live view.
+  let printedEngagement = false;
   for (const k of ["delivered", "opened", "clicked", "bounced", "complained", "unsubscribed"]) {
-    if (k in d) console.log(`  ${k.padEnd(12)} ${String(d[k])}`);
+    if (k in d) {
+      console.log(`  ${k.padEnd(12)} ${String(d[k])}`);
+      printedEngagement = true;
+    }
+  }
+  if (!printedEngagement) {
+    console.log("  Aperturas y clicks: ver dashboard (este SDK aún no los expone por API)");
   }
   console.log(`\n  Full analytics: https://resend.com/broadcasts/${match.id}`);
 }
