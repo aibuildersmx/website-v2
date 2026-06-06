@@ -27,7 +27,7 @@ async function main() {
     process.exit(1);
   }
 
-  const d = detail.data as Record<string, unknown>;
+  const d = detail.data as unknown as Record<string, unknown>;
   console.log(`Broadcast "${name}" (id=${match.id})`);
   console.log(`  status:      ${d.status ?? "—"}`);
   console.log(`  sent_at:     ${d.sent_at ?? "—"}`);
