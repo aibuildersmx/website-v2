@@ -35,7 +35,7 @@ export function parseTimestamp(raw: string | undefined): Date | undefined {
   const s = (raw ?? "").trim();
   if (!s || s.toUpperCase() === "NULL") return undefined;
   // Normalize "YYYY-MM-DD HH:MM:SS[ UTC]" → ISO "YYYY-MM-DDTHH:MM:SSZ".
-  const normalized = s.replace(/\s+UTC$/i, "").replace(" ", "T") + "Z";
+  const normalized = s.replace(/\s+UTC$/i, "").replace(/ +/, "T") + "Z";
   const d = new Date(normalized);
   return Number.isNaN(d.getTime()) ? undefined : d;
 }
