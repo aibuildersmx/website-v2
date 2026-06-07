@@ -12,6 +12,11 @@ export interface ImportResult {
  * Upsert merged contacts by email. The merged set is the desired state, so on
  * conflict we overwrite the mutable fields and bump updated_at. Idempotent for
  * the same input set. `xmax = 0` distinguishes a fresh insert from an update.
+ *
+ * Assumes a FULL re-import (every source CSV present), so the merged value is
+ * authoritative and overwriting `firstSeenAt` is safe. If incremental imports
+ * are ever added, switch `firstSeenAt` to `least(contacts.firstSeenAt, excluded)`
+ * so a narrower run can't clobber an earlier timestamp.
  */
 export async function importContacts(db: DB, merged: MergedContact[]): Promise<ImportResult> {
   let inserted = 0;
