@@ -70,9 +70,13 @@ restoring it just to re-export already-exported data is not worth it).
 | `ai-builders-mx-basic_subscriber-2026-06-07.csv` (Beehiiv) | 2,177 | `email`, `status` (active), `tags`, `premium?`, `created_at` | `beehiiv` |
 | `attendees.csv` (Cursor Event) | 81 | `email`, `name`, `locale`, `opted_in_for_raffle`, `selected_prize_id`, `coupon_code_id`, `registered_at` | `cursor-event` |
 | `leads.csv` | 90 | `email`, `name`, `locale`, `coupon_code_id`, `registered_at` | `lead` |
+| `cursor-attendees.csv` (Convex export, added 2026-06-07) | 61 | `_creationTime` (epoch-millis float), `_id`, `couponId`, `email`, `name` | `cursor-attendees` |
 
-Expected unified total: ~2,200+ (event attendees overlap with Beehiiv), not the
-naive sum of 2,348.
+Expected unified total: ~2,200+ (attendees overlap with Beehiiv), not the
+naive sum of all rows. The `cursor-attendees.csv` has a distinct (Convex) shape —
+epoch-millis timestamp, no locale — so it gets its own parser and source tag,
+kept separate from the SQL-style `attendees.csv` (`cursor-event`). CSV parsing
+enables `bom: true` so BOM-prefixed exports are not silently dropped.
 
 ---
 
