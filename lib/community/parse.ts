@@ -1,5 +1,5 @@
 import { parse } from "csv-parse/sync";
-import { parseTimestamp, type ContactInput, type ContactSource } from "./types";
+import { parseEpochMillis, parseTimestamp, type ContactInput, type ContactSource } from "./types";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const BEEHIIV_UNSUB = new Set(["unsubscribed", "unsub", "inactive", "removed", "bounced"]);
@@ -19,10 +19,12 @@ function splitTags(raw: string | undefined): string[] {
 
 /** Beehiiv export: subscriber_id,api_subscription_id,email,tags,status,premium?,created_at */
 export function parseBeehiiv(csv: string): ContactInput[] {
-  const rows = parse(csv, { columns: true, skip_empty_lines: true, trim: true }) as Record<
-    string,
-    string
-  >[];
+  const rows = parse(csv, {
+    columns: true,
+    skip_empty_lines: true,
+    trim: true,
+    bom: true,
+  }) as Record<string, string>[];
   const out: ContactInput[] = [];
   for (const raw of rows) {
     const r = lower(raw);
@@ -52,10 +54,12 @@ export function parseBeehiiv(csv: string): ContactInput[] {
  * Every contact is newsletter_subscribed=true (Ricardo's consent decision).
  */
 export function parseEventCsv(csv: string, source: ContactSource): ContactInput[] {
-  const rows = parse(csv, { columns: true, skip_empty_lines: true, trim: true }) as Record<
-    string,
-    string
-  >[];
+  const rows = parse(csv, {
+    columns: true,
+    skip_empty_lines: true,
+    trim: true,
+    bom: true,
+  }) as Record<string, string>[];
   const out: ContactInput[] = [];
   for (const raw of rows) {
     const r = lower(raw);
@@ -79,6 +83,41 @@ export function parseEventCsv(csv: string, source: ContactSource): ContactInput[
       newsletterSubscribed: true,
       metadata,
       firstSeenAt: parseTimestamp(r.registered_at) ?? parseTimestamp(r.created_at),
+    });
+  }
+  return out;
+}
+
+/**
+ * Cursor attendees (Convex export): _creationTime,_id,couponId,email,name
+ * `_creationTime` is epoch-millis (float). Every contact is
+ * newsletter_subscribed=true (Ricardo's consent decision).
+ */
+export function parseCursorAttendees(csv: string): ContactInput[] {
+  const rows = parse(csv, {
+    columns: true,
+    skip_empty_lines: true,
+    trim: true,
+    bom: true,
+  }) as Record<string, string>[];
+  const out: ContactInput[] = [];
+  for (const raw of rows) {
+    const r = lower(raw);
+    const email = (r.email ?? "").trim().toLowerCase();
+    if (!EMAIL_RE.test(email)) continue;
+    const name = (r.name ?? "").trim() || undefined;
+    const metadata: Record<string, unknown> = {};
+    if (r._id) metadata._id = r._id;
+    if (r.couponid && r.couponid.toUpperCase() !== "NULL") metadata.couponId = r.couponid;
+    out.push({
+      email,
+      name,
+      source: "cursor-attendees",
+      tags: [],
+      isPremium: false,
+      newsletterSubscribed: true,
+      metadata,
+      firstSeenAt: parseEpochMillis(r._creationtime),
     });
   }
   return out;

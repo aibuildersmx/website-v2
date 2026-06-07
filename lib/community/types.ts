@@ -1,4 +1,4 @@
-export type ContactSource = "beehiiv" | "cursor-event" | "lead";
+export type ContactSource = "beehiiv" | "cursor-event" | "lead" | "cursor-attendees";
 
 /** One normalized row from a single CSV source. */
 export interface ContactInput {
@@ -37,5 +37,19 @@ export function parseTimestamp(raw: string | undefined): Date | undefined {
   // Normalize "YYYY-MM-DD HH:MM:SS[ UTC]" → ISO "YYYY-MM-DDTHH:MM:SSZ".
   const normalized = s.replace(/\s+UTC$/i, "").replace(/ +/, "T") + "Z";
   const d = new Date(normalized);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
+
+/**
+ * Parse an epoch-millis timestamp (possibly a float, e.g. Convex `_creationTime`
+ * "1773873720598.4993") into a Date, rounding to the nearest millisecond.
+ * Empty/NULL/junk/non-positive return undefined.
+ */
+export function parseEpochMillis(raw: string | undefined): Date | undefined {
+  const s = (raw ?? "").trim();
+  if (!s || s.toUpperCase() === "NULL") return undefined;
+  const n = Number(s);
+  if (!Number.isFinite(n) || n <= 0) return undefined;
+  const d = new Date(Math.round(n));
   return Number.isNaN(d.getTime()) ? undefined : d;
 }
