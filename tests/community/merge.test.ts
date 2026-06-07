@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mergeContacts } from "../../lib/community/merge";
+import { mergeContacts, sourceCounts } from "../../lib/community/merge";
 import type { ContactInput } from "../../lib/community/types";
 
 function input(p: Partial<ContactInput> & { email: string; source: ContactInput["source"] }): ContactInput {
@@ -57,5 +57,20 @@ describe("mergeContacts", () => {
     ]);
     expect(merged[0].name).toBe("First");
     expect(merged[0].tags).toEqual(["a", "b"]);
+  });
+
+  it("sourceCounts reports all four sources with no NaN", () => {
+    const merged = mergeContacts([
+      input({ email: "a@x.com", source: "beehiiv" }),
+      input({ email: "a@x.com", source: "cursor-event" }),
+      input({ email: "b@x.com", source: "lead" }),
+      input({ email: "c@x.com", source: "cursor-attendees" }),
+    ]);
+    expect(sourceCounts(merged)).toEqual({
+      beehiiv: 1,
+      "cursor-event": 1,
+      lead: 1,
+      "cursor-attendees": 1,
+    });
   });
 });

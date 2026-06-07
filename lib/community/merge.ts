@@ -9,6 +9,9 @@ import type { ContactInput, ContactSource, MergedContact } from "./types";
  * - newsletterSubscribed: AND — any explicit opt-out wins (CAN-SPAM compliance)
  * - metadata: namespaced by source
  * - firstSeenAt: earliest defined
+ *
+ * Inputs are assumed single-use: stored `metadata` references `input.metadata`
+ * (not cloned), so callers must not mutate inputs after merging.
  */
 export function mergeContacts(inputs: ContactInput[]): MergedContact[] {
   const byEmail = new Map<string, MergedContact>();
