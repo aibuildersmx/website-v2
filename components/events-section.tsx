@@ -5,7 +5,7 @@ import { MapPin, ArrowUpRight, Ticket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { events, pastEvents } from "./events-data";
+import { events, pastEvents, type EventCard } from "./events-data";
 
 const isExternalLink = (link?: string) => Boolean(link?.startsWith("http"));
 const eventTypeStyles: Record<string, string> = {
@@ -58,6 +58,44 @@ function EventLogo({
   );
 }
 
+function EventDate({ event, compact = false }: { event: EventCard; compact?: boolean }) {
+  if (event.dateLabel) {
+    return (
+      <span
+        className={cn(
+          "font-mono font-bold uppercase tracking-wider text-black/70 leading-tight text-center",
+          compact ? "text-[9px] sm:text-[10px]" : "text-[11px]",
+        )}
+      >
+        {event.dateLabel}
+      </span>
+    );
+  }
+
+  return (
+    <>
+      <span
+        className={cn(
+          "font-mono font-bold text-black/40 leading-none uppercase tracking-wider",
+          compact
+            ? "text-[8px] sm:text-[10px] mb-0.5 sm:mb-1"
+            : "text-[10px] tracking-widest font-medium",
+        )}
+      >
+        {event.month}
+      </span>
+      <span
+        className={cn(
+          "font-instrument font-medium leading-none text-black/90",
+          compact ? "text-lg sm:text-2xl" : "text-3xl",
+        )}
+      >
+        {event.day}
+      </span>
+    </>
+  );
+}
+
 export default function EventsSection() {
   return (
     <section
@@ -78,17 +116,25 @@ export default function EventsSection() {
           {events.map((event, index) => (
             <div
               key={index}
-              className="group relative flex flex-col md:flex-col bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5 cursor-default"
+              className={cn(
+                "group relative flex flex-col md:flex-col bg-white border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5",
+                event.link && event.buttonDisabled ? "cursor-pointer" : "cursor-default",
+              )}
             >
+              {event.link && event.buttonDisabled && (
+                <Link
+                  href={event.link}
+                  target={isExternalLink(event.link) ? "_blank" : undefined}
+                  rel={isExternalLink(event.link) ? "noopener noreferrer" : undefined}
+                  aria-label={`Ver detalles de ${event.title}`}
+                  className="absolute inset-0 z-10"
+                />
+              )}
+
               {/* Mobile Layout (Horizontal/Subtle) */}
               <div className="flex md:hidden items-center p-4 sm:p-6 gap-3 sm:gap-5">
                 <div className="flex flex-col items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-black/[0.03] border border-black/5 shrink-0">
-                  <span className="text-[8px] sm:text-[10px] font-mono font-bold text-black/40 leading-none mb-0.5 sm:mb-1 uppercase tracking-wider">
-                    {event.month}
-                  </span>
-                  <span className="text-lg sm:text-2xl font-instrument font-medium leading-none">
-                    {event.day}
-                  </span>
+                  <EventDate event={event} compact />
                 </div>
 
                 <div className="flex-1 min-w-0 py-1">
@@ -179,12 +225,7 @@ export default function EventsSection() {
                 {/* Header with Date & Status */}
                 <div className="flex items-stretch border-b border-black/5 bg-black/[0.01]">
                   <div className="flex flex-col justify-center items-center w-24 py-6 border-r border-black/5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-black/40 font-medium">
-                      {event.month}
-                    </span>
-                    <span className="text-3xl font-instrument font-medium text-black/90">
-                      {event.day}
-                    </span>
+                    <EventDate event={event} />
                   </div>
                   <div className="flex-1 flex items-center justify-end px-5 py-2">
                     <div
