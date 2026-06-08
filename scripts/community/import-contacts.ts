@@ -40,6 +40,17 @@ async function main() {
     process.exit(0);
   }
 
+  // Friendly preflight: lib/db/client throws a bare "DATABASE_URL is not set"
+  // at module load, so check here and give the operator a clear remedy instead.
+  if (!process.env.DATABASE_URL?.trim()) {
+    console.error(
+      "DATABASE_URL is not set. For a local run, use Railway's public proxy:\n" +
+        '  export DATABASE_URL="$(railway variables --service Postgres --kv | grep \'^DATABASE_PUBLIC_URL=\' | cut -d= -f2-)"\n' +
+        "then re-run, or pass --dry-run to parse/merge without writing.",
+    );
+    process.exit(1);
+  }
+
   // Lazy-load the DB layer so the dry-run path never imports lib/db/client,
   // which throws at module load when DATABASE_URL is unset.
   const { importContacts } = await import("../../lib/community/import");
