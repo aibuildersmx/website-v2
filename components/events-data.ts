@@ -6,6 +6,7 @@ export type EventCard = {
   description: string;
   month: string;
   day: string;
+  dateLabel?: string;
   location: string;
   attendees: string;
   status: string;
@@ -27,6 +28,23 @@ export type PastEvent = {
 };
 
 export const events: EventCard[] = [
+  {
+    title: "La Residencia",
+    description:
+      "Seis semanas de espacio, mentoría y respaldo para builders con proyectos reales.",
+    month: "JUN",
+    day: "JUL",
+    dateLabel: "JUN–JUL",
+    location: "CDMX",
+    attendees: "Cupo limitado",
+    status: "AGOTADO",
+    price: "Gratis",
+    buttonText: "Agotado",
+    buttonDisabled: true,
+    tags: ["Residencia", "AI"],
+    logo: "/favicon.svg",
+    link: "/residencia",
+  },
   {
     title: "How I Use AI #7: WhatsApp Voicebots",
     description:

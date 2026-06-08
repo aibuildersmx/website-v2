@@ -36,7 +36,7 @@ export default function StatsSection() {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="group overflow-hidden border-black/10 rounded-xl sm:rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5 cursor-default"
+              className="group overflow-hidden rounded-xl border border-black/10 bg-white text-black ring-black/10 sm:rounded-2xl hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5 cursor-default"
             >
               <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-4 md:flex-col md:items-center md:text-center md:gap-6 md:py-10">
                 <div className="flex items-center justify-center size-10 sm:size-12 rounded-lg sm:rounded-xl bg-black/[0.03] border border-black/5 shrink-0 group-hover:bg-black group-hover:text-white transition-colors duration-500">
@@ -44,7 +44,7 @@ export default function StatsSection() {
                 </div>
 
                 <div className="flex-1 min-w-0 md:space-y-2">
-                  <div className="text-2xl sm:text-3xl font-bold tracking-tighter md:text-5xl">
+                  <div className="font-sans text-2xl font-semibold tracking-normal sm:text-3xl md:text-5xl">
                     {stat.value}
                   </div>
                   <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-black/40 font-medium leading-tight">
