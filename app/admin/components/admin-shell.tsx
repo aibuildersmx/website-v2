@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Mail, Briefcase, Users, Menu, X, ChevronUp } from "lucide-react";
+import { Home, Mail, Menu, X, ChevronUp } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { identityForEmail } from "@/lib/admin/avatars";
 
@@ -77,7 +77,7 @@ function AccountFooter({
             {identity && (
               <p className="truncate text-sm text-gray-800 dark:text-gray-100">{identity.name}</p>
             )}
-            <p className="truncate font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+            <p className="truncate text-[10px] font-medium text-gray-400 dark:text-gray-500">
               {email}
             </p>
           </div>
@@ -97,8 +97,6 @@ function AccountFooter({
 const NAV: { href: string; label: string; section: string; icon: typeof Home; exact?: boolean }[] = [
   { href: "/admin", label: "Inicio", section: "General", icon: Home, exact: true },
   { href: "/admin/newsletter", label: "Newsletter", section: "The Build Log", icon: Mail },
-  { href: "/job-board/dashboard", label: "Vacantes", section: "Job Board", icon: Briefcase },
-  { href: "/job-board/dashboard/recruiters", label: "Reclutadores", section: "Job Board", icon: Users },
 ];
 
 function isActive(pathname: string, href: string, exact?: boolean): boolean {
@@ -148,7 +146,7 @@ export function AdminShell({
     <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 py-6">
       {sections.map((section) => (
         <div key={section.name}>
-          <p className="px-3 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+          <p className="px-3 pb-2 text-[10px] font-medium text-gray-400 dark:text-gray-500">
             {section.name}
           </p>
           <ul className="flex flex-col gap-1">
@@ -181,7 +179,7 @@ export function AdminShell({
   const account = <AccountFooter email={email} signOutAction={signOutAction} />;
 
   return (
-    <div className="min-h-screen bg-stone-100 dark:bg-neutral-950">
+    <div className="admin-scope min-h-screen bg-stone-100 dark:bg-neutral-950">
       {/* Desktop sidebar — fixed left. */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-black/5 bg-white md:flex dark:border-white/10 dark:bg-neutral-900">
         <Link

@@ -14,10 +14,10 @@ export function StatCard({
 }) {
   const inner = (
     <>
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+      <p className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
         {eyebrow}
       </p>
-      <p className="mt-2 font-serif text-3xl text-gray-800 dark:text-gray-100">{value}</p>
+      <p className="mt-2 text-3xl font-medium text-gray-800 dark:text-gray-100">{value}</p>
       {sublabel && (
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{sublabel}</p>
       )}

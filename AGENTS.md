@@ -4,13 +4,6 @@ This guide helps non-developers work safely in this project with AI agents (Curs
 
 If you can describe what you want in plain language, an agent can usually do it for you.
 
-## Job Board First (Important)
-
-If your request is job-board-only, start with `JOB-BOARD.md`.
-
-- Use it as the primary guide for `/job-board/demo` and `/job-board/dashboard`
-- Keep changes scoped to job-board files unless a shared dependency requires otherwise
-
 ## Design System (Required Reading)
 
 Before you ask an agent to build, change, or test any visual part of the site, point the agent at the design system. It is the "what does the site look like, and how do we keep it consistent" rulebook.
@@ -83,16 +76,16 @@ You are adding a blog post to aibuilders.mx. Before writing anything:
 ## What This Project Is
 
 - Public website for AI Builders (`/`)
-- Job board demo (`/job-board/demo`)
-- Recruiter dashboard (`/job-board/dashboard`)
 - Event photo gallery (`/photos`)
-- Backed by Supabase for job data
+- Blog (`/blog`)
+- Admin dashboard (`/admin`) — newsletter + community metrics
+- Backed by Railway Postgres (via Drizzle ORM) for community/newsletter data
 
 ### Core Stack (So You Can Talk To Agents Clearly)
 
 - Next.js 16 (App Router)
 - Tailwind CSS 4
-- Supabase (jobs data)
+- Railway Postgres + Drizzle ORM
 - `pnpm` as package manager (prefer `pnpm`, not `npm`/`yarn`)
 
 ### Content Language Rule
@@ -154,14 +147,14 @@ pnpm build
 - `app/*`: routes/pages
   - `app/page.tsx`: homepage
   - `app/photos/page.tsx`: photos gallery
-  - `app/job-board/demo/page.tsx`: public jobs page
-  - `app/job-board/dashboard/page.tsx`: recruiter dashboard
+  - `app/admin/*`: admin dashboard (newsletter + metrics, login-gated)
   - `app/collab/*`: isolated collab page
 - `components/*`: reusable and section components
-- `lib/supabase/*`: DB clients/types
-- `lib/actions/jobs.ts`: job CRUD actions
+- `lib/db/*`: Drizzle client + schema (Railway Postgres)
+- `lib/auth/*`: session/auth helpers
+- `lib/actions/*`: server actions (newsletter, webinar leads)
 - `public/*`: static assets (images/logos)
-- `supabase/migrations/*`: database schema history
+- `drizzle/*`: generated SQL migrations
 
 ## Safe Areas You Can Request Changes In
 
@@ -181,20 +174,12 @@ These are the best places for non-dev content updates:
 - Photo list + alt text: `app/photos/page.tsx`
 - Image files: `public/images/event-photos/...`
 
-### Job Board (Public Demo)
-
-- Main listing experience: `app/job-board/demo/page.tsx`
-- Card visuals/components: `components/job-board/cards/*`
-
-### Recruiter Dashboard (Internal UI)
-
-- Dashboard UI + job form behavior: `app/job-board/dashboard/page.tsx`
-
 ## Data + Backend Areas (Use Extra Care)
 
-- Supabase client/server setup: `lib/supabase/client.ts`, `lib/supabase/server.ts`
-- Job server actions: `lib/actions/jobs.ts`
-- DB schema/migrations: `supabase/migrations/*`
+- Drizzle client/schema: `lib/db/client.ts`, `lib/db/schema.ts`
+- Auth/session logic: `lib/auth/*`
+- Server actions: `lib/actions/*`
+- DB schema/migrations: `lib/db/schema.ts` + `drizzle/*`
 
 Only request changes here if you really need behavior/data model changes.
 
@@ -240,19 +225,12 @@ Use this copy exactly: [paste copy].
 Do not change layout, only text and links.
 ```
 
-### 5) Job Board Filters/Text Refresh
-
-```txt
-In `app/job-board/demo/page.tsx`, update header copy and helper text to this: [paste].
-Keep current filtering logic and AI mode behavior unchanged.
-```
-
 ## Things To Avoid Unless You Mean It
 
-- `lib/supabase/*` credentials logic
-- SQL migrations in `supabase/migrations/*`
+- `lib/db/*` and `lib/auth/*` connection/credentials logic
+- SQL migrations in `drizzle/*` and the schema in `lib/db/schema.ts`
 - Global app shell files (`app/layout.tsx`) unless required
-- Large animation refactors in hero/job-board pages
+- Large animation refactors in the hero page
 - Tooling config files (`next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs`)
 - Dependency and lock files (`package.json`, `pnpm-lock.yaml`) unless explicitly requested
 
@@ -265,9 +243,8 @@ For each task, require this output:
 - Lint result (`pnpm lint`)
 - Manual test checklist by route:
   - `/`
-  - `/job-board/demo`
-  - `/job-board/dashboard`
   - `/photos`
+  - `/admin` (requires login)
 - Any risks or follow-ups
 
 ## Quick Recovery Playbook

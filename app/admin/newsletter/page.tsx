@@ -10,7 +10,7 @@ function StatusDot({ status }: { status: string }) {
       <span
         className={`h-1.5 w-1.5 rounded-full ${sent ? "bg-green-500" : "bg-black/20 dark:bg-white/25"}`}
       />
-      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+      <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
         {sent ? "Enviado" : "Borrador"}
       </span>
     </span>
@@ -24,10 +24,10 @@ export default async function NewsletterListPage() {
     <div>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+          <p className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
             The Build Log
           </p>
-          <h1 className="mt-1 font-serif text-3xl text-gray-800 dark:text-gray-100">Newsletter</h1>
+          <h1 className="mt-1 text-3xl font-medium text-gray-800 dark:text-gray-100">Newsletter</h1>
         </div>
         <form action={createIssue}>
           <button
@@ -53,12 +53,12 @@ export default async function NewsletterListPage() {
                   className="flex items-center justify-between gap-4 px-6 py-4 transition hover:bg-stone-50 dark:hover:bg-white/5"
                 >
                   <div className="min-w-0">
-                    <p className="truncate font-serif text-lg text-gray-800 dark:text-gray-100">
+                    <p className="truncate text-lg font-medium text-gray-800 dark:text-gray-100">
                       {issue.subject || (
                         <span className="text-gray-300 dark:text-gray-600">Sin subject</span>
                       )}
                     </p>
-                    <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+                    <p className="mt-0.5 text-[10px] font-medium text-gray-400 dark:text-gray-500">
                       Issue {issue.slug}
                     </p>
                   </div>

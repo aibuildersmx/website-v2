@@ -14,8 +14,8 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSession = Boolean(request.cookies.get(SESSION_COOKIE)?.value);
 
-  // Protect the job-board dashboard: no session cookie → send to login.
-  if (!hasSession && pathname.startsWith("/job-board/dashboard")) {
+  // Protect the admin dashboard: no session cookie → send to login.
+  if (!hasSession && pathname.startsWith("/admin")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirectTo", pathname);

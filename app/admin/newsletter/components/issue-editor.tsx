@@ -26,7 +26,7 @@ function removeAt<T>(arr: T[], i: number): T[] {
 // --- inline field primitives (Notion-ish: borderless until focus) -----------
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-1 block font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+    <span className="mb-1 block text-[11px] font-medium text-gray-400 dark:text-gray-500">
       {children}
     </span>
   );
@@ -105,10 +105,10 @@ function Block({
     <section className="rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
       <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/10">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-300 dark:text-gray-600">
+          <p className="text-[10px] font-medium text-gray-300 dark:text-gray-600">
             {index}
           </p>
-          <h2 className="font-serif text-xl text-gray-800 dark:text-gray-100">{title}</h2>
+          <h2 className="text-xl font-medium text-gray-800 dark:text-gray-100">{title}</h2>
         </div>
         {onAdd && (
           <button
@@ -137,7 +137,7 @@ function Item({
   return (
     <div className="rounded-xl border border-black/5 bg-stone-50/60 p-4 dark:border-white/10 dark:bg-white/5">
       <div className="mb-3 flex items-center justify-between">
-        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+        <span className="text-[11px] font-medium text-gray-400 dark:text-gray-500">
           {label}
         </span>
         <button
@@ -249,9 +249,9 @@ export function IssueEditor({
       {/* Toolbar */}
       <div className="sticky top-0 z-10 -mx-4 mb-6 flex flex-wrap items-center gap-3 border-b border-black/5 bg-stone-100/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 dark:border-white/10 dark:bg-neutral-950/90">
         <div className="flex items-center gap-2">
-          <span className="font-serif text-lg text-gray-800 dark:text-gray-100">Issue {issue.slug}</span>
+          <span className="text-lg font-medium text-gray-800 dark:text-gray-100">Issue {issue.slug}</span>
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
               sent
                 ? "bg-green-500/10 text-green-700 dark:text-green-400"
                 : "bg-black/5 text-gray-500 dark:bg-white/10 dark:text-gray-300"
@@ -262,7 +262,7 @@ export function IssueEditor({
           </span>
         </div>
 
-        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">
+        <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
           {saveText}
         </span>
 
@@ -469,7 +469,7 @@ export function IssueEditor({
         <div className="lg:sticky lg:top-20 lg:h-[calc(100vh-7rem)]">
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black">
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+              <span className="text-[10px] font-medium text-white/40">
                 Vista previa
               </span>
               <span className="font-mono text-[10px] text-white/30">email</span>

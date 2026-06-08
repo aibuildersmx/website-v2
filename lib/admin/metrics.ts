@@ -1,7 +1,6 @@
 import { sql, eq, gte, desc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { contacts, newsletterIssues } from "@/lib/db/schema";
-import { getJobs } from "@/lib/actions/jobs";
 import { events as upcomingEventsData } from "@/components/events-data";
 import { eventToSummary, type EventSummary } from "./format";
 
@@ -24,7 +23,6 @@ export type DashboardMetrics = {
     lastIssueSentAt: Date | null;
     recentIssues: RecentIssue[];
   };
-  jobs: { active: number | null };
   events: { upcomingCount: number | null; upcoming: EventSummary[] };
 };
 
@@ -68,12 +66,6 @@ async function getNewsletterMetrics(): Promise<DashboardMetrics["newsletter"]> {
   return { subscribers, lastIssueSentAt: sentRows[0]?.sentAt ?? null, recentIssues };
 }
 
-async function getJobsMetrics(): Promise<DashboardMetrics["jobs"]> {
-  // getJobs() ya filtra is_active = true y devuelve [] ante errores de Supabase.
-  const jobs = await getJobs();
-  return { active: jobs.length };
-}
-
 async function getEventsMetrics(): Promise<DashboardMetrics["events"]> {
   return {
     upcomingCount: upcomingEventsData.length,
@@ -83,10 +75,9 @@ async function getEventsMetrics(): Promise<DashboardMetrics["events"]> {
 
 // Nunca lanza: cada sección degrada a su valor neutro si su fuente falla.
 export async function getDashboardMetrics(): Promise<DashboardMetrics> {
-  const [contactsR, newsletterR, jobsR, eventsR] = await Promise.allSettled([
+  const [contactsR, newsletterR, eventsR] = await Promise.allSettled([
     getContactsMetrics(),
     getNewsletterMetrics(),
-    getJobsMetrics(),
     getEventsMetrics(),
   ]);
 
@@ -99,7 +90,6 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
       newsletterR.status === "fulfilled"
         ? newsletterR.value
         : { subscribers: null, lastIssueSentAt: null, recentIssues: [] },
-    jobs: jobsR.status === "fulfilled" ? jobsR.value : { active: null },
     events:
       eventsR.status === "fulfilled"
         ? eventsR.value

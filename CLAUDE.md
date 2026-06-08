@@ -4,15 +4,6 @@
 
 ---
 
-## Job Board First (Important)
-
-If a task is only for the job board, follow `JOB-BOARD.md` first.
-
-- Scope job board changes to `/job-board/demo`, `/job-board/dashboard`, and `components/job-board/*`
-- Use `JOB-BOARD.md` for job-board-specific guardrails, prompt templates, and validation checklist
-
----
-
 ## Design System (Required Reading)
 
 Before creating any new section, feature, or visual change, read the design system. It is the single source of truth for how the site looks, feels, and composes.
@@ -29,7 +20,7 @@ Before creating any new section, feature, or visual change, read the design syst
 2. [docs/design/tokens.md](docs/design/tokens.md) — raw values (colors, fonts, spacing, radii, shadows, motion).
 3. [docs/design/components.md](docs/design/components.md) — canonical class strings for Button, Card, Pill Navigation, Eyebrow, Status Dot, Infinite Slider, Section Anchor, Footer, Input.
 4. [docs/design/sections.md](docs/design/sections.md) — five ready-to-copy section templates (Hero, Content With Media, Grid Of Cards, CTA With Inset, Stats Grid).
-5. [docs/design/validation.md](docs/design/validation.md) — pre-merge checklist, agent scoring prompt, and the known-deviations backlog for `/launch`, `/collab`, `/designwithai`, `/job-board`.
+5. [docs/design/validation.md](docs/design/validation.md) — pre-merge checklist, agent scoring prompt, and the known-deviations backlog for `/launch`, `/collab`, `/designwithai`.
 
 **When building a new section:** `tokens.md` → `sections.md` → `components.md` → validate with `validation.md`. When auditing an existing page, paste the scoring prompt in `validation.md § Part 2` into the agent.
 
@@ -86,7 +77,7 @@ This is the **AI Builders Mexico** community website ([aibuilders.mx](https://ai
 
 - **Next.js 16** — A React framework that handles pages, routing, and server-side features
 - **Tailwind CSS 4** — Utility-first styling (classes like `bg-white`, `text-black`, `p-4`)
-- **Supabase** — The database for the job board (companies, jobs, applications)
+- **Railway Postgres + Drizzle ORM** — The database (community contacts, admin users/sessions, newsletter issues), accessed via `lib/db/`
 - **pnpm** — The package manager (like npm, but faster). Always use `pnpm`, never `npm` or `yarn`
 
 The site is in **Spanish** (es_MX). All user-facing text should stay in Spanish unless specified otherwise.
@@ -142,10 +133,9 @@ aibuilders/
 │   │   ├── page.tsx
 │   │   └── components/
 │   │
-│   └── job-board/              ← Job board (/job-board)
-│       ├── page.tsx            ← Redirects to /job-board/demo
-│       ├── demo/page.tsx       ← Public-facing job listings
-│       └── dashboard/page.tsx  ← Admin panel to manage jobs
+│   └── admin/                  ← Admin dashboard (/admin) — newsletter, metrics
+│       ├── layout.tsx          ← Auth gate (redirects to /login)
+│       └── newsletter/         ← Newsletter ("The Build Log") management
 │
 ├── components/                 ← SHARED components (used across pages)
 │   ├── hero-section.tsx        ← Big hero at the top of homepage
@@ -157,21 +147,20 @@ aibuilders/
 │   ├── cta-section.tsx         ← Call-to-action / newsletter signup
 │   ├── content-3.tsx           ← Manifesto / about section
 │   ├── gallery/                ← Photo gallery components
-│   ├── job-board/              ← Job board components and data
 │   └── ui/                     ← Reusable UI primitives (buttons, cards, etc.)
 │
 ├── lib/                        ← LOGIC & UTILITIES
 │   ├── utils.ts                ← Helper functions
-│   ├── actions/jobs.ts         ← Server actions for job CRUD operations
-│   └── supabase/               ← Database connection and types
+│   ├── db/                     ← Drizzle client + schema (Railway Postgres)
+│   ├── auth/                   ← Session/auth helpers
+│   └── actions/                ← Server actions (newsletter, webinar leads)
 │
 ├── public/                     ← STATIC FILES (images, logos, icons)
 │   ├── favicon.svg
 │   ├── og-image.png            ← Social media preview image
 │   └── images/event-photos/    ← Event photography
 │
-├── supabase/                   ← DATABASE
-│   └── migrations/             ← Database schema definitions
+├── drizzle/                    ← Generated SQL migrations (Railway Postgres)
 │
 ├── types/                      ← TypeScript type definitions
 ├── hooks/                      ← React hooks (use-mobile.tsx)
@@ -224,12 +213,6 @@ Keep current layout and speed behavior.
 Update homepage copy in `components/hero-section.tsx` and `components/cta-section.tsx`.
 Use this copy exactly: [paste copy].
 Do not change layout, only text and links.
-```
-
-**Update job board text:**
-```txt
-In `app/job-board/demo/page.tsx`, update header copy and helper text to this: [paste].
-Keep current filtering logic and AI mode behavior unchanged.
 ```
 
 ### One-Line Super Prompt
@@ -362,19 +345,7 @@ Contains the WhatsApp community link and the Beehiiv newsletter signup form.
 
 ---
 
-### 8. Manage Job Board Postings
-
-The job board has two views:
-
-- **Public demo** (`app/job-board/demo/page.tsx`) — What visitors see. Fetches jobs from Supabase with local fallback data.
-- **Admin dashboard** (`app/job-board/dashboard/page.tsx`) — Create, edit, and delete job postings. Data is stored in Supabase.
-- **Fallback/sample data** (`components/job-board/job-data.ts`) — Hardcoded jobs shown when Supabase is unavailable.
-
-To update the sample/fallback jobs, edit the data in `components/job-board/job-data.ts`.
-
----
-
-### 9. Add Partner Logos
+### 8. Add Partner Logos
 
 Partner logos appear in two places:
 - **Homepage hero slider:** `components/hero-section.tsx` (look for `InfiniteSlider`)
@@ -386,7 +357,7 @@ To add a logo:
 
 ---
 
-### 10. Update the Collab Page
+### 9. Update the Collab Page
 
 The `/collab` page has its own isolated set of components in `app/collab/components/`. It includes:
 - Its own header, footer, hero section
@@ -403,13 +374,13 @@ The `/collab` page has its own isolated set of components in `app/collab/compone
 | File/Folder | Why |
 |---|---|
 | `app/layout.tsx` | Root layout — fonts, theme provider, analytics. Breaking this breaks everything. |
-| `lib/supabase/` | Database connection. Sensitive config. |
-| `lib/actions/jobs.ts` | Server actions with data mutations. |
+| `lib/db/` | Database connection (Drizzle + Railway Postgres). Sensitive config. |
+| `lib/auth/` | Session/auth logic. |
 | `next.config.ts` | Next.js config. |
 | `tsconfig.json` | TypeScript config. |
 | `package.json` | Dependencies. Don't manually edit versions. |
 | `pnpm-lock.yaml` | Auto-generated lock file. Never edit manually. |
-| `supabase/migrations/` | Database schema. Changes here affect the live database. |
+| `drizzle/` & `lib/db/schema.ts` | Database schema/migrations. Changes here affect the live database. |
 | `postcss.config.mjs` | PostCSS/Tailwind pipeline config. |
 | `eslint.config.mjs` | Linting rules. |
 
@@ -436,25 +407,25 @@ The `/collab` page has its own isolated set of components in `app/collab/compone
 
 ---
 
-## Database (Supabase)
+## Database (Railway Postgres + Drizzle)
 
-The job board uses Supabase with three main tables:
+The site uses Railway Postgres accessed through **Drizzle ORM**. Current tables:
 
 | Table | Purpose |
 |---|---|
-| `companies` | Company profiles (name, logo, website, description) |
-| `jobs` | Job postings (title, description, location, salary, type, status) |
-| `applications` | Job applications (name, email, resume, cover letter) |
+| `contacts` | Community email list (source/tags, newsletter opt-in) |
+| `users` | Admin accounts (email + password hash) |
+| `sessions` | Admin login sessions (cookie token hashes) |
+| `newsletter_issues` | "The Build Log" newsletter issues (JSONB content) |
 
-- **Server-side access** uses `lib/supabase/server.ts` with cookie-based auth
-- **Client-side access** uses `lib/supabase/client.ts`
-- **Admin operations** use `createAdminClient()` which bypasses Row Level Security
-- **Types** are defined in `lib/supabase/types.ts`
+- **Client + schema** live in `lib/db/client.ts` and `lib/db/schema.ts`.
+- **Auth** is a custom session cookie (`lib/auth/`), validated server-side — no third-party auth provider.
+- **Migrations** are generated by Drizzle Kit into `drizzle/` (`pnpm db:generate` → `pnpm db:migrate`).
 
-Environment variables needed (in `.env.local`, not committed to git):
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY` (for admin operations)
+Environment variable needed (in `.env.local`, not committed to git):
+- `DATABASE_URL` — Railway Postgres connection string
+
+> Note: the job board was removed (June 2026) pending a redesign; it will be rebuilt with a fresh schema later.
 
 ---
 
@@ -473,7 +444,7 @@ Be careful editing animation code — it can be complex. If you just need to cha
 
 ## Deployment
 
-The project deploys on **Vercel**. Key points:
+The project deploys on **Railway**. Key points:
 
 - Pushing to `main` triggers automatic deployment
 - The `pnpm build` command must succeed before deploying
@@ -495,8 +466,6 @@ The project deploys on **Vercel**. Key points:
 | Edit navigation links | `components/header.tsx` |
 | Update CTA / newsletter | `components/cta-section.tsx` |
 | Add partner logo | `components/hero-section.tsx` and `components/stats.tsx` (InfiniteSlider) |
-| Edit job board sample data | `components/job-board/job-data.ts` |
-| Manage live job postings | Visit `/job-board/dashboard` in the browser |
 | Edit collab page | `app/collab/components/` (isolated components) |
 | Add a new page | Create a new folder in `app/` with a `page.tsx` file |
 | Change global styles/colors | `app/globals.css` |
@@ -517,10 +486,9 @@ After every task, require this output from the AI agent:
 - **Lint result** — output of `pnpm lint`
 - **Manual test checklist** by route:
   - `/` (homepage)
-  - `/job-board/demo` (public job board)
-  - `/job-board/dashboard` (admin panel)
   - `/photos` (gallery)
   - `/collab` (collaboration page)
+  - `/admin` (admin dashboard — requires login)
 - **Any risks or follow-ups** — things to watch out for
 
 ---
