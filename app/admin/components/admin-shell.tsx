@@ -240,7 +240,7 @@ export function AdminShell({
 
       {/* Content — offset by the sidebar width on desktop. */}
       <div className="md:pl-60">
-        <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">{children}</main>
+        <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">{children}</main>
       </div>
     </div>
   );
