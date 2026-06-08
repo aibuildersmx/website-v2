@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useSyncExternalStore } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
@@ -26,22 +26,26 @@ const SplitText = ({
   const ref = useRef(null);
   const animationCompletedRef = useRef(false);
   const onCompleteRef = useRef(onLetterAnimationComplete);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  // `false` on the server / first render, then re-reads once webfonts finish
+  // loading — no effect, no setState.
+  const fontsLoaded = useSyncExternalStore(
+    (cb) => {
+      let live = true;
+      document.fonts.ready.then(() => {
+        if (live) cb();
+      });
+      return () => {
+        live = false;
+      };
+    },
+    () => document.fonts.status === 'loaded',
+    () => false
+  );
 
   // Keep callback ref updated
   useEffect(() => {
     onCompleteRef.current = onLetterAnimationComplete;
   }, [onLetterAnimationComplete]);
-
-  useEffect(() => {
-    if (document.fonts.status === 'loaded') {
-      setFontsLoaded(true);
-    } else {
-      document.fonts.ready.then(() => {
-        setFontsLoaded(true);
-      });
-    }
-  }, []);
 
   useGSAP(
     () => {
@@ -53,7 +57,7 @@ const SplitText = ({
       if (el._rbsplitInstance) {
         try {
           el._rbsplitInstance.revert();
-        } catch (_) {
+        } catch {
           /* ignore */
         }
         el._rbsplitInstance = null;
@@ -122,7 +126,7 @@ const SplitText = ({
         });
         try {
           splitInstance.revert();
-        } catch (_) {
+        } catch {
           /* ignore */
         }
         el._rbsplitInstance = null;

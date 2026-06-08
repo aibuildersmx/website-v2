@@ -1,4 +1,4 @@
-import type { Issue } from "../issues/types";
+import type { Issue } from "./types";
 
 export interface BroadcastPayload {
   audienceId: string;

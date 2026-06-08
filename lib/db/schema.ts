@@ -7,6 +7,7 @@ import {
   timestamp,
   index,
 } from "drizzle-orm/pg-core";
+import type { Issue } from "@/lib/newsletter/types";
 
 export const contacts = pgTable(
   "contacts",
@@ -62,3 +63,21 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Session = typeof sessions.$inferSelect;
 export type NewSession = typeof sessions.$inferInsert;
+
+// Newsletter issues ("The Build Log"). `data` holds the full structured Issue
+// (lib/newsletter/types.ts) as JSONB — the single canonical model edited by the
+// panel and, later, by an external generator / AI tools / an MCP agent.
+export const newsletterIssues = pgTable("newsletter_issues", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(), // e.g. "003"; also Issue.slug
+  subject: text("subject").notNull().default(""), // denormalized for list views
+  status: text("status").notNull().default("draft"), // "draft" | "sent"
+  data: jsonb("data").$type<Issue>().notNull(), // the full Issue object
+  resendBroadcastId: text("resend_broadcast_id"), // set once broadcast
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type NewsletterIssueRow = typeof newsletterIssues.$inferSelect;
+export type NewNewsletterIssueRow = typeof newsletterIssues.$inferInsert;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { buildBroadcastPayload } from "../../scripts/newsletter/lib/broadcast";
-import issue002 from "../../scripts/newsletter/issues/002-the-build-log";
+import { buildBroadcastPayload } from "@/lib/newsletter/broadcast";
+import issue002 from "./fixtures/sample-issue";
 
 describe("buildBroadcastPayload", () => {
   const payload = buildBroadcastPayload(issue002, "<html>hi</html>", {

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import React from "react";
 
@@ -9,7 +10,7 @@ export default function FooterSection() {
                     href="/"
                     aria-label="go home"
                     className="mx-auto block size-fit">
-                    <img src="/AIBM-logo-dark.svg" alt="AI Builders Mexico" className="h-6 sm:h-8 w-auto" />
+                    <Image src="/AIBM-logo-dark.svg" alt="AI Builders Mexico" width={393} height={95} unoptimized className="h-6 sm:h-8 w-auto" />
                 </Link>
 
                 <div className="mt-8 text-center">

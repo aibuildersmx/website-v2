@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, ArrowUpRight, Ticket } from "lucide-react";
+import { MapPin, ArrowUpRight, Ticket } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -44,9 +45,12 @@ function EventLogo({
   }
 
   return (
-    <img
+    <Image
       src={logo}
       alt={alt}
+      width={128}
+      height={32}
+      unoptimized
       className={className}
       onError={(e) => (e.currentTarget.style.display = "none")}
     />

@@ -1,3 +1,15 @@
+// Canonical newsletter data model ("The Build Log").
+//
+// This is the single source of truth for the Issue shape. It is consumed by:
+//   - the web composer at /admin/newsletter (humans edit it inline),
+//   - the Resend send pipeline (renderBuildLog + buildBroadcastPayload),
+//   - the legacy CLI in scripts/newsletter (which re-exports from here),
+//   - and, in a later phase, an external generator + AI tools (Anthropic SDK)
+//     + an MCP agent — all of which read/write this same structured JSON.
+//
+// Keep it structured (typed sections, not free-form markdown) precisely so
+// every one of those editors operates on the same model.
+
 export interface Story {
   eyebrow: string; // "01 · Desarrollo"
   title: string;

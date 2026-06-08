@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import type { PartnerLogo } from '@/lib/enterprise-partners'
@@ -71,9 +72,12 @@ function LogoCell({
     }
 
     return (
-        <img
+        <Image
             src={logo.src}
             alt={logo.alt}
+            width={128}
+            height={32}
+            unoptimized
             className={cn(
                 'w-auto object-contain transition-opacity duration-300',
                 heightClass,

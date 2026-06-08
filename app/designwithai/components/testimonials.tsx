@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 
 const testimonials = [
@@ -106,9 +107,12 @@ export default function TestimonialsSection() {
 
                 <div className="flex items-center gap-3 mt-auto pt-4 border-t border-black/5">
                   {testimonial.avatar ? (
-                    <img
+                    <Image
                       src={testimonial.avatar}
                       alt={testimonial.name}
+                      width={40}
+                      height={40}
+                      unoptimized
                       className="size-8 sm:size-10 rounded-full object-cover flex-shrink-0"
                     />
                   ) : (

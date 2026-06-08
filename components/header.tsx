@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
@@ -37,9 +38,12 @@ export const HeroHeader = () => {
                     aria-label="home"
                     className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-white/10 transition-colors"
                 >
-                    <img
+                    <Image
                         src="/AIBM-logo-dark.svg"
                         alt="AI Builders Mexico"
+                        width={393}
+                        height={95}
+                        unoptimized
                         className="h-4 sm:h-5 w-auto"
                     />
                 </Link>

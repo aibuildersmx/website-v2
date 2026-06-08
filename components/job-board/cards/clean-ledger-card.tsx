@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   MapPin,
@@ -112,9 +113,12 @@ export function CleanLedgerCard({
         {/* ---- Top section (subtle bg) ---- */}
         <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/80 px-5 py-5 sm:px-8 sm:py-6">
           <div className="flex items-center gap-2.5">
-            <img
+            <Image
               src={job.companyLogo}
               alt={job.company}
+              width={40}
+              height={40}
+              unoptimized
               className="h-10 w-10 rounded-xl"
             />
             <span className="text-sm text-gray-400">{job.company}</span>

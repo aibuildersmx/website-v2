@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HeroHeader } from "./header";
@@ -109,30 +110,34 @@ export default function HeroSection() {
                   className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full max-w-[360px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-none"
                 >
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
-                    <img
+                    <Image
                       src="/hero1.avif"
                       alt="Hero 1"
+                      fill
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
-                    <img
+                    <Image
                       src="/hero2.avif"
                       alt="Hero 2"
+                      fill
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
-                    <img
+                    <Image
                       src="/hero3.avif"
                       alt="Hero 3"
+                      fill
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
                   <div className="relative aspect-square w-full bg-[#212121]/80 rounded-xl sm:rounded-2xl border border-white/10 overflow-hidden">
-                    <img
+                    <Image
                       src="/hero4.avif"
                       alt="Hero 4"
+                      fill
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>

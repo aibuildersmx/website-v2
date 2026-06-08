@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, DollarSign, Users } from "lucide-react";
 import type { JobData } from "../job-data";
@@ -58,9 +59,12 @@ export function EventStyleCard({ job }: { job: JobData }) {
       {/* Main content */}
       <div className="px-6 pb-7 pt-6">
         {/* Company logo */}
-        <img
+        <Image
           src={job.companyLogo}
           alt={job.company}
+          width={48}
+          height={48}
+          unoptimized
           className="mb-4 h-12 w-12 rounded-xl"
         />
 

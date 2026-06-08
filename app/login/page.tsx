@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Loader2, LogIn, AlertCircle } from "lucide-react";
 import { signIn } from "@/lib/auth";
@@ -29,13 +31,16 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <div className="mb-10 text-center">
-          <a href="/">
-            <img
+          <Link href="/">
+            <Image
               src="/aibm-logo.svg"
               alt="AI Builders Mexico"
-              className="mx-auto h-6 brightness-0"
+              width={393}
+              height={95}
+              className="mx-auto h-6 w-auto brightness-0"
+              unoptimized
             />
-          </a>
+          </Link>
         </div>
 
         {/* Header */}

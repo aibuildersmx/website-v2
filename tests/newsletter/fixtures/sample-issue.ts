@@ -1,5 +1,8 @@
-import type { Issue } from "./types";
+import type { Issue } from "@/lib/newsletter/types";
 
+// Realistic sample issue (was The Build Log 002). Lives here as a test fixture
+// now that the CLI was retired; doubles as reference content for seeding the
+// first draft in the panel.
 const issue: Issue = {
   slug: "002",
   subject: "The Build Log · Issue 002 — Cada agente cuesta",

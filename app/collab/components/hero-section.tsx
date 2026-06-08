@@ -1,6 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
-import {Button} from '@/app/collab/components/ui/button'
 import {InfiniteSlider} from '@/app/collab/components/ui/infinite-slider'
 import {ProgressiveBlur} from '@/app/collab/components/ui/progressive-blur'
 import {TextEffect} from "@/app/collab/components/motion-primitives/text-effect";
