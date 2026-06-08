@@ -61,7 +61,7 @@ export function renderBuildLog(issue: Issue): string {
   const stories = issue.stories
     .map(
       (s) => `
-      <div style="padding:0 0 32px;border-bottom:1px solid ${LINE};margin-bottom:32px;">
+      <div style="padding:0 0 40px;border-bottom:1px solid ${LINE};margin-bottom:32px;">
         ${eyebrow(s.eyebrow)}
         <h3 style="margin:0;font-family:${SANS};font-size:24px;font-weight:600;line-height:1.25;">
           <a href="${esc(s.href)}" style="color:${TEXT};text-decoration:none;">${esc(

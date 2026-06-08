@@ -299,7 +299,7 @@ export function EditableCanvas({
             key={i}
             onRemove={() => patch({ stories: removeAt(issue.stories, i) })}
           >
-            <div className="group border-b border-black/5 pb-4 dark:border-white/10">
+            <div className="group border-b border-black/5 pb-8 dark:border-white/10">
               <Eyebrow
                 value={s.eyebrow}
                 onChange={(v) =>
