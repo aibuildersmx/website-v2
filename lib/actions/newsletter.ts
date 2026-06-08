@@ -2,16 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { newsletterIssues } from "@/lib/db/schema";
+import { newsletterIssues, newsletterSends } from "@/lib/db/schema";
 import { getUser } from "@/lib/auth";
 import type { Issue } from "@/lib/newsletter/types";
 import { emptyIssue } from "@/lib/newsletter/issue";
 import { renderBuildLog } from "@/lib/newsletter/render";
 import { loadNewsletterConfig, MissingEnvError } from "@/lib/newsletter/resend";
 import { subscribedRecipients, chunk } from "@/lib/newsletter/recipients";
-import { injectUnsubscribe, unsubscribeHeaders } from "@/lib/newsletter/unsubscribe";
+import { getBoss, SEND_BATCH_QUEUE } from "@/lib/queue/boss";
 
 const LIST_PATH = "/admin/newsletter";
 
@@ -161,22 +161,21 @@ export async function sendTest(
   return { ok: true, message: `Prueba enviada a ${to}.` };
 }
 
-export async function sendIssue(
-  id: string,
-): Promise<ActionOk | ActionError> {
+export async function sendIssue(id: string): Promise<ActionOk | ActionError> {
   if (await gate()) return { error: "No autorizado." };
 
   const detail = await getIssue(id);
   if (!detail) return { error: "Issue no encontrado." };
   if (detail.status === "sent") return { error: "Este issue ya fue enviado." };
+  if (detail.status === "sending") return { error: "Este issue ya se está enviando." };
 
   const data = detail.data;
   if (!data.subject.trim()) return { error: "El issue necesita un subject." };
   if (!data.stories.length) return { error: "Agrega al menos una historia antes de enviar." };
 
-  let cfg;
+  // Fail fast if Resend isn't configured — the same env the worker needs.
   try {
-    cfg = loadNewsletterConfig();
+    loadNewsletterConfig();
   } catch (e) {
     if (e instanceof MissingEnvError) return { error: e.message };
     throw e;
@@ -185,43 +184,85 @@ export async function sendIssue(
   const recipients = await subscribedRecipients();
   if (!recipients.length) return { error: "No hay contactos suscritos al newsletter." };
 
-  // Send via the transactional batch API, ≤100 per call. Each recipient gets
-  // their own unsubscribe link (footer + List-Unsubscribe header) so we stay
-  // CAN-SPAM / one-click compliant without Resend Audiences.
-  const html = renderBuildLog(data);
-  let failed = 0;
+  // 1. One pending row per recipient (idempotent — re-send is a no-op).
+  await db
+    .insert(newsletterSends)
+    .values(
+      recipients.map((r) => ({ issueId: id, contactId: r.id, status: "pending" as const })),
+    )
+    .onConflictDoNothing({
+      target: [newsletterSends.issueId, newsletterSends.contactId],
+    });
+
+  // 2. Mark the issue as sending.
+  await db
+    .update(newsletterIssues)
+    .set({ status: "sending", updatedAt: new Date() })
+    .where(eq(newsletterIssues.id, id));
+
+  // 3. Enqueue one job per chunk of 100 recipients.
+  const boss = await getBoss();
   for (const group of chunk(recipients)) {
-    const res = await cfg.resend.batch.send(
-      group.map((r) => ({
-        from: cfg.from,
-        to: [r.email],
-        subject: data.subject,
-        html: injectUnsubscribe(html, r.id),
-        replyTo: cfg.replyTo,
-        headers: unsubscribeHeaders(r.id),
-      })),
-    );
-    if (res.error) failed += group.length;
+    await boss.send(SEND_BATCH_QUEUE, {
+      issueId: id,
+      contactIds: group.map((r) => r.id),
+    });
   }
 
-  if (failed === recipients.length) {
-    return { error: "No se pudo enviar el newsletter a ningún contacto." };
-  }
+  revalidatePath(`${LIST_PATH}/${id}`);
+  revalidatePath(LIST_PATH);
+  return { ok: true, message: `Encolado: enviando a ${recipients.length} contactos.` };
+}
+
+export async function retryFailed(id: string): Promise<ActionOk | ActionError> {
+  if (await gate()) return { error: "No autorizado." };
+
+  const failed = await db
+    .select({ contactId: newsletterSends.contactId })
+    .from(newsletterSends)
+    .where(and(eq(newsletterSends.issueId, id), eq(newsletterSends.status, "failed")));
+  if (!failed.length) return { error: "No hay envíos fallidos para reintentar." };
+
+  await db
+    .update(newsletterSends)
+    .set({ status: "pending", error: null, updatedAt: new Date() })
+    .where(and(eq(newsletterSends.issueId, id), eq(newsletterSends.status, "failed")));
 
   await db
     .update(newsletterIssues)
-    .set({
-      status: "sent",
-      sentAt: new Date(),
-      updatedAt: new Date(),
-    })
+    .set({ status: "sending", sentAt: null, updatedAt: new Date() })
     .where(eq(newsletterIssues.id, id));
+
+  const ids = failed.map((r) => r.contactId);
+  const boss = await getBoss();
+  for (const group of chunk(ids)) {
+    await boss.send(SEND_BATCH_QUEUE, { issueId: id, contactIds: group });
+  }
+
   revalidatePath(`${LIST_PATH}/${id}`);
   revalidatePath(LIST_PATH);
+  return { ok: true, message: `Reintentando ${ids.length} envíos.` };
+}
 
-  const delivered = recipients.length - failed;
-  const note = failed ? ` (${failed} fallaron)` : "";
-  return { ok: true, message: `Newsletter enviado a ${delivered} contactos${note}.` };
+export interface IssueProgress {
+  total: number;
+  sent: number;
+  failed: number;
+  pending: number;
+}
+
+export async function getIssueProgress(id: string): Promise<IssueProgress> {
+  if (await gate()) return { total: 0, sent: 0, failed: 0, pending: 0 };
+  const rows = await db
+    .select({ status: newsletterSends.status, count: sql<number>`count(*)::int` })
+    .from(newsletterSends)
+    .where(eq(newsletterSends.issueId, id))
+    .groupBy(newsletterSends.status);
+  const by = (s: string) => rows.find((r) => r.status === s)?.count ?? 0;
+  const sent = by("sent");
+  const failed = by("failed");
+  const pending = by("pending");
+  return { total: sent + failed + pending, sent, failed, pending };
 }
 
 // --- Phase 4 seam (NOT wired yet) -------------------------------------------
