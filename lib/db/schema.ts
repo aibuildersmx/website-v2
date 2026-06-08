@@ -6,6 +6,7 @@ import {
   jsonb,
   timestamp,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import type { Issue } from "@/lib/newsletter/types";
 
@@ -71,7 +72,7 @@ export const newsletterIssues = pgTable("newsletter_issues", {
   id: uuid("id").primaryKey().defaultRandom(),
   slug: text("slug").notNull().unique(), // e.g. "003"; also Issue.slug
   subject: text("subject").notNull().default(""), // denormalized for list views
-  status: text("status").notNull().default("draft"), // "draft" | "sent"
+  status: text("status").notNull().default("draft"), // "draft" | "sending" | "sent"
   data: jsonb("data").$type<Issue>().notNull(), // the full Issue object
   resendBroadcastId: text("resend_broadcast_id"), // set once broadcast
   sentAt: timestamp("sent_at", { withTimezone: true }),
@@ -81,3 +82,37 @@ export const newsletterIssues = pgTable("newsletter_issues", {
 
 export type NewsletterIssueRow = typeof newsletterIssues.$inferSelect;
 export type NewNewsletterIssueRow = typeof newsletterIssues.$inferInsert;
+
+// One row per (issue, contact) send attempt. The unique (issueId, contactId)
+// index is the idempotency anchor: re-enqueuing a send is a no-op, and a retried
+// batch skips rows already marked "sent".
+export const newsletterSends = pgTable(
+  "newsletter_sends",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id")
+      .notNull()
+      .references(() => newsletterIssues.id, { onDelete: "cascade" }),
+    contactId: uuid("contact_id")
+      .notNull()
+      .references(() => contacts.id, { onDelete: "cascade" }),
+    status: text("status").notNull().default("pending"), // "pending" | "sent" | "failed"
+    resendId: text("resend_id"),
+    error: text("error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    issueContactIdx: uniqueIndex("newsletter_sends_issue_contact_idx").on(
+      t.issueId,
+      t.contactId,
+    ),
+    issueStatusIdx: index("newsletter_sends_issue_status_idx").on(
+      t.issueId,
+      t.status,
+    ),
+  }),
+);
+
+export type NewsletterSendRow = typeof newsletterSends.$inferSelect;
+export type NewNewsletterSendRow = typeof newsletterSends.$inferInsert;
