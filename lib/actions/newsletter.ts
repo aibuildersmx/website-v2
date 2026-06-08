@@ -4,13 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { newsletterIssues, newsletterSends } from "@/lib/db/schema";
+import { contacts, newsletterIssues, newsletterSends } from "@/lib/db/schema";
 import { getUser } from "@/lib/auth";
 import type { Issue } from "@/lib/newsletter/types";
 import { emptyIssue } from "@/lib/newsletter/issue";
 import { renderBuildLog } from "@/lib/newsletter/render";
 import { loadNewsletterConfig, MissingEnvError } from "@/lib/newsletter/resend";
 import { subscribedRecipients, chunk } from "@/lib/newsletter/recipients";
+import { injectUnsubscribe, siteUrl } from "@/lib/newsletter/unsubscribe";
 import { getBoss, SEND_BATCH_QUEUE } from "@/lib/queue/boss";
 
 const LIST_PATH = "/admin/newsletter";
@@ -150,11 +151,27 @@ export async function sendTest(
     throw e;
   }
 
+  // Render a real "Cancelar suscripción" link instead of the no-op "#" used in
+  // the in-panel preview. If the test recipient is a real contact, sign their id
+  // so the link behaves exactly like production; otherwise point to the live
+  // unsubscribe page (it shows a friendly "couldn't verify" message).
+  const [contact] = await db
+    .select({ id: contacts.id })
+    .from(contacts)
+    .where(eq(contacts.email, to))
+    .limit(1);
+  const html = contact
+    ? injectUnsubscribe(renderBuildLog(data), contact.id)
+    : renderBuildLog(data).replace(
+        /\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g,
+        `${siteUrl()}/unsubscribe`,
+      );
+
   const res = await cfg.resend.emails.send({
     from: cfg.from,
     to: [to],
     subject: `[TEST] ${data.subject}`,
-    html: previewHtml(data),
+    html,
     replyTo: cfg.replyTo,
   });
   if (res.error) return { error: `Envío de prueba falló: ${res.error.message}` };
