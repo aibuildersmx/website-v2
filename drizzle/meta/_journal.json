@@ -8,6 +8,13 @@
       "when": 1780868678575,
       "tag": "0000_gifted_thunderbolts",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780885582223,
+      "tag": "0001_crazy_omega_red",
+      "breakpoints": true
     }
   ]
 }
