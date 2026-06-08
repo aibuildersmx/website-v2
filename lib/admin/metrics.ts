@@ -1,25 +1,108 @@
-export type EventSummary = { title: string; dateLabel: string; location: string };
+import { sql, eq, gte, desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { contacts, newsletterIssues } from "@/lib/db/schema";
+import { getJobs } from "@/lib/actions/jobs";
+import { events as upcomingEventsData } from "@/components/events-data";
+import { eventToSummary, type EventSummary } from "./format";
 
-const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+// Re-export para que la página importe todo lo del dashboard desde un solo lugar.
+export { eventToSummary, formatDate, formatCount } from "./format";
+export type { EventSummary } from "./format";
 
-// Resume un evento del array a lo mínimo que muestra el dashboard.
-export function eventToSummary(e: {
-  title: string;
-  month: string;
-  day: string;
-  location: string;
-}): EventSummary {
-  return { title: e.title, dateLabel: `${e.month} ${e.day}`, location: e.location };
+export type RecentIssue = {
+  id: string;
+  slug: string;
+  subject: string;
+  status: string;
+  sentAt: Date | null;
+};
+
+export type DashboardMetrics = {
+  contacts: { total: number | null; last30d: number | null };
+  newsletter: {
+    subscribers: number | null;
+    lastIssueSentAt: Date | null;
+    recentIssues: RecentIssue[];
+  };
+  jobs: { active: number | null };
+  events: { upcomingCount: number | null; upcoming: EventSummary[] };
+};
+
+async function getContactsMetrics(): Promise<DashboardMetrics["contacts"]> {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const [{ total }] = await db
+    .select({ total: sql<number>`count(*)::int` })
+    .from(contacts);
+  const [{ recent }] = await db
+    .select({ recent: sql<number>`count(*)::int` })
+    .from(contacts)
+    .where(gte(contacts.createdAt, thirtyDaysAgo));
+  return { total, last30d: recent };
 }
 
-// "14 may 2026" en UTC (determinista para tests); "—" si no hay fecha.
-export function formatDate(d: Date | null): string {
-  if (!d) return "—";
-  return `${d.getUTCDate()} ${MESES[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+async function getNewsletterMetrics(): Promise<DashboardMetrics["newsletter"]> {
+  const [{ subscribers }] = await db
+    .select({ subscribers: sql<number>`count(*)::int` })
+    .from(contacts)
+    .where(eq(contacts.newsletterSubscribed, true));
+
+  const sentRows = await db
+    .select({ sentAt: newsletterIssues.sentAt })
+    .from(newsletterIssues)
+    .where(eq(newsletterIssues.status, "sent"))
+    .orderBy(desc(newsletterIssues.sentAt))
+    .limit(1);
+
+  const recentIssues = await db
+    .select({
+      id: newsletterIssues.id,
+      slug: newsletterIssues.slug,
+      subject: newsletterIssues.subject,
+      status: newsletterIssues.status,
+      sentAt: newsletterIssues.sentAt,
+    })
+    .from(newsletterIssues)
+    .orderBy(desc(newsletterIssues.updatedAt))
+    .limit(3);
+
+  return { subscribers, lastIssueSentAt: sentRows[0]?.sentAt ?? null, recentIssues };
 }
 
-// "2,256" con separador de miles; "—" si es null.
-export function formatCount(n: number | null): string {
-  if (n === null) return "—";
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+async function getJobsMetrics(): Promise<DashboardMetrics["jobs"]> {
+  // getJobs() ya filtra is_active = true y devuelve [] ante errores de Supabase.
+  const jobs = await getJobs();
+  return { active: jobs.length };
+}
+
+async function getEventsMetrics(): Promise<DashboardMetrics["events"]> {
+  return {
+    upcomingCount: upcomingEventsData.length,
+    upcoming: upcomingEventsData.slice(0, 3).map(eventToSummary),
+  };
+}
+
+// Nunca lanza: cada sección degrada a su valor neutro si su fuente falla.
+export async function getDashboardMetrics(): Promise<DashboardMetrics> {
+  const [contactsR, newsletterR, jobsR, eventsR] = await Promise.allSettled([
+    getContactsMetrics(),
+    getNewsletterMetrics(),
+    getJobsMetrics(),
+    getEventsMetrics(),
+  ]);
+
+  return {
+    contacts:
+      contactsR.status === "fulfilled"
+        ? contactsR.value
+        : { total: null, last30d: null },
+    newsletter:
+      newsletterR.status === "fulfilled"
+        ? newsletterR.value
+        : { subscribers: null, lastIssueSentAt: null, recentIssues: [] },
+    jobs: jobsR.status === "fulfilled" ? jobsR.value : { active: null },
+    events:
+      eventsR.status === "fulfilled"
+        ? eventsR.value
+        : { upcomingCount: null, upcoming: [] },
+  };
 }

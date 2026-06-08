@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { eventToSummary, formatDate, formatCount } from "../../lib/admin/metrics";
+import { eventToSummary, formatDate, formatCount } from "../../lib/admin/format";
 
 describe("eventToSummary", () => {
   it("arma el label de fecha desde month y day", () => {
