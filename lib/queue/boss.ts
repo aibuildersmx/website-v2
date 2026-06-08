@@ -30,12 +30,13 @@ async function startBoss(): Promise<PgBoss> {
 
   // Idempotent queue setup. retryLimit/retryBackoff + deadLetter are queue
   // policies in pg-boss v12, so enqueue calls don't need per-send options.
+  // The dead-letter queue must exist before the main queue references it.
+  await boss.createQueue(SEND_BATCH_DLQ, {});
   await boss.createQueue(SEND_BATCH_QUEUE, {
     retryLimit: 5,
     retryBackoff: true,
     deadLetter: SEND_BATCH_DLQ,
   });
-  await boss.createQueue(SEND_BATCH_DLQ, {});
 
   return boss;
 }
