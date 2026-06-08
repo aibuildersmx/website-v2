@@ -3,7 +3,7 @@ import {Button} from '@/app/launch/components/ui/button'
 import Link from 'next/link'
 import {TextEffect} from "@/app/launch/components/motion-primitives/text-effect"
 import {AnimatedGroup} from "@/app/launch/components/motion-primitives/animated-group"
-import {transitionVariants} from "@/lib/utils"
+import {transitionVariants} from "@/lib/motion"
 
 export default function CallToAction() {
     return (

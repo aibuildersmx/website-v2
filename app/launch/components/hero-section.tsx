@@ -3,7 +3,7 @@ import {Button} from '@/app/launch/components/ui/button'
 import {TextEffect} from "@/app/launch/components/motion-primitives/text-effect"
 import {AnimatedGroup} from "@/app/launch/components/motion-primitives/animated-group"
 import DecryptedText from "@/app/launch/components/DecryptedText"
-import {transitionVariants} from "@/lib/utils"
+import {transitionVariants} from "@/lib/motion"
 
 export default function HeroSection() {
     const scrollTo = (id: string) => (e: React.MouseEvent) => {

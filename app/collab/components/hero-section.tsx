@@ -6,7 +6,7 @@ import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-
 import V0Icon from "@/app/collab/components/icons/v0-icon";
 import Image from 'next/image';
 import DecryptedText from "@/app/collab/components/DecryptedText";
-import {transitionVariants} from "@/lib/utils";
+import {transitionVariants} from "@/lib/motion";
 
 export default function HeroSection() {
     return (

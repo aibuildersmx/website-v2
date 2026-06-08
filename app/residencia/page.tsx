@@ -18,7 +18,7 @@ import DecryptedText from '@/app/launch/components/DecryptedText'
 import { AnimatedGroup } from '@/app/launch/components/motion-primitives/animated-group'
 import { TextEffect } from '@/app/launch/components/motion-primitives/text-effect'
 import { Button } from '@/app/launch/components/ui/button'
-import { transitionVariants } from '@/lib/utils'
+import { transitionVariants } from '@/lib/motion'
 
 const applicationHref = 'https://forms.gle/Bga8XyuNzsHnk6cQA'
 
