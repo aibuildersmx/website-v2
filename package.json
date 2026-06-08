@@ -13,7 +13,8 @@
     "test:newsletter": "vitest run tests/newsletter",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "community:import": "tsx scripts/community/import-contacts.ts"
+    "community:import": "tsx scripts/community/import-contacts.ts",
+    "db:seed-admin": "tsx scripts/auth/seed-admin.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
