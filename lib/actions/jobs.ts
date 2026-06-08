@@ -1,38 +1,15 @@
 'use server'
 
-import { createAdminClient, createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { getUser } from '@/lib/auth'
 import type { Job, Company, JobWithCompany } from '@/lib/supabase/types'
 
 async function requireAuth() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getUser()
   if (!user) {
     return { error: 'No autorizado.' }
   }
-
-  const admin = createAdminClient()
-  const normalizedEmail = (user.email ?? '').trim().toLowerCase()
-  if (!normalizedEmail) {
-    return { error: 'No autorizado.' }
-  }
-
-  const { data: recruiter, error: recruiterError } = await admin
-    .from('recruiters')
-    .select('email')
-    .eq('email', normalizedEmail)
-    .eq('is_active', true)
-    .maybeSingle()
-
-  if (recruiterError) {
-    console.error('Failed to validate recruiter allowlist:', recruiterError)
-    return { error: 'No autorizado.' }
-  }
-
-  if (!recruiter) {
-    return { error: 'No autorizado.' }
-  }
-
   return { user }
 }
 

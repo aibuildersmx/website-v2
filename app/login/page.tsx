@@ -44,7 +44,7 @@ export default function LoginPage() {
             Iniciar sesión
           </h1>
           <p className="text-sm text-gray-400">
-            Panel de administración del Job Board
+            Panel de administración
           </p>
         </div>
 
