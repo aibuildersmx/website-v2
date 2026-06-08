@@ -5,14 +5,13 @@ export const dynamic = "force-dynamic";
 
 function StatusDot({ status }: { status: string }) {
   const sent = status === "sent";
+  const sending = status === "sending";
+  const color = sent ? "bg-green-500" : sending ? "bg-amber-500" : "bg-black/20 dark:bg-white/25";
+  const label = sent ? "Enviado" : sending ? "Enviando…" : "Borrador";
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span
-        className={`h-1.5 w-1.5 rounded-full ${sent ? "bg-green-500" : "bg-black/20 dark:bg-white/25"}`}
-      />
-      <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
-        {sent ? "Enviado" : "Borrador"}
-      </span>
+      <span className={`h-1.5 w-1.5 rounded-full ${color}`} />
+      <span className="text-xs font-medium text-gray-400 dark:text-gray-500">{label}</span>
     </span>
   );
 }

@@ -7,6 +7,9 @@ import {
   sendTest,
   sendIssue,
   renderPreview,
+  retryFailed,
+  getIssueProgress,
+  type IssueProgress,
 } from "@/lib/actions/newsletter";
 import { EditableCanvas } from "./editable-canvas";
 
@@ -16,14 +19,17 @@ export function IssueEditor({
   id,
   initialData,
   status: initialStatus,
+  initialProgress,
 }: {
   id: string;
   initialData: Issue;
   status: string;
+  initialProgress: IssueProgress;
 }) {
   const [issue, setIssue] = useState<Issue>(initialData);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [status, setStatus] = useState(initialStatus);
+  const [progress, setProgress] = useState<IssueProgress>(initialProgress);
   const [testEmail, setTestEmail] = useState("");
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [showEmail, setShowEmail] = useState(false);
@@ -32,6 +38,7 @@ export function IssueEditor({
 
   const firstRender = useRef(true);
   const sent = status === "sent";
+  const sending = status === "sending";
 
   // Debounced autosave whenever the issue changes (skip the first render).
   // "saving" is flagged in onChange (an event) — not synchronously in the
@@ -47,6 +54,25 @@ export function IssueEditor({
     }, 1000);
     return () => clearTimeout(t);
   }, [id, issue]);
+
+  // Poll send progress while the issue is draining the queue. Stops when no
+  // recipients remain pending (the worker has finalized the issue to "sent").
+  useEffect(() => {
+    if (!sending) return;
+    let active = true;
+    const tick = async () => {
+      const p = await getIssueProgress(id);
+      if (!active) return;
+      setProgress(p);
+      if (p.pending === 0 && p.total > 0) setStatus("sent");
+    };
+    void tick();
+    const interval = setInterval(tick, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [sending, id]);
 
   function onIssueChange(next: Issue) {
     setSaveState("saving");
@@ -81,8 +107,19 @@ export function IssueEditor({
     if ("error" in res) {
       setMessage({ kind: "err", text: res.error });
     } else {
-      setStatus("sent");
-      setMessage({ kind: "ok", text: res.message ?? "Newsletter enviado." });
+      setStatus("sending");
+      setMessage({ kind: "ok", text: res.message ?? "Newsletter encolado." });
+    }
+  }
+
+  async function onRetryFailed() {
+    setMessage(null);
+    const res = await retryFailed(id);
+    if ("error" in res) {
+      setMessage({ kind: "err", text: res.error });
+    } else {
+      setStatus("sending");
+      setMessage({ kind: "ok", text: res.message ?? "Reintentando." });
     }
   }
 
@@ -96,20 +133,26 @@ export function IssueEditor({
           : "";
 
   return (
-    <div className="mt-4">
+    <div>
       {/* Toolbar */}
-      <div className="sticky top-0 z-10 -mx-4 mb-8 flex flex-wrap items-center gap-3 border-b border-black/5 bg-stone-100/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 dark:border-white/10 dark:bg-neutral-950/90">
+      <div className="sticky top-0 z-10 -mx-4 -mt-10 mb-8 flex flex-wrap items-center gap-3 border-b border-black/5 bg-stone-100/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:-mt-12 sm:px-6 dark:border-white/10 dark:bg-neutral-950/90">
         <div className="flex items-center gap-2">
           <span className="text-lg font-medium text-gray-800 dark:text-gray-100">Issue {issue.slug}</span>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
               sent
                 ? "bg-green-500/10 text-green-700 dark:text-green-400"
-                : "bg-black/5 text-gray-500 dark:bg-white/10 dark:text-gray-300"
+                : sending
+                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                  : "bg-black/5 text-gray-500 dark:bg-white/10 dark:text-gray-300"
             }`}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${sent ? "bg-green-500" : "bg-black/20 dark:bg-white/30"}`} />
-            {sent ? "Enviado" : "Borrador"}
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                sent ? "bg-green-500" : sending ? "bg-amber-500" : "bg-black/20 dark:bg-white/30"
+              }`}
+            />
+            {sent ? "Enviado" : sending ? "Enviando…" : "Borrador"}
           </span>
         </div>
 
@@ -121,7 +164,7 @@ export function IssueEditor({
           <button
             type="button"
             onClick={() => setShowEmail(true)}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Ver email real
           </button>
@@ -135,17 +178,32 @@ export function IssueEditor({
           <button
             type="button"
             onClick={onSendTest}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Enviar prueba
           </button>
+          {sending && (
+            <span className="font-sans text-xs font-medium text-gray-500 dark:text-gray-400">
+              {progress.sent}/{progress.total} enviados
+              {progress.failed > 0 && ` · ${progress.failed} fallaron`}
+            </span>
+          )}
+          {sent && progress.failed > 0 && (
+            <button
+              type="button"
+              onClick={onRetryFailed}
+              className="rounded-full border border-red-500/30 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-red-600 transition hover:border-red-500/60"
+            >
+              Reintentar {progress.failed} fallidos
+            </button>
+          )}
           <button
             type="button"
             onClick={onSendIssue}
-            disabled={sent}
-            className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            disabled={sent || sending}
+            className="rounded-full bg-gray-900 px-4 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
-            {sent ? "Enviado" : "Enviar newsletter"}
+            {sent ? "Enviado" : sending ? "Enviando…" : "Enviar newsletter"}
           </button>
         </div>
       </div>
