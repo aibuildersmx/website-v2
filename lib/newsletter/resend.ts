@@ -4,17 +4,17 @@ import { Resend } from "resend";
 // (scripts/newsletter/lib/env.ts), this reads process.env directly — on
 // Railway these are set as service variables, not a local .env file.
 //
-// Required for the panel to send:
+// The newsletter sends through Resend's transactional API (resend.batch.send)
+// to our own contacts table — Broadcasts/Audiences are no longer used.
+//
+// Required to send:
 //   RESEND_API_KEY, NEWSLETTER_FROM
-// Required only to broadcast (not for test sends):
-//   RESEND_AUDIENCE_ID
 // Optional:
 //   NEWSLETTER_REPLY_TO
 
 export interface NewsletterConfig {
   resend: Resend;
   from: string;
-  audienceId: string | undefined;
   replyTo: string | undefined;
 }
 
@@ -30,21 +30,12 @@ function required(name: string): string {
   return v;
 }
 
-export function loadNewsletterConfig(
-  opts: { requireAudience?: boolean } = {},
-): NewsletterConfig {
+export function loadNewsletterConfig(): NewsletterConfig {
   const apiKey = required("RESEND_API_KEY");
   const from = required("NEWSLETTER_FROM");
-  const audienceId = process.env.RESEND_AUDIENCE_ID?.trim() || undefined;
-  if (opts.requireAudience && !audienceId) {
-    throw new MissingEnvError(
-      "Falta RESEND_AUDIENCE_ID. Configúrala en Railway para poder enviar el broadcast.",
-    );
-  }
   return {
     resend: new Resend(apiKey),
     from,
-    audienceId,
     replyTo: process.env.NEWSLETTER_REPLY_TO?.trim() || undefined,
   };
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Mail, Menu, X, ChevronUp } from "lucide-react";
+import { Home, Mail, Users, Menu, X, ChevronUp } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { identityForEmail } from "@/lib/admin/avatars";
 
@@ -97,6 +97,7 @@ function AccountFooter({
 const NAV: { href: string; label: string; section: string; icon: typeof Home; exact?: boolean }[] = [
   { href: "/admin", label: "Inicio", section: "General", icon: Home, exact: true },
   { href: "/admin/newsletter", label: "Newsletter", section: "The Build Log", icon: Mail },
+  { href: "/admin/contactos", label: "Contactos", section: "Comunidad", icon: Users },
 ];
 
 function isActive(pathname: string, href: string, exact?: boolean): boolean {

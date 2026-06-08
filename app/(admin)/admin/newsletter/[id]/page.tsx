@@ -26,7 +26,6 @@ export default async function NewsletterIssuePage({
         id={issue.id}
         initialData={issue.data}
         status={issue.status}
-        resendBroadcastId={issue.resendBroadcastId}
       />
     </div>
   );

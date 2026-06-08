@@ -11,6 +11,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "community:import": "tsx scripts/community/import-contacts.ts",
+    "community:backfill": "tsx scripts/community/backfill-contacts.ts",
     "db:seed-admin": "tsx scripts/auth/seed-admin.ts"
   },
   "dependencies": {

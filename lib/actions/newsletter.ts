@@ -9,8 +9,9 @@ import { getUser } from "@/lib/auth";
 import type { Issue } from "@/lib/newsletter/types";
 import { emptyIssue } from "@/lib/newsletter/issue";
 import { renderBuildLog } from "@/lib/newsletter/render";
-import { buildBroadcastPayload } from "@/lib/newsletter/broadcast";
 import { loadNewsletterConfig, MissingEnvError } from "@/lib/newsletter/resend";
+import { subscribedRecipients, chunk } from "@/lib/newsletter/recipients";
+import { injectUnsubscribe, unsubscribeHeaders } from "@/lib/newsletter/unsubscribe";
 
 const LIST_PATH = "/admin/newsletter";
 
@@ -59,7 +60,6 @@ export interface IssueDetail {
   id: string;
   slug: string;
   status: string;
-  resendBroadcastId: string | null;
   sentAt: Date | null;
   data: Issue;
 }
@@ -77,7 +77,6 @@ export async function getIssue(id: string): Promise<IssueDetail | null> {
     id: row.id,
     slug: row.slug,
     status: row.status,
-    resendBroadcastId: row.resendBroadcastId,
     sentAt: row.sentAt,
     data: row.data,
   };
@@ -162,7 +161,7 @@ export async function sendTest(
   return { ok: true, message: `Prueba enviada a ${to}.` };
 }
 
-export async function sendBroadcast(
+export async function sendIssue(
   id: string,
 ): Promise<ActionOk | ActionError> {
   if (await gate()) return { error: "No autorizado." };
@@ -177,38 +176,52 @@ export async function sendBroadcast(
 
   let cfg;
   try {
-    cfg = loadNewsletterConfig({ requireAudience: true });
+    cfg = loadNewsletterConfig();
   } catch (e) {
     if (e instanceof MissingEnvError) return { error: e.message };
     throw e;
   }
 
-  const payload = buildBroadcastPayload(data, renderBuildLog(data), {
-    audienceId: cfg.audienceId!,
-    from: cfg.from,
-    replyTo: cfg.replyTo,
-  });
-  const created = await cfg.resend.broadcasts.create(payload);
-  if (created.error || !created.data) {
-    return { error: `No se pudo crear el broadcast: ${created.error?.message}` };
+  const recipients = await subscribedRecipients();
+  if (!recipients.length) return { error: "No hay contactos suscritos al newsletter." };
+
+  // Send via the transactional batch API, ≤100 per call. Each recipient gets
+  // their own unsubscribe link (footer + List-Unsubscribe header) so we stay
+  // CAN-SPAM / one-click compliant without Resend Audiences.
+  const html = renderBuildLog(data);
+  let failed = 0;
+  for (const group of chunk(recipients)) {
+    const res = await cfg.resend.batch.send(
+      group.map((r) => ({
+        from: cfg.from,
+        to: [r.email],
+        subject: data.subject,
+        html: injectUnsubscribe(html, r.id),
+        replyTo: cfg.replyTo,
+        headers: unsubscribeHeaders(r.id),
+      })),
+    );
+    if (res.error) failed += group.length;
   }
-  const sent = await cfg.resend.broadcasts.send(created.data.id);
-  if (sent.error) {
-    return { error: `No se pudo enviar el broadcast: ${sent.error.message}` };
+
+  if (failed === recipients.length) {
+    return { error: "No se pudo enviar el newsletter a ningún contacto." };
   }
 
   await db
     .update(newsletterIssues)
     .set({
       status: "sent",
-      resendBroadcastId: created.data.id,
       sentAt: new Date(),
       updatedAt: new Date(),
     })
     .where(eq(newsletterIssues.id, id));
   revalidatePath(`${LIST_PATH}/${id}`);
   revalidatePath(LIST_PATH);
-  return { ok: true, message: `Broadcast "${payload.name}" enviado.` };
+
+  const delivered = recipients.length - failed;
+  const note = failed ? ` (${failed} fallaron)` : "";
+  return { ok: true, message: `Newsletter enviado a ${delivered} contactos${note}.` };
 }
 
 // --- Phase 4 seam (NOT wired yet) -------------------------------------------

@@ -5,7 +5,7 @@ import type { Issue } from "@/lib/newsletter/types";
 import {
   saveIssue,
   sendTest,
-  sendBroadcast,
+  sendIssue,
   renderPreview,
 } from "@/lib/actions/newsletter";
 import { EditableCanvas } from "./editable-canvas";
@@ -16,17 +16,14 @@ export function IssueEditor({
   id,
   initialData,
   status: initialStatus,
-  resendBroadcastId: initialBroadcastId,
 }: {
   id: string;
   initialData: Issue;
   status: string;
-  resendBroadcastId: string | null;
 }) {
   const [issue, setIssue] = useState<Issue>(initialData);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [status, setStatus] = useState(initialStatus);
-  const [broadcastId] = useState(initialBroadcastId);
   const [testEmail, setTestEmail] = useState("");
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [showEmail, setShowEmail] = useState(false);
@@ -77,15 +74,15 @@ export function IssueEditor({
     );
   }
 
-  async function onSendBroadcast() {
-    if (!window.confirm("¿Enviar este issue a TODA la audiencia? No se puede deshacer.")) return;
+  async function onSendIssue() {
+    if (!window.confirm("¿Enviar este issue a TODOS los contactos suscritos? No se puede deshacer.")) return;
     setMessage(null);
-    const res = await sendBroadcast(id);
+    const res = await sendIssue(id);
     if ("error" in res) {
       setMessage({ kind: "err", text: res.error });
     } else {
       setStatus("sent");
-      setMessage({ kind: "ok", text: res.message ?? "Broadcast enviado." });
+      setMessage({ kind: "ok", text: res.message ?? "Newsletter enviado." });
     }
   }
 
@@ -144,11 +141,11 @@ export function IssueEditor({
           </button>
           <button
             type="button"
-            onClick={onSendBroadcast}
+            onClick={onSendIssue}
             disabled={sent}
             className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
-            {sent ? "Enviado" : "Enviar broadcast"}
+            {sent ? "Enviado" : "Enviar newsletter"}
           </button>
         </div>
       </div>
@@ -162,11 +159,6 @@ export function IssueEditor({
           }`}
         >
           {message.text}
-          {broadcastId && message.kind === "ok" && (
-            <span className="ml-2 font-mono text-xs text-gray-400">
-              ({broadcastId})
-            </span>
-          )}
         </div>
       )}
 
