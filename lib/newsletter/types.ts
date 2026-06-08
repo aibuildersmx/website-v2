@@ -69,6 +69,7 @@ export interface Issue {
   stories: Story[];
   essay: Essay;
   useCases: UseCase[];
+  eventsLabel?: string; // section heading for `events` (default "Próximos eventos")
   events: EventItem[];
   community: Community;
   jobs: JobItem[];

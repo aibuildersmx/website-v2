@@ -1,4 +1,13 @@
 import type { Issue } from "./types";
+import { siteUrl } from "./unsubscribe";
+
+// Use-case icons are Phosphor glyphs served as PNGs (Gmail/Outlook strip inline
+// SVG, so an <img> with an absolute URL is the only email-safe option). The route
+// rasterizes any Phosphor name on demand, so new icons need no pre-generation.
+// `UseCase.icon` holds the Phosphor icon name, e.g. "repeat".
+function iconUrl(name: string): string {
+  return `${siteUrl()}/api/newsletter/icons/${name}.png`;
+}
 
 function esc(s: string): string {
   return s
@@ -64,7 +73,9 @@ export function renderBuildLog(issue: Issue): string {
     .map(
       (u) => `
       <div style="padding:0 0 28px;">
-        <div style="font-size:24px;color:${TEXT};margin-bottom:12px;">${esc(u.icon)}</div>
+        <div style="width:44px;height:44px;border:1px solid ${LINE};border-radius:12px;text-align:center;line-height:44px;margin-bottom:16px;">
+          <img src="${esc(iconUrl(u.icon))}" width="24" height="24" alt="" style="display:inline-block;vertical-align:middle;">
+        </div>
         <h3 style="margin:0 0 8px;font-family:${SANS};font-size:20px;font-weight:600;color:${TEXT};">${esc(
         u.title,
       )}</h3>
@@ -118,6 +129,75 @@ export function renderBuildLog(issue: Issue): string {
     )
     .join("");
 
+  const essayBlock = `<tr><td>
+    <div style="padding:32px;border:1px solid ${LINE};border-radius:18px;background:${PANEL};">
+      <div style="font-size:36px;color:${TEXT};margin-bottom:20px;">&rdquo;</div>
+      ${eyebrow(issue.essay.eyebrow)}
+      <h3 style="margin:0 0 16px;font-family:${SANS};font-size:30px;font-weight:400;line-height:1.15;color:${TEXT};">${esc(
+        issue.essay.title,
+      )}</h3>
+      <p style="margin:0;color:${MUTED};font-family:${SANS};font-size:18px;line-height:1.55;">${esc(
+        issue.essay.body,
+      )}</p>
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid ${LINE};">
+        <p style="margin:0;color:#a0a0a0;font-family:${SANS};font-size:16px;">
+          <strong style="color:${TEXT};">${esc(issue.essay.author)}</strong><br>${esc(
+        issue.essay.authorRole,
+      )}
+        </p>
+        <p style="margin:12px 0 0;"><a href="${esc(
+          issue.essay.linkHref,
+        )}" style="color:${TEXT};font-family:${SANS};font-size:16px;font-weight:600;text-decoration:underline;">${esc(
+    issue.essay.linkText,
+  )} ↗</a></p>
+      </div>
+    </div>
+  </td></tr>`;
+
+  const communityBlock = `<tr><td>
+    <div style="padding:28px;border:1px solid ${LINE};border-radius:18px;background:${PANEL};">
+      ${eyebrow(issue.community.label)}
+      <h3 style="margin:0;font-family:${SANS};font-size:24px;font-weight:600;color:${TEXT};">${esc(
+        issue.community.title,
+      )} <span style="color:${QUIET};font-weight:400;">${esc(
+    issue.community.titleSuffix,
+  )}</span></h3>
+      <p style="margin:16px 0 0;color:${MUTED};font-family:${SANS};font-size:16px;line-height:1.5;">${esc(
+        issue.community.body,
+      )}</p>
+      <ul style="margin:20px 0 0;padding:0 0 0 4px;list-style:none;">${statsList}</ul>
+    </div>
+    <div style="margin-top:16px;">${jobs}</div>
+  </td></tr>`;
+
+  // Sections render only when they carry content, and the "NN / TOTAL" counter
+  // is computed from how many actually render — so an issue without an essay
+  // shows "01 / 04" instead of a hardcoded "/ 05" with an empty card.
+  const sections: Array<[string, string]> = [];
+  if (issue.stories.length)
+    sections.push(["Esta semana en IA", `<tr><td>${stories}</td></tr>`]);
+  if (issue.essay.title.trim()) sections.push(["Pensamiento de la semana", essayBlock]);
+  if (issue.useCases.length)
+    sections.push([
+      "En qué estamos usando IA",
+      `<tr><td style="padding-bottom:20px;">${useCases}</td></tr>`,
+    ]);
+  if (issue.events.length)
+    sections.push([
+      issue.eventsLabel?.trim() || "Próximos eventos",
+      `<tr><td>${events}</td></tr>`,
+    ]);
+  if (issue.community.title.trim() || issue.jobs.length)
+    sections.push(["Comunidad", communityBlock]);
+
+  const total = String(sections.length).padStart(2, "0");
+  const sectionsHtml = sections
+    .map(
+      ([title, body], i) =>
+        sectionHeader(title, `${String(i + 1).padStart(2, "0")} / ${total}`) + body,
+    )
+    .join("\n");
+
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -149,57 +229,7 @@ export function renderBuildLog(issue: Issue): string {
   </td></tr>
   ${hr()}
 
-  ${sectionHeader("Esta semana en IA", "01 / 05")}
-  <tr><td>${stories}</td></tr>
-
-  ${sectionHeader("Pensamiento de la semana", "02 / 05")}
-  <tr><td>
-    <div style="padding:32px;border:1px solid ${LINE};border-radius:18px;background:${PANEL};">
-      <div style="font-size:36px;color:${TEXT};margin-bottom:20px;">&rdquo;</div>
-      ${eyebrow(issue.essay.eyebrow)}
-      <h3 style="margin:0 0 16px;font-family:${SANS};font-size:30px;font-weight:400;line-height:1.15;color:${TEXT};">${esc(
-        issue.essay.title,
-      )}</h3>
-      <p style="margin:0;color:${MUTED};font-family:${SANS};font-size:18px;line-height:1.55;">${esc(
-        issue.essay.body,
-      )}</p>
-      <div style="margin-top:28px;padding-top:24px;border-top:1px solid ${LINE};">
-        <p style="margin:0;color:#a0a0a0;font-family:${SANS};font-size:16px;">
-          <strong style="color:${TEXT};">${esc(issue.essay.author)}</strong><br>${esc(
-        issue.essay.authorRole,
-      )}
-        </p>
-        <p style="margin:12px 0 0;"><a href="${esc(
-          issue.essay.linkHref,
-        )}" style="color:${TEXT};font-family:${SANS};font-size:16px;font-weight:600;text-decoration:underline;">${esc(
-    issue.essay.linkText,
-  )} ↗</a></p>
-      </div>
-    </div>
-  </td></tr>
-
-  ${sectionHeader("En qué estamos usando IA", "03 / 05")}
-  <tr><td style="padding-bottom:20px;">${useCases}</td></tr>
-
-  ${sectionHeader("Próximos eventos", "04 / 05")}
-  <tr><td>${events}</td></tr>
-
-  ${sectionHeader("Comunidad", "05 / 05")}
-  <tr><td>
-    <div style="padding:28px;border:1px solid ${LINE};border-radius:18px;background:${PANEL};">
-      ${eyebrow(issue.community.label)}
-      <h3 style="margin:0;font-family:${SANS};font-size:24px;font-weight:600;color:${TEXT};">${esc(
-        issue.community.title,
-      )} <span style="color:${QUIET};font-weight:400;">${esc(
-    issue.community.titleSuffix,
-  )}</span></h3>
-      <p style="margin:16px 0 0;color:${MUTED};font-family:${SANS};font-size:16px;line-height:1.5;">${esc(
-        issue.community.body,
-      )}</p>
-      <ul style="margin:20px 0 0;padding:0 0 0 4px;list-style:none;">${statsList}</ul>
-    </div>
-    <div style="margin-top:16px;">${jobs}</div>
-  </td></tr>
+  ${sectionsHtml}
 
   ${hr()}
   <tr><td style="padding:32px 0 0;">
