@@ -3,17 +3,24 @@
 // as a CLI for ops. Idempotent: only `failed` rows are reset to `pending` and
 // re-enqueued; already-`sent` recipients are never touched (no duplicates).
 //
+//   # retry all failed
 //   set -a && . ./.env.local && set +a && pnpm tsx scripts/newsletter/retry-failed.ts <issueId>
+//   # retry only the first N (canary)
+//   ... retry-failed.ts <issueId> --limit 100
 
 import { parseArgs } from "node:util";
 
 async function main() {
-  const { positionals } = parseArgs({ allowPositionals: true, options: {} });
+  const { positionals, values } = parseArgs({
+    allowPositionals: true,
+    options: { limit: { type: "string" } },
+  });
   const issueId = positionals[0];
   if (!issueId) {
-    console.error("Usage: pnpm tsx scripts/newsletter/retry-failed.ts <issueId>");
+    console.error("Usage: pnpm tsx scripts/newsletter/retry-failed.ts <issueId> [--limit N]");
     process.exit(1);
   }
+  const lim = values.limit ? Number.parseInt(values.limit, 10) : undefined;
 
   if (!process.env.DATABASE_URL?.trim()) {
     console.error("DATABASE_URL is not set. Run: set -a && . ./.env.local && set +a");
@@ -22,11 +29,11 @@ async function main() {
 
   const { db } = await import("../../lib/db/client");
   const schema = await import("../../lib/db/schema");
-  const { and, eq } = await import("drizzle-orm");
+  const { and, eq, inArray } = await import("drizzle-orm");
   const { chunk } = await import("../../lib/newsletter/recipients");
   const { getBoss, SEND_BATCH_QUEUE } = await import("../../lib/queue/boss");
 
-  const failed = await db
+  const query = db
     .select({ contactId: schema.newsletterSends.contactId })
     .from(schema.newsletterSends)
     .where(
@@ -35,18 +42,22 @@ async function main() {
         eq(schema.newsletterSends.status, "failed"),
       ),
     );
+  const failed = lim ? await query.limit(lim) : await query;
   if (!failed.length) {
     console.log("No hay envíos fallidos para reintentar.");
     process.exit(0);
   }
 
+  const ids = failed.map((r) => r.contactId);
+
+  // Reset only the selected rows to pending (so --limit really sends just N).
   await db
     .update(schema.newsletterSends)
     .set({ status: "pending", error: null, updatedAt: new Date() })
     .where(
       and(
         eq(schema.newsletterSends.issueId, issueId),
-        eq(schema.newsletterSends.status, "failed"),
+        inArray(schema.newsletterSends.contactId, ids),
       ),
     );
 
@@ -55,7 +66,6 @@ async function main() {
     .set({ status: "sending", sentAt: null, updatedAt: new Date() })
     .where(eq(schema.newsletterIssues.id, issueId));
 
-  const ids = failed.map((r) => r.contactId);
   const boss = await getBoss();
   let jobs = 0;
   for (const group of chunk(ids)) {
