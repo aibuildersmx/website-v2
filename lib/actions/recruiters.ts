@@ -2,35 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
-import { createAdminClient, createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
+import { getUser } from "@/lib/auth";
 
 const RECRUITERS_PATH = "/job-board/dashboard/recruiters";
 const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
 
 async function requireRecruiter() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const user = await getUser();
   if (!user?.email) {
     return { error: "No autorizado." as const };
   }
 
-  const normalizedEmail = user.email.trim().toLowerCase();
-  const admin = createAdminClient();
-  const { data, error } = await admin
-    .from("recruiters")
-    .select("email")
-    .eq("email", normalizedEmail)
-    .eq("is_active", true)
-    .maybeSingle();
-
-  if (error || !data) {
-    return { error: "No autorizado." as const };
-  }
-
-  return { userEmail: normalizedEmail };
+  return { userEmail: user.email.trim().toLowerCase() };
 }
 
 async function requireMainAdmin() {
