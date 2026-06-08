@@ -28,22 +28,6 @@ export type PastEvent = {
 
 export const events: EventCard[] = [
   {
-    title: "AIBM Vibe Coding Bootcamp",
-    description:
-      "Workshop virtual para aprender a disenar con AI, prototipar mas rapido y construir una landing funcional paso a paso.",
-    month: "MAY",
-    day: "14",
-    location: "Virtual, Zoom",
-    attendees: "Agotado",
-    status: "AGOTADO",
-    price: "Agotado",
-    buttonText: "Lista de espera",
-    buttonDisabled: false,
-    tags: ["Workshop", "AI"],
-    logo: "/favicon.svg",
-    link: "/designwithai",
-  },
-  {
     title: "How I Use AI #7: WhatsApp Voicebots",
     description:
       "Daniel Torres nos enseñará como programa su agente de voz \"Geeky\" para resumir los mensajes en forma de voicenote de grupos de WhatsApp.",
@@ -59,9 +43,49 @@ export const events: EventCard[] = [
     logo: "/favicon.svg",
     link: "https://luma.com/vhwcyvjr",
   },
+  {
+    title: "How I Use AI: Juan Martínez",
+    description:
+      "Chat y Q&A con Juan Martinez, ex ingeniero de QA en Cursor y founder de un nuevo startup de AI.",
+    month: "JUL",
+    day: "09",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Webinar", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/3iyi3bsr",
+  },
+  {
+    title: "How I Use AI: Andres Matte",
+    description:
+      "Chat y Q&A con Andres Matte, founder de Kapso.ai, sobre el journey de Kapso y su crecimiento acelerado.",
+    month: "JUL",
+    day: "23",
+    location: "Virtual, Google Meet",
+    attendees: "∞",
+    status: "ABIERTO",
+    price: "Gratis",
+    buttonText: "Registrarme",
+    buttonDisabled: false,
+    tags: ["Webinar", "AI"],
+    logo: "/favicon.svg",
+    link: "https://luma.com/6liqe957",
+  },
 ];
 
 export const pastEvents: PastEvent[] = [
+  {
+    title: "AIBM Vibe Coding Bootcamp",
+    month: "MAY",
+    day: "14",
+    location: "Virtual, Zoom",
+    logo: "/favicon.svg",
+    link: "/designwithai",
+  },
   {
     title: "Zero to Agent",
     month: "ABR",
