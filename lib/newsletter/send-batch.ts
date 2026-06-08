@@ -63,9 +63,15 @@ export async function processSendBatch(
     })),
   );
   if (res.error) {
+    // Surface the real Resend error (pg-boss otherwise swallows it on retry).
+    console.error(
+      `[send-batch] Resend rechazó batch de ${pending.length} (issue ${issueId}):`,
+      JSON.stringify(res.error),
+    );
     // Throw so pg-boss retries with backoff. Rows stay "pending" → clean re-send.
     throw new Error(`Resend batch falló: ${res.error.message}`);
   }
+  console.log(`[send-batch] ${pending.length} enviados (issue ${issueId}).`);
 
   const ids = (res.data?.data ?? []) as { id: string }[];
   await Promise.all(
