@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, DollarSign, Clock } from "lucide-react";
 import type { JobData } from "../job-data";
@@ -29,9 +30,12 @@ export function GlassmorphismCard({ job }: { job: JobData }) {
         {/* Header */}
         <div className="mb-4 flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src={job.companyLogo}
               alt={job.company}
+              width={40}
+              height={40}
+              unoptimized
               className="h-10 w-10 rounded-xl shadow-sm"
             />
             <div>

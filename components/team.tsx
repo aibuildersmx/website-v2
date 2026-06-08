@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -46,8 +47,9 @@ export default function TeamSection() {
               className="group flex flex-row md:flex-col bg-white border border-black/10 rounded-xl sm:rounded-2xl overflow-hidden hover:border-black/20 transition-all duration-500 hover:shadow-lg hover:shadow-black/5"
             >
               {/* Image Container: Square on mobile, 4/5 on desktop */}
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-full md:h-auto md:aspect-[4/5] overflow-hidden bg-black/[0.02] shrink-0">
-                <img
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-full md:h-auto md:aspect-[4/5] overflow-hidden bg-black/[0.02] shrink-0">
+                <Image
+                  fill
                   className={`h-full w-full object-cover grayscale transition-all duration-700 ${
                     member.name === "Javier Rivero" ||
                     member.name === "Ricardo Garcia"
@@ -56,6 +58,7 @@ export default function TeamSection() {
                   } group-hover:scale-110`}
                   src={member.avatar}
                   alt={member.name}
+                  unoptimized
                 />
               </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, DollarSign } from "lucide-react";
 import type { JobData } from "../job-data";
@@ -26,9 +27,12 @@ export function HolographicCard({ job }: { job: JobData }) {
         {/* Company + status */}
         <div className="mb-4 flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src={job.companyLogo}
               alt={job.company}
+              width={40}
+              height={40}
+              unoptimized
               className="h-10 w-10 rounded-lg"
             />
             <div>

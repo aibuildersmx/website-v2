@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, DollarSign, Clock } from "lucide-react";
 import type { JobData } from "../job-data";
@@ -30,9 +31,12 @@ export function LiquidMetalCard({ job }: { job: JobData }) {
         <div className="flex items-center gap-3">
           {/* Chrome ring avatar */}
           <div className="rounded-full bg-gradient-to-br from-zinc-400 via-zinc-300 to-zinc-500 p-[2px]">
-            <img
+            <Image
               src={job.companyLogo}
               alt={job.company}
+              width={44}
+              height={44}
+              unoptimized
               className="h-11 w-11 rounded-full bg-zinc-800"
             />
           </div>

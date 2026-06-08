@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -60,9 +61,12 @@ export function PerspectiveCard({ job }: { job: JobData }) {
           className="mb-4 flex items-start justify-between"
         >
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src={job.companyLogo}
               alt={job.company}
+              width={44}
+              height={44}
+              unoptimized
               className="h-11 w-11 rounded-xl shadow-md"
             />
             <div>

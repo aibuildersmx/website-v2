@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { CleanLedgerCard } from "@/components/job-board/cards/clean-ledger-card";
 import type { JobData } from "@/components/job-board/job-data";
@@ -815,12 +816,15 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
               {/* Modal header */}
               <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/80 px-5 py-5 sm:px-8 sm:py-6">
                 <div className="flex items-center gap-2.5">
-                  <img
+                  <Image
                     src={
                       form.companyLogo ||
                       `https://api.dicebear.com/9.x/initials/svg?seed=${getCompanyInitials(form.companyName || "Company")}&backgroundColor=${recruiterColor}`
                     }
                     alt={form.companyName || "Company"}
+                    width={40}
+                    height={40}
+                    unoptimized
                     className="h-10 w-10 rounded-xl"
                   />
                   <div>

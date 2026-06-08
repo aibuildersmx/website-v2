@@ -76,9 +76,10 @@ export default function ResidencyPage() {
         <main className="relative overflow-hidden bg-[#f0f4f8]">
             {/* Hero */}
             <section className="relative min-h-screen flex items-center px-6 pt-24 pb-16 sm:pt-28">
-                <img
+                <Image
                     src="/residency.png"
                     alt=""
+                    fill
                     className="absolute inset-0 h-full w-full object-cover -scale-x-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#5a9fd4]/30 via-transparent to-[#f0f4f8]" />
