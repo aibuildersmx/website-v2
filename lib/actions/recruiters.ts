@@ -6,6 +6,9 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getUser } from "@/lib/auth";
 
 const RECRUITERS_PATH = "/job-board/dashboard/recruiters";
+// Super-admin gate for recruiter management. Must match the seeded admin's
+// email exactly (lowercased) — see scripts/auth/seed-admin.ts. If the seeded
+// admin uses a different email, these recruiter actions return "No autorizado".
 const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
 
 async function requireRecruiter() {
