@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Loader2, LogIn, AlertCircle } from "lucide-react";
 import { signIn } from "@/lib/auth";
-import { ThemeToggle } from "@/app/admin/components/theme-toggle";
+import { ThemeToggle } from "@/app/(admin)/admin/components/theme-toggle";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="mb-2 font-serif text-3xl text-gray-800 dark:text-gray-100">
+          <h1 className="mb-2 text-3xl font-medium text-gray-800 dark:text-gray-100">
             Iniciar sesión
           </h1>
           <p className="text-sm text-gray-400 dark:text-gray-500">
