@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react'
 // Note: the cover image is intentionally NOT shown on the blog index cards —
 // we keep the grid typographic and only surface the hero image once the
 // reader opens the full article in `PostShell`.
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 import { cn } from '@/lib/utils'
 import { getAuthor, type BlogAuthor } from '@/lib/blog/authors'
 import type { BlogPostMeta } from '@/lib/blog/posts'

@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 import { cn } from '@/lib/utils'
 
 export type StepListVariant = 'default' | 'success'

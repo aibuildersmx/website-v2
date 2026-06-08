@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 import { cn } from '@/lib/utils'
 
 /**

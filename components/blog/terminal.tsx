@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Check, Copy } from 'lucide-react'
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 
 /* ── Catppuccin Palettes ── */
 

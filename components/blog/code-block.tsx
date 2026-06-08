@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 
 /* ── Catppuccin Palettes (same as terminal) ── */
 const catppuccin = {

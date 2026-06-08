@@ -1,6 +1,6 @@
 'use client'
 
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 import { AlertTriangle, Info, Zap, Shield } from 'lucide-react'
 import { useState, useEffect, type ReactNode } from 'react'
 

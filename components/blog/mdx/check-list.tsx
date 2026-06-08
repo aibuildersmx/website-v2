@@ -1,6 +1,6 @@
 'use client'
 
-import { useBlogTheme } from '@/app/(blog)/layout'
+import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 import {
     CheckList as SharedCheckList,
     type CheckListItem,
