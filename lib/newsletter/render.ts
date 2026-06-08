@@ -245,10 +245,11 @@ export function renderBuildLog(issue: Issue): string {
   ${hr()}
   <tr><td style="padding:32px 0 0;">
     <p style="margin:0 0 12px;color:${QUIET};font-family:${SANS};font-size:14px;line-height:1.5;">The Build Log es una curaduría semanal de AI Builders MX para gente que construye con IA en serio.</p>
-    <p style="margin:0;color:${QUIET};font-family:${MONO};font-size:12px;letter-spacing:normal;">
+    <p style="margin:0 0 8px;color:${QUIET};font-family:${MONO};font-size:12px;letter-spacing:normal;">
       <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:${ACCENT};text-decoration:underline;">Cancelar suscripción</a>
       &nbsp;·&nbsp; AI Builders MX · Ciudad de México
     </p>
+    <p style="margin:0;color:${QUIET};font-family:${MONO};font-size:12px;letter-spacing:normal;line-height:1.5;">Ámsterdam 255, Hipódromo Condesa, Cuauhtémoc, 06100 Ciudad de México, CDMX, México</p>
   </td></tr>
 
 </table>
