@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { IconPicker } from "./icon-picker";
 import type {
   Issue,
   Story,
@@ -120,21 +121,42 @@ function Eyebrow({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500"
+      className="font-mono text-[11px] uppercase tracking-normal text-gray-400 dark:text-gray-500"
     />
   );
 }
 
 // Section heading shown above each block, mirrors the email's "01 / 05" rhythm.
-function SectionHeader({ index, title }: { index: string; title: string }) {
+function SectionHeader({
+  index,
+  title,
+  editableTitle,
+  onTitleChange,
+  titlePlaceholder,
+}: {
+  index: string;
+  title?: string;
+  editableTitle?: string;
+  onTitleChange?: (v: string) => void;
+  titlePlaceholder?: string;
+}) {
+  const titleClass =
+    "mt-1 text-2xl font-semibold text-gray-800 dark:text-gray-100";
   return (
     <div className="mt-14 mb-6">
-      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-300 dark:text-gray-600">
+      <p className="font-mono text-[11px] uppercase tracking-normal text-gray-300 dark:text-gray-600">
         {index}
       </p>
-      <h2 className="mt-1 text-2xl font-semibold text-gray-800 dark:text-gray-100">
-        {title}
-      </h2>
+      {onTitleChange ? (
+        <Editable
+          value={editableTitle ?? ""}
+          onChange={onTitleChange}
+          placeholder={titlePlaceholder ?? "Título de la sección"}
+          className={titleClass}
+        />
+      ) : (
+        <h2 className={titleClass}>{title}</h2>
+      )}
     </div>
   );
 }
@@ -152,7 +174,7 @@ function ItemShell({
       <button
         type="button"
         onClick={onRemove}
-        className="absolute right-2 top-2 rounded-full px-2 py-0.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
+        className="absolute right-2 top-2 rounded-full px-2 py-0.5 font-mono text-xs uppercase tracking-normal text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
       >
         × Quitar
       </button>
@@ -172,7 +194,7 @@ function AddButton({
     <button
       type="button"
       onClick={onClick}
-      className="mt-3 w-full rounded-xl border border-dashed border-black/10 py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-gray-400 transition hover:border-black/25 hover:text-gray-600 dark:border-white/10 dark:text-gray-500 dark:hover:border-white/25 dark:hover:text-gray-300"
+      className="mt-3 w-full rounded-xl border border-dashed border-black/10 py-2.5 font-mono text-xs uppercase tracking-normal text-gray-400 transition hover:border-black/25 hover:text-gray-600 dark:border-white/10 dark:text-gray-500 dark:hover:border-white/25 dark:hover:text-gray-300"
     >
       {label}
     </button>
@@ -197,7 +219,7 @@ export function EditableCanvas({
     <div className="mx-auto w-full max-w-[680px]">
       {/* Envelope: email metadata that isn't part of the visible body */}
       <div className="mb-8 rounded-2xl border border-black/5 bg-stone-50/70 px-5 py-4 dark:border-white/10 dark:bg-white/5">
-        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-gray-400 dark:text-gray-600">
+        <p className="mb-3 font-mono text-xs uppercase tracking-normal text-gray-400 dark:text-gray-600">
           Sobre · inbox
         </p>
         <div className="space-y-2">
@@ -228,7 +250,7 @@ export function EditableCanvas({
       {/* The newsletter body — follows the admin color scheme */}
       <article className="rounded-2xl border border-black/5 bg-white px-6 py-10 sm:px-10 dark:border-white/10 dark:bg-neutral-900">
         {/* Masthead */}
-        <p className="mb-8 font-mono text-[11px] uppercase tracking-[0.18em] text-gray-300 dark:text-gray-600">
+        <p className="mb-8 font-mono text-[11px] uppercase tracking-normal text-gray-300 dark:text-gray-600">
           AI Builders MX
         </p>
         <Editable
@@ -252,21 +274,21 @@ export function EditableCanvas({
             value={issue.issueLabel}
             onChange={(v) => patch({ issueLabel: v })}
             placeholder="Issue 003"
-            className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500"
+            className="font-mono text-[11px] uppercase tracking-normal text-gray-400 dark:text-gray-500"
           />
           <span className="font-mono text-[11px] text-gray-300 dark:text-gray-600">·</span>
           <Editable
             value={issue.date}
             onChange={(v) => patch({ date: v })}
             placeholder="07 Jun 2026"
-            className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500"
+            className="font-mono text-[11px] uppercase tracking-normal text-gray-400 dark:text-gray-500"
           />
           <span className="font-mono text-[11px] text-gray-300 dark:text-gray-600">·</span>
           <Editable
             value={issue.readingTime}
             onChange={(v) => patch({ readingTime: v })}
             placeholder="6 min de lectura"
-            className="font-mono text-[11px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500"
+            className="font-mono text-[11px] uppercase tracking-normal text-gray-400 dark:text-gray-500"
           />
         </div>
 
@@ -382,15 +404,12 @@ export function EditableCanvas({
             onRemove={() => patch({ useCases: removeAt(issue.useCases, i) })}
           >
             <div className="pb-3">
-              <div className="text-2xl text-gray-800 dark:text-gray-100">
-                <Editable
-                  value={u.icon}
-                  onChange={(v) =>
-                    patch({ useCases: replaceAt(issue.useCases, i, { ...u, icon: v }) })
-                  }
-                  placeholder="⌁"
-                />
-              </div>
+              <IconPicker
+                value={u.icon}
+                onSelect={(name) =>
+                  patch({ useCases: replaceAt(issue.useCases, i, { ...u, icon: name }) })
+                }
+              />
               <div className="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
                 <Editable
                   value={u.title}
@@ -421,14 +440,19 @@ export function EditableCanvas({
         />
 
         {/* 04 — Events */}
-        <SectionHeader index="04 / 05" title="Próximos eventos" />
+        <SectionHeader
+          index="04 / 05"
+          editableTitle={issue.eventsLabel}
+          onTitleChange={(v) => patch({ eventsLabel: v })}
+          titlePlaceholder="Próximos eventos"
+        />
         {issue.events.map((e, i) => (
           <ItemShell
             key={i}
             onRemove={() => patch({ events: removeAt(issue.events, i) })}
           >
             <div className="group border-b border-black/5 pb-4 dark:border-white/10">
-              <div className="flex flex-wrap items-baseline gap-x-2 font-mono text-[11px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+              <div className="flex flex-wrap items-baseline gap-x-2 font-mono text-[11px] uppercase tracking-normal text-gray-400 dark:text-gray-500">
                 <Editable
                   value={e.day}
                   onChange={(v) =>
