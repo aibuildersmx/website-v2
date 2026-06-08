@@ -1,7 +1,7 @@
-import {TextEffect} from "@/app/collab/components/motion-primitives/text-effect";
+import {TextEffect} from "@/app/(site)/collab/components/motion-primitives/text-effect";
 import React from "react";
 import {transitionVariants} from "@/lib/motion";
-import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-group";
+import {AnimatedGroup} from "@/app/(site)/collab/components/motion-primitives/animated-group";
 
 export default function Agenda() {
     return (

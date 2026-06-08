@@ -14,10 +14,10 @@ import {
     Users,
 } from 'lucide-react'
 
-import DecryptedText from '@/app/launch/components/DecryptedText'
-import { AnimatedGroup } from '@/app/launch/components/motion-primitives/animated-group'
-import { TextEffect } from '@/app/launch/components/motion-primitives/text-effect'
-import { Button } from '@/app/launch/components/ui/button'
+import DecryptedText from '@/app/(site)/launch/components/DecryptedText'
+import { AnimatedGroup } from '@/app/(site)/launch/components/motion-primitives/animated-group'
+import { TextEffect } from '@/app/(site)/launch/components/motion-primitives/text-effect'
+import { Button } from '@/app/(site)/launch/components/ui/button'
 import { transitionVariants } from '@/lib/motion'
 
 const applicationHref = 'https://forms.gle/Bga8XyuNzsHnk6cQA'

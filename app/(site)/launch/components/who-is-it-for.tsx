@@ -1,7 +1,7 @@
 'use client'
 import {Lightbulb, Code, Palette, Hammer} from 'lucide-react'
-import {TextEffect} from "@/app/launch/components/motion-primitives/text-effect"
-import {AnimatedGroup} from "@/app/launch/components/motion-primitives/animated-group"
+import {TextEffect} from "@/app/(site)/launch/components/motion-primitives/text-effect"
+import {AnimatedGroup} from "@/app/(site)/launch/components/motion-primitives/animated-group"
 import {transitionVariants} from "@/lib/motion"
 
 const personas = [

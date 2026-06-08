@@ -1,11 +1,11 @@
 import React from 'react'
-import {InfiniteSlider} from '@/app/collab/components/ui/infinite-slider'
-import {ProgressiveBlur} from '@/app/collab/components/ui/progressive-blur'
-import {TextEffect} from "@/app/collab/components/motion-primitives/text-effect";
-import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-group";
-import V0Icon from "@/app/collab/components/icons/v0-icon";
+import {InfiniteSlider} from '@/app/(site)/collab/components/ui/infinite-slider'
+import {ProgressiveBlur} from '@/app/(site)/collab/components/ui/progressive-blur'
+import {TextEffect} from "@/app/(site)/collab/components/motion-primitives/text-effect";
+import {AnimatedGroup} from "@/app/(site)/collab/components/motion-primitives/animated-group";
+import V0Icon from "@/app/(site)/collab/components/icons/v0-icon";
 import Image from 'next/image';
-import DecryptedText from "@/app/collab/components/DecryptedText";
+import DecryptedText from "@/app/(site)/collab/components/DecryptedText";
 import {transitionVariants} from "@/lib/motion";
 
 export default function HeroSection() {

@@ -1,9 +1,9 @@
-import {Card, CardContent, CardHeader} from '@/app/collab/components/ui/card'
+import {Card, CardContent, CardHeader} from '@/app/(site)/collab/components/ui/card'
 import {Wand2Icon, SparklesIcon, Code2Icon} from 'lucide-react'
 import React, {ReactNode} from 'react'
-import {TextEffect} from "@/app/collab/components/motion-primitives/text-effect";
+import {TextEffect} from "@/app/(site)/collab/components/motion-primitives/text-effect";
 import {transitionVariants} from "@/lib/motion";
-import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-group";
+import {AnimatedGroup} from "@/app/(site)/collab/components/motion-primitives/animated-group";
 
 export default function Features() {
     return (

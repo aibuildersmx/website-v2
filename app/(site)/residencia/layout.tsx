@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 
-import ResidencyFooter from '@/app/residencia/components/footer'
+import ResidencyFooter from '@/app/(site)/residencia/components/footer'
 import { HeroHeader } from '@/components/header'
 
 export const metadata: Metadata = {

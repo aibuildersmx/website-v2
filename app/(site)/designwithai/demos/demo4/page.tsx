@@ -1,4 +1,4 @@
-import Demo4 from "@/app/designwithai/components/demos/demo4";
+import Demo4 from "@/app/(site)/designwithai/components/demos/demo4";
 
 export default function Demo4Page() {
   return (

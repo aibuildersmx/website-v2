@@ -1,8 +1,8 @@
 import React from "react"
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono, Instrument_Serif} from 'next/font/google'
-import DitherWrapper from "@/app/collab/components/DitherWrapper";
-import FooterSection from "@/app/collab/components/footer";
+import DitherWrapper from "@/app/(site)/collab/components/DitherWrapper";
+import FooterSection from "@/app/(site)/collab/components/footer";
 import {HeroHeader} from "@/components/header";
 
 const geist = Geist({

@@ -1,7 +1,7 @@
-import {Button} from '@/app/collab/components/ui/button'
+import {Button} from '@/app/(site)/collab/components/ui/button'
 import Link from 'next/link'
-import {TextEffect} from "@/app/collab/components/motion-primitives/text-effect"
-import {AnimatedGroup} from "@/app/collab/components/motion-primitives/animated-group";
+import {TextEffect} from "@/app/(site)/collab/components/motion-primitives/text-effect"
+import {AnimatedGroup} from "@/app/(site)/collab/components/motion-primitives/animated-group";
 import {transitionVariants} from "@/lib/motion";
 
 export default function CallToAction() {

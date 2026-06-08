@@ -1,6 +1,6 @@
 import React from "react"
 import type {Metadata} from 'next'
-import FooterSection from "@/app/launch/components/footer"
+import FooterSection from "@/app/(site)/launch/components/footer"
 import {HeroHeader} from "@/components/header"
 
 export const metadata: Metadata = {

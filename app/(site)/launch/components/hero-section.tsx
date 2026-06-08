@@ -1,8 +1,8 @@
 'use client'
-import {Button} from '@/app/launch/components/ui/button'
-import {TextEffect} from "@/app/launch/components/motion-primitives/text-effect"
-import {AnimatedGroup} from "@/app/launch/components/motion-primitives/animated-group"
-import DecryptedText from "@/app/launch/components/DecryptedText"
+import {Button} from '@/app/(site)/launch/components/ui/button'
+import {TextEffect} from "@/app/(site)/launch/components/motion-primitives/text-effect"
+import {AnimatedGroup} from "@/app/(site)/launch/components/motion-primitives/animated-group"
+import DecryptedText from "@/app/(site)/launch/components/DecryptedText"
 import {transitionVariants} from "@/lib/motion"
 
 export default function HeroSection() {

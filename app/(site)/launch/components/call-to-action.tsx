@@ -1,8 +1,8 @@
 'use client'
-import {Button} from '@/app/launch/components/ui/button'
+import {Button} from '@/app/(site)/launch/components/ui/button'
 import Link from 'next/link'
-import {TextEffect} from "@/app/launch/components/motion-primitives/text-effect"
-import {AnimatedGroup} from "@/app/launch/components/motion-primitives/animated-group"
+import {TextEffect} from "@/app/(site)/launch/components/motion-primitives/text-effect"
+import {AnimatedGroup} from "@/app/(site)/launch/components/motion-primitives/animated-group"
 import {transitionVariants} from "@/lib/motion"
 
 export default function CallToAction() {
