@@ -26,14 +26,14 @@ function removeAt<T>(arr: T[], i: number): T[] {
 // --- inline field primitives (Notion-ish: borderless until focus) -----------
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-1 block font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400">
+    <span className="mb-1 block font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
       {children}
     </span>
   );
 }
 
 const inputCls =
-  "w-full bg-transparent text-gray-800 outline-none border-b border-transparent hover:border-black/10 focus:border-black/40 transition py-1 placeholder:text-gray-300";
+  "w-full bg-transparent text-gray-800 outline-none border-b border-transparent hover:border-black/10 focus:border-black/40 transition py-1 placeholder:text-gray-300 dark:text-gray-100 dark:hover:border-white/20 dark:focus:border-white/50 dark:placeholder:text-gray-600";
 
 function TextField({
   label,
@@ -102,19 +102,19 @@ function Block({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-black/5 bg-white p-6">
-      <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/5 pb-3">
+    <section className="rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
+      <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/10">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-300">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-300 dark:text-gray-600">
             {index}
           </p>
-          <h2 className="font-serif text-xl text-gray-800">{title}</h2>
+          <h2 className="font-serif text-xl text-gray-800 dark:text-gray-100">{title}</h2>
         </div>
         {onAdd && (
           <button
             type="button"
             onClick={onAdd}
-            className="shrink-0 rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 hover:text-gray-900"
+            className="shrink-0 rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 hover:text-gray-900 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40 dark:hover:text-white"
           >
             {addLabel ?? "+ Añadir"}
           </button>
@@ -135,15 +135,15 @@ function Item({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-black/5 bg-stone-50/60 p-4">
+    <div className="rounded-xl border border-black/5 bg-stone-50/60 p-4 dark:border-white/10 dark:bg-white/5">
       <div className="mb-3 flex items-center justify-between">
-        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400">
+        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
           {label}
         </span>
         <button
           type="button"
           onClick={onRemove}
-          className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-300 transition hover:text-red-500"
+          className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-300 transition hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400"
         >
           Quitar
         </button>
@@ -247,20 +247,22 @@ export function IssueEditor({
   return (
     <div className="mt-4">
       {/* Toolbar */}
-      <div className="sticky top-0 z-10 -mx-4 mb-6 flex flex-wrap items-center gap-3 border-b border-black/5 bg-stone-100/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky top-0 z-10 -mx-4 mb-6 flex flex-wrap items-center gap-3 border-b border-black/5 bg-stone-100/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 dark:border-white/10 dark:bg-neutral-950/90">
         <div className="flex items-center gap-2">
-          <span className="font-serif text-lg text-gray-800">Issue {issue.slug}</span>
+          <span className="font-serif text-lg text-gray-800 dark:text-gray-100">Issue {issue.slug}</span>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] ${
-              sent ? "bg-green-500/10 text-green-700" : "bg-black/5 text-gray-500"
+              sent
+                ? "bg-green-500/10 text-green-700 dark:text-green-400"
+                : "bg-black/5 text-gray-500 dark:bg-white/10 dark:text-gray-300"
             }`}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${sent ? "bg-green-500" : "bg-black/20"}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${sent ? "bg-green-500" : "bg-black/20 dark:bg-white/30"}`} />
             {sent ? "Enviado" : "Borrador"}
           </span>
         </div>
 
-        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400">
+        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">
           {saveText}
         </span>
 
@@ -269,7 +271,7 @@ export function IssueEditor({
             type="button"
             onClick={refreshPreview}
             disabled={isPending}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 disabled:opacity-50"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 disabled:opacity-50 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             {isPending ? "…" : "Actualizar vista"}
           </button>
@@ -278,12 +280,12 @@ export function IssueEditor({
             value={testEmail}
             onChange={(e) => setTestEmail(e.target.value)}
             placeholder="tu@correo.com"
-            className="w-40 rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs text-gray-800 outline-none focus:border-black/40"
+            className="w-40 rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs text-gray-800 outline-none focus:border-black/40 dark:border-white/15 dark:bg-neutral-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-white/40"
           />
           <button
             type="button"
             onClick={onSendTest}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Enviar prueba
           </button>
@@ -291,7 +293,7 @@ export function IssueEditor({
             type="button"
             onClick={onSendBroadcast}
             disabled={sent}
-            className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             {sent ? "Enviado" : "Enviar broadcast"}
           </button>
@@ -341,7 +343,7 @@ export function IssueEditor({
               })
             }
           >
-            {issue.stories.length === 0 && <p className="text-sm text-gray-300">Sin historias todavía.</p>}
+            {issue.stories.length === 0 && <p className="text-sm text-gray-300 dark:text-gray-600">Sin historias todavía.</p>}
             {issue.stories.map((s, i) => (
               <Item key={i} label={`Historia ${i + 1}`} onRemove={() => patch({ stories: removeAt(issue.stories, i) })}>
                 <TextField label="Eyebrow" value={s.eyebrow} onChange={(v) => patch({ stories: replaceAt(issue.stories, i, { ...s, eyebrow: v }) })} placeholder="01 · Desarrollo" mono />
@@ -370,7 +372,7 @@ export function IssueEditor({
             addLabel="+ Caso"
             onAdd={() => patch({ useCases: [...issue.useCases, { icon: "", title: "", body: "" } as UseCase] })}
           >
-            {issue.useCases.length === 0 && <p className="text-sm text-gray-300">Sin casos todavía.</p>}
+            {issue.useCases.length === 0 && <p className="text-sm text-gray-300 dark:text-gray-600">Sin casos todavía.</p>}
             {issue.useCases.map((u, i) => (
               <Item key={i} label={`Caso ${i + 1}`} onRemove={() => patch({ useCases: removeAt(issue.useCases, i) })}>
                 <TextField label="Ícono (un glifo)" value={u.icon} onChange={(v) => patch({ useCases: replaceAt(issue.useCases, i, { ...u, icon: v }) })} placeholder="⌁" mono />
@@ -386,7 +388,7 @@ export function IssueEditor({
             addLabel="+ Evento"
             onAdd={() => patch({ events: [...issue.events, { day: "", month: "", label: "", title: "", body: "", href: "" } as EventItem] })}
           >
-            {issue.events.length === 0 && <p className="text-sm text-gray-300">Sin eventos todavía.</p>}
+            {issue.events.length === 0 && <p className="text-sm text-gray-300 dark:text-gray-600">Sin eventos todavía.</p>}
             {issue.events.map((e, i) => (
               <Item key={i} label={`Evento ${i + 1}`} onRemove={() => patch({ events: removeAt(issue.events, i) })}>
                 <div className="grid grid-cols-3 gap-4">
@@ -412,7 +414,7 @@ export function IssueEditor({
                 <button
                   type="button"
                   onClick={() => patchCommunity({ stats: [...issue.community.stats, ""] })}
-                  className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 hover:text-gray-900"
+                  className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
                   + Línea
                 </button>
@@ -429,7 +431,7 @@ export function IssueEditor({
                     <button
                       type="button"
                       onClick={() => patchCommunity({ stats: removeAt(issue.community.stats, i) })}
-                      className="shrink-0 font-mono text-[10px] uppercase text-gray-300 hover:text-red-500"
+                      className="shrink-0 font-mono text-[10px] uppercase text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400"
                     >
                       ×
                     </button>
@@ -438,13 +440,13 @@ export function IssueEditor({
               </div>
             </div>
 
-            <div className="border-t border-black/5 pt-5">
+            <div className="border-t border-black/5 pt-5 dark:border-white/10">
               <div className="mb-2 flex items-center justify-between">
                 <Label>Empleos</Label>
                 <button
                   type="button"
                   onClick={() => patch({ jobs: [...issue.jobs, { label: "", title: "", meta: "", href: "" } as JobItem] })}
-                  className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 hover:text-gray-900"
+                  className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
                   + Empleo
                 </button>

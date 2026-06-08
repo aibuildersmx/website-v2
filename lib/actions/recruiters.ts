@@ -6,11 +6,10 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getUser } from "@/lib/auth";
 
 const RECRUITERS_PATH = "/job-board/dashboard/recruiters";
-// Super-admin gate for recruiter management. Must match the seeded admin's
-// email exactly (lowercased) — see scripts/auth/seed-admin.ts. If the seeded
-// admin uses a different email, these recruiter actions return "No autorizado".
-const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
 
+// Recruiter management is open to any logged-in admin — access is currently
+// flat (every authenticated user is an admin). The gate only requires a valid
+// session; it no longer restricts to a single super-admin email.
 async function requireRecruiter() {
   const user = await getUser();
   if (!user?.email) {
@@ -18,17 +17,6 @@ async function requireRecruiter() {
   }
 
   return { userEmail: user.email.trim().toLowerCase() };
-}
-
-async function requireMainAdmin() {
-  const auth = await requireRecruiter();
-  if ("error" in auth) return auth;
-
-  if (auth.userEmail !== MAIN_ADMIN_EMAIL) {
-    return { error: "No autorizado." as const };
-  }
-
-  return auth;
 }
 
 async function getBaseUrl() {
@@ -45,7 +33,7 @@ async function getBaseUrl() {
 }
 
 export async function getRecruiters() {
-  const auth = await requireMainAdmin();
+  const auth = await requireRecruiter();
   if ("error" in auth) return [];
 
   const admin = createAdminClient();
@@ -70,7 +58,7 @@ export async function addRecruiter(
   _prevState: AddRecruiterState,
   formData: FormData
 ): Promise<AddRecruiterState> {
-  const auth = await requireMainAdmin();
+  const auth = await requireRecruiter();
   if ("error" in auth) return { error: auth.error };
 
   const emailRaw = String(formData.get("email") || "").trim().toLowerCase();
@@ -135,7 +123,7 @@ export async function addRecruiter(
 export async function toggleRecruiterStatus(
   formData: FormData
 ): Promise<void> {
-  const auth = await requireMainAdmin();
+  const auth = await requireRecruiter();
   if ("error" in auth) return;
 
   const email = String(formData.get("email") || "").trim().toLowerCase();
@@ -158,7 +146,7 @@ export async function toggleRecruiterStatus(
 }
 
 export async function deleteRecruiter(formData: FormData): Promise<void> {
-  const auth = await requireMainAdmin();
+  const auth = await requireRecruiter();
   if ("error" in auth) return;
 
   const email = String(formData.get("email") || "").trim().toLowerCase();

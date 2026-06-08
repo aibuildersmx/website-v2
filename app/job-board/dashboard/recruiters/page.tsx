@@ -4,8 +4,6 @@ import { getUser } from "@/lib/auth";
 import { getRecruiters } from "@/lib/actions/recruiters";
 import { RecruitersAdmin } from "./recruiters-admin";
 
-const MAIN_ADMIN_EMAIL = "admin@aibuilders.mx";
-
 export default async function RecruitersPage() {
   const user = await getUser();
   if (!user) {
@@ -13,10 +11,6 @@ export default async function RecruitersPage() {
   }
 
   const userEmail = (user.email || "").trim().toLowerCase();
-  if (userEmail !== MAIN_ADMIN_EMAIL) {
-    redirect("/job-board/dashboard");
-  }
-
   const recruiters = await getRecruiters();
 
   return (
