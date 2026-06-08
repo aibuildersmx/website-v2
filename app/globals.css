@@ -143,13 +143,6 @@
     font-family: var(--font-instrument-serif), serif;
   }
 }
-
-/* Admin: headings use Geist Sans, not Instrument Serif. Scoped to .admin-scope
-   (set on the admin shell root) so the public site keeps its serif headings. */
-.admin-scope :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--font-geist-sans);
-}
-
 /* ===== Hide scrollbar utility for mobile filter rows (job-board) ===== */
 .scrollbar-none {
   -ms-overflow-style: none;

@@ -179,7 +179,7 @@ export function AdminShell({
   const account = <AccountFooter email={email} signOutAction={signOutAction} />;
 
   return (
-    <div className="admin-scope min-h-screen bg-stone-100 dark:bg-neutral-950">
+    <div className="min-h-screen bg-stone-100 dark:bg-neutral-950">
       {/* Desktop sidebar — fixed left. */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-black/5 bg-white md:flex dark:border-white/10 dark:bg-neutral-900">
         <Link
