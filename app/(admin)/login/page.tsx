@@ -75,7 +75,7 @@ export default function LoginPage() {
         {/* Form */}
         <form action={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+            <label className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
               Correo electrónico
             </label>
             <input
@@ -88,7 +88,7 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
+            <label className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
               Contraseña
             </label>
             <input
@@ -116,7 +116,7 @@ export default function LoginPage() {
         </form>
 
         {/* Footer */}
-        <p className="mt-8 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-gray-300 dark:text-gray-600">
+        <p className="mt-8 text-center font-mono text-xs uppercase tracking-[0.2em] text-gray-300 dark:text-gray-600">
           Solo administradores
         </p>
       </motion.div>

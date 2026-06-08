@@ -116,7 +116,7 @@ export function IssueEditor({
           </span>
         </div>
 
-        <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
+        <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
           {saveText}
         </span>
 
@@ -124,7 +124,7 @@ export function IssueEditor({
           <button
             type="button"
             onClick={() => setShowEmail(true)}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Ver email real
           </button>
@@ -138,7 +138,7 @@ export function IssueEditor({
           <button
             type="button"
             onClick={onSendTest}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Enviar prueba
           </button>
@@ -146,7 +146,7 @@ export function IssueEditor({
             type="button"
             onClick={onSendBroadcast}
             disabled={sent}
-            className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="rounded-full bg-gray-900 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             {sent ? "Enviado" : "Enviar broadcast"}
           </button>
@@ -163,7 +163,7 @@ export function IssueEditor({
         >
           {message.text}
           {broadcastId && message.kind === "ok" && (
-            <span className="ml-2 font-mono text-[10px] text-gray-400">
+            <span className="ml-2 font-mono text-xs text-gray-400">
               ({broadcastId})
             </span>
           )}
@@ -183,13 +183,13 @@ export function IssueEditor({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-              <span className="text-[10px] font-medium text-white/40">
+              <span className="text-xs font-medium text-white/40">
                 Email real {isPending && "· actualizando…"}
               </span>
               <button
                 type="button"
                 onClick={() => setShowEmail(false)}
-                className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/40 transition hover:text-white"
+                className="font-mono text-xs uppercase tracking-[0.15em] text-white/40 transition hover:text-white"
               >
                 Cerrar ×
               </button>

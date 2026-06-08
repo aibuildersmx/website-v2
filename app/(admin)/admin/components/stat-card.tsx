@@ -14,7 +14,7 @@ export function StatCard({
 }) {
   const inner = (
     <>
-      <p className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
+      <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
         {eyebrow}
       </p>
       <p className="mt-2 text-3xl font-medium text-gray-800 dark:text-gray-100">{value}</p>

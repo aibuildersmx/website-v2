@@ -18,7 +18,7 @@ export default async function NewsletterIssuePage({
     <div>
       <Link
         href="/admin/newsletter"
-        className="text-[10px] font-medium text-gray-400 hover:text-gray-700"
+        className="text-xs font-medium text-gray-400 hover:text-gray-700"
       >
         ← Newsletter
       </Link>

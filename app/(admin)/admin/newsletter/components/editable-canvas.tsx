@@ -152,7 +152,7 @@ function ItemShell({
       <button
         type="button"
         onClick={onRemove}
-        className="absolute right-2 top-2 rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
+        className="absolute right-2 top-2 rounded-full px-2 py-0.5 font-mono text-xs uppercase tracking-[0.15em] text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
       >
         × Quitar
       </button>
@@ -172,7 +172,7 @@ function AddButton({
     <button
       type="button"
       onClick={onClick}
-      className="mt-3 w-full rounded-xl border border-dashed border-black/10 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-gray-400 transition hover:border-black/25 hover:text-gray-600 dark:border-white/10 dark:text-gray-500 dark:hover:border-white/25 dark:hover:text-gray-300"
+      className="mt-3 w-full rounded-xl border border-dashed border-black/10 py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-gray-400 transition hover:border-black/25 hover:text-gray-600 dark:border-white/10 dark:text-gray-500 dark:hover:border-white/25 dark:hover:text-gray-300"
     >
       {label}
     </button>
@@ -197,7 +197,7 @@ export function EditableCanvas({
     <div className="mx-auto w-full max-w-[680px]">
       {/* Envelope: email metadata that isn't part of the visible body */}
       <div className="mb-8 rounded-2xl border border-black/5 bg-stone-50/70 px-5 py-4 dark:border-white/10 dark:bg-white/5">
-        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-600">
+        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-gray-400 dark:text-gray-600">
           Sobre · inbox
         </p>
         <div className="space-y-2">
@@ -546,7 +546,7 @@ export function EditableCanvas({
                   onClick={() =>
                     patchCommunity({ stats: removeAt(issue.community.stats, i) })
                   }
-                  className="font-mono text-[10px] uppercase text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
+                  className="font-mono text-xs uppercase text-gray-300 opacity-0 transition hover:text-red-500 group-hover/item:opacity-100 dark:text-gray-600 dark:hover:text-red-400"
                 >
                   ×
                 </button>

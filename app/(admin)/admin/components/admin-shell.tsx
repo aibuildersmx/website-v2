@@ -45,7 +45,7 @@ function AccountFooter({
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 text-left font-mono text-[10px] uppercase tracking-[0.2em] text-gray-600 transition hover:bg-black/5 dark:text-gray-300 dark:hover:bg-white/10"
+                  className="w-full px-4 py-3 text-left font-mono text-xs uppercase tracking-[0.2em] text-gray-600 transition hover:bg-black/5 dark:text-gray-300 dark:hover:bg-white/10"
                 >
                   Salir
                 </button>
@@ -77,7 +77,7 @@ function AccountFooter({
             {identity && (
               <p className="truncate text-sm text-gray-800 dark:text-gray-100">{identity.name}</p>
             )}
-            <p className="truncate text-[10px] font-medium text-gray-400 dark:text-gray-500">
+            <p className="truncate text-xs font-medium text-gray-400 dark:text-gray-500">
               {email}
             </p>
           </div>
@@ -146,7 +146,7 @@ export function AdminShell({
     <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 py-6">
       {sections.map((section) => (
         <div key={section.name}>
-          <p className="px-3 pb-2 text-[10px] font-medium text-gray-400 dark:text-gray-500">
+          <p className="px-3 pb-2 text-xs font-medium text-gray-400 dark:text-gray-500">
             {section.name}
           </p>
           <ul className="flex flex-col gap-1">

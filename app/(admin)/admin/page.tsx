@@ -63,7 +63,7 @@ export default async function AdminHome() {
                 <span className="truncate text-sm text-gray-800 dark:text-gray-100">
                   {e.title}
                 </span>
-                <span className="shrink-0 text-[10px] font-medium text-gray-400">
+                <span className="shrink-0 text-xs font-medium text-gray-400">
                   {e.dateLabel}
                 </span>
               </div>
