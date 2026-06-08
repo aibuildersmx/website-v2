@@ -7,6 +7,7 @@ import {
   timestamp,
   index,
 } from "drizzle-orm/pg-core";
+import type { Issue } from "@/lib/newsletter/types";
 
 export const contacts = pgTable(
   "contacts",
@@ -71,7 +72,7 @@ export const newsletterIssues = pgTable("newsletter_issues", {
   slug: text("slug").notNull().unique(), // e.g. "003"; also Issue.slug
   subject: text("subject").notNull().default(""), // denormalized for list views
   status: text("status").notNull().default("draft"), // "draft" | "sent"
-  data: jsonb("data").notNull(), // the full Issue object
+  data: jsonb("data").$type<Issue>().notNull(), // the full Issue object
   resendBroadcastId: text("resend_broadcast_id"), // set once broadcast
   sentAt: timestamp("sent_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
