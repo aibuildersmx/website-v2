@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, forwardRef } from 'react';
+import { useRef, useState, useEffect, forwardRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
 import { Effect } from 'postprocessing';
@@ -181,7 +181,11 @@ function DitheredWaves({
   const mouseRef = useRef(new THREE.Vector2());
   const { viewport, size, gl } = useThree();
 
-  const waveUniformsRef = useRef({
+  // Created once via a lazy state initializer so it has a stable identity and is
+  // safe to read during render (`waveUniforms`). The same object is held in a
+  // ref (`waveUniformsRef`) — the sanctioned mutable handle for the imperative
+  // per-frame updates below.
+  const [waveUniforms] = useState(() => ({
     time: new THREE.Uniform(0),
     resolution: new THREE.Uniform(new THREE.Vector2(0, 0)),
     waveSpeed: new THREE.Uniform(waveSpeed),
@@ -191,7 +195,8 @@ function DitheredWaves({
     mousePos: new THREE.Uniform(new THREE.Vector2(0, 0)),
     enableMouseInteraction: new THREE.Uniform(enableMouseInteraction ? 1 : 0),
     mouseRadius: new THREE.Uniform(mouseRadius)
-  });
+  }));
+  const waveUniformsRef = useRef(waveUniforms);
 
   useEffect(() => {
     const dpr = gl.getPixelRatio();
@@ -242,7 +247,7 @@ function DitheredWaves({
         <shaderMaterial
           vertexShader={waveVertexShader}
           fragmentShader={waveFragmentShader}
-          uniforms={waveUniformsRef.current}
+          uniforms={waveUniforms}
         />
       </mesh>
 

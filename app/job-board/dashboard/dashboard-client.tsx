@@ -357,17 +357,13 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
 
   /* ── Pagination ── */
   const totalPages = Math.ceil(roles.length / JOBS_PER_PAGE);
+  // Clamp during render so a deletion that shrinks the list can't leave us on a
+  // now-empty page — no effect/setState needed.
+  const safePage = Math.min(currentPage, Math.max(1, totalPages));
   const paginatedRoles = roles.slice(
-    (currentPage - 1) * JOBS_PER_PAGE,
-    currentPage * JOBS_PER_PAGE
+    (safePage - 1) * JOBS_PER_PAGE,
+    safePage * JOBS_PER_PAGE
   );
-
-  // Adjust page if current page exceeds total after deletion
-  useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
-    }
-  }, [roles.length, currentPage, totalPages]);
 
   /* ── Helpers ── */
   const resetForm = useCallback(() => {
@@ -755,8 +751,8 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
             <div className="mt-10 flex items-center justify-center gap-2">
               <button
                 type="button"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
+                disabled={safePage === 1}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 font-mono text-sm text-gray-500 transition-colors hover:border-gray-300 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
@@ -768,7 +764,7 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
                   type="button"
                   onClick={() => setCurrentPage(page)}
                   className={`flex h-10 w-10 items-center justify-center rounded-full font-mono text-xs transition-colors ${
-                    currentPage === page
+                    safePage === page
                       ? "bg-gray-900 text-white"
                       : "border border-gray-200 text-gray-500 hover:border-gray-300"
                   }`}
@@ -779,8 +775,8 @@ export function DashboardClient({ userEmail }: { userEmail: string }) {
 
               <button
                 type="button"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1))}
+                disabled={safePage === totalPages}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 font-mono text-sm text-gray-500 transition-colors hover:border-gray-300 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <ChevronRight className="h-4 w-4" strokeWidth={1.5} />

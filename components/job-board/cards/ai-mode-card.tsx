@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { JobData } from "../job-data";
 
@@ -61,9 +62,12 @@ export function AiModeCard({ job }: { job: JobData }) {
         {/* ---- Header: avatar + company ---- */}
         <div className="flex items-center justify-between gap-3 px-5 pt-6 pb-1 sm:px-7 sm:pt-7">
           <div className="flex items-center gap-3">
-          <img
+          <Image
             src={job.companyLogo}
             alt={job.company}
+            width={44}
+            height={44}
+            unoptimized
             className="h-11 w-11 rounded-full ring-1 ring-white/10"
           />
           <span className="text-[15px] font-semibold tracking-tight text-white/90">

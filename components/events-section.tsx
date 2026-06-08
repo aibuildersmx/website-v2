@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, ArrowUpRight, Ticket } from "lucide-react";
+import { MapPin, ArrowUpRight, Ticket } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 

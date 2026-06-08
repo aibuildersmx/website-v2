@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, DollarSign, Clock } from "lucide-react";
+import { MapPin, DollarSign } from "lucide-react";
 import type { JobData } from "../job-data";
 
 export function HolographicCard({ job }: { job: JobData }) {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { renderBuildLog } from "../../scripts/newsletter/templates/build-log";
-import issue002 from "../../scripts/newsletter/issues/002-the-build-log";
+import { renderBuildLog } from "@/lib/newsletter/render";
+import issue002 from "./fixtures/sample-issue";
 
 describe("renderBuildLog", () => {
   const html = renderBuildLog(issue002);

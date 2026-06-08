@@ -1,6 +1,6 @@
 'use client'
 
-import {useRef, useEffect, forwardRef} from 'react';
+import {useRef, useState, useEffect, forwardRef} from 'react';
 import {Canvas, useFrame, useThree, ThreeEvent} from '@react-three/fiber';
 import {EffectComposer, wrapEffect} from '@react-three/postprocessing';
 import {Effect} from 'postprocessing';
@@ -135,10 +135,10 @@ void mainImage(in vec4 inputColor, in vec2 uv, out vec4 outputColor) {
 `;
 
 class RetroEffectImpl extends Effect {
-    public uniforms: Map<string, THREE.Uniform<any>>;
+    public uniforms: Map<string, THREE.Uniform<unknown>>;
 
     constructor() {
-        const uniforms = new Map<string, THREE.Uniform<any>>([
+        const uniforms = new Map<string, THREE.Uniform<unknown>>([
             ['colorNum', new THREE.Uniform(4.0)],
             ['pixelSize', new THREE.Uniform(2.0)]
         ]);
@@ -151,7 +151,7 @@ class RetroEffectImpl extends Effect {
     }
 
     get colorNum(): number {
-        return this.uniforms.get('colorNum')!.value;
+        return this.uniforms.get('colorNum')!.value as number;
     }
 
     set pixelSize(value: number) {
@@ -159,20 +159,21 @@ class RetroEffectImpl extends Effect {
     }
 
     get pixelSize(): number {
-        return this.uniforms.get('pixelSize')!.value;
+        return this.uniforms.get('pixelSize')!.value as number;
     }
 }
 
+const WrappedRetroEffect = wrapEffect(RetroEffectImpl);
+
 const RetroEffect = forwardRef<RetroEffectImpl, { colorNum: number; pixelSize: number }>((props, ref) => {
     const {colorNum, pixelSize} = props;
-    const WrappedRetroEffect = wrapEffect(RetroEffectImpl);
     return <WrappedRetroEffect ref={ref} colorNum={colorNum} pixelSize={pixelSize}/>;
 });
 
 RetroEffect.displayName = 'RetroEffect';
 
 interface WaveUniforms {
-    [key: string]: THREE.Uniform<any>;
+    [key: string]: THREE.Uniform<unknown>;
 
     time: THREE.Uniform<number>;
     resolution: THREE.Uniform<THREE.Vector2>;
@@ -215,7 +216,11 @@ function DitheredWaves({
     const mouseRef = useRef(new THREE.Vector2());
     const {viewport, size, gl} = useThree();
 
-    const waveUniformsRef = useRef<WaveUniforms>({
+    // Created once via a lazy state initializer so it has a stable identity and
+    // is safe to read during render (`waveUniforms`). The same object is held in
+    // a ref (`waveUniformsRef`) which is the sanctioned mutable handle used for
+    // the imperative per-frame updates below.
+    const [waveUniforms] = useState<WaveUniforms>(() => ({
         time: new THREE.Uniform(0),
         resolution: new THREE.Uniform(new THREE.Vector2(0, 0)),
         waveSpeed: new THREE.Uniform(waveSpeed),
@@ -226,7 +231,8 @@ function DitheredWaves({
         mousePos: new THREE.Uniform(new THREE.Vector2(0, 0)),
         enableMouseInteraction: new THREE.Uniform(enableMouseInteraction ? 1 : 0),
         mouseRadius: new THREE.Uniform(mouseRadius)
-    });
+    }));
+    const waveUniformsRef = useRef(waveUniforms);
 
     useEffect(() => {
         const dpr = gl.getPixelRatio();
@@ -283,7 +289,7 @@ function DitheredWaves({
                 <shaderMaterial
                     vertexShader={waveVertexShader}
                     fragmentShader={waveFragmentShader}
-                    uniforms={waveUniformsRef.current}
+                    uniforms={waveUniforms}
                 />
             </mesh>
 

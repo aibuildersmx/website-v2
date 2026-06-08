@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, DollarSign, Clock } from "lucide-react";
+import { useMounted } from "@/hooks/use-mounted";
 import type { JobData } from "../job-data";
 
 function MatrixRain() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   if (!mounted) return null;
 

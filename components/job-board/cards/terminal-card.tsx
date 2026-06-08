@@ -84,7 +84,7 @@ export function TerminalCard({ job }: { job: JobData }) {
       <div className="border-t border-green-900/30 pt-3 text-xs text-green-600/50">
         <span className="text-green-500">status:</span>{" "}
         <span className="text-green-300">{job.status}</span>
-        <span className="ml-2 text-green-700">// {job.id}</span>
+        <span className="ml-2 text-green-700">{`// ${job.id}`}</span>
       </div>
     </motion.div>
   );

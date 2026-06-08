@@ -1,4 +1,4 @@
-import type { Issue } from "../issues/types";
+import type { Issue } from "./types";
 
 function esc(s: string): string {
   return s

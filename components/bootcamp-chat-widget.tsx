@@ -2,17 +2,20 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
 const bootcampHref = '/residencia'
 const widgetCutoff = '2026-05-02T00:00:00-06:00'
+const emptySubscribe = () => () => {}
 
 export function BootcampChatWidget() {
-    const [isVisible, setIsVisible] = useState(false)
-
-    useEffect(() => {
-        setIsVisible(Date.now() < new Date(widgetCutoff).getTime())
-    }, [])
+    // `false` on the server / first render, then the real clock check on the
+    // client — no effect, no setState, no hydration mismatch.
+    const isVisible = useSyncExternalStore(
+        emptySubscribe,
+        () => Date.now() < new Date(widgetCutoff).getTime(),
+        () => false
+    )
 
     if (!isVisible) {
         return null

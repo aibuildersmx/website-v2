@@ -81,7 +81,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       alt,
       width,
       height,
-      ...rest
     }: ImgHTMLAttributes<HTMLImageElement>): ReactElement => {
       if (typeof src === "string" && width && height) {
         return (
@@ -94,8 +93,21 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           />
         );
       }
-      // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-      return <img src={src} alt={alt ?? ""} {...rest} />;
+      // No intrinsic dimensions given (e.g. a plain markdown image): render a
+      // responsive, full-width image. `width/height={0}` + `sizes` is Next's
+      // pattern for unknown-size sources; `unoptimized` skips the remote-host
+      // allowlist so any blog image host works.
+      return (
+        <Image
+          src={src as string}
+          alt={alt ?? ""}
+          width={0}
+          height={0}
+          sizes="100vw"
+          unoptimized
+          className="rounded-xl border border-black/10 dark:border-white/10 my-6 w-full h-auto"
+        />
+      );
     },
 
     ...components,

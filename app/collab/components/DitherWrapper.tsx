@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+import { useMounted } from '@/hooks/use-mounted'
 import Dither from './Dither'
 
 // ============================================
@@ -13,11 +13,7 @@ const FORCE_DITHER_MODE: 'dark' | 'light' | 'auto' = 'dark'
 
 export default function DitherWrapper() {
     const { resolvedTheme } = useTheme()
-    const [mounted, setMounted] = useState(false)
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+    const mounted = useMounted()
 
     // Determine effective mode based on toggle
     const effectiveMode = FORCE_DITHER_MODE === 'auto' ? resolvedTheme : FORCE_DITHER_MODE
