@@ -4,6 +4,9 @@ import { PgBoss } from "pg-boss";
 // exhausted so the issue can still finalize.
 export const SEND_BATCH_QUEUE = "newsletter.send-batch";
 export const SEND_BATCH_DLQ = "newsletter.send-batch-dead";
+// Domain-warmup heartbeat: a pg-boss cron fires this; the worker handler stages
+// the next ramped chunk of an active warmup plan. See lib/newsletter/warmup.ts.
+export const WARMUP_TICK_QUEUE = "newsletter.warmup-tick";
 
 export interface SendBatchJob {
   issueId: string;
@@ -37,6 +40,9 @@ async function startBoss(): Promise<PgBoss> {
     retryBackoff: true,
     deadLetter: SEND_BATCH_DLQ,
   });
+  // Warmup heartbeat queue. Single-attempt: a missed/failed tick just retries on
+  // the next cron fire, so no retries/backlog needed.
+  await boss.createQueue(WARMUP_TICK_QUEUE, { retryLimit: 0 });
 
   return boss;
 }

@@ -3,6 +3,7 @@ import {
   uuid,
   text,
   boolean,
+  integer,
   jsonb,
   timestamp,
   index,
@@ -116,3 +117,31 @@ export const newsletterSends = pgTable(
 
 export type NewsletterSendRow = typeof newsletterSends.$inferSelect;
 export type NewNewsletterSendRow = typeof newsletterSends.$inferInsert;
+
+// Domain-warmup plan for a staged send. The worker's hourly cron reads the single
+// `active` row and, per tick, enqueues up to `chunkSize` more recipients until the
+// current day's cap is hit — ramping volume over days instead of one cold blast.
+// `dailyCaps` is the per-day cap (e.g. [200,400,700]); once the day index passes
+// the array end, the remaining list goes out uncapped ("the rest"). Day index is
+// derived from `startAt` (rolling 24h windows). Set `active=false` to pause/stop.
+export const newsletterWarmup = pgTable(
+  "newsletter_warmup",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id")
+      .notNull()
+      .references(() => newsletterIssues.id, { onDelete: "cascade" }),
+    dailyCaps: jsonb("daily_caps").$type<number[]>().notNull(), // per-day send cap; after last entry = rest
+    chunkSize: integer("chunk_size").notNull().default(100), // recipients enqueued per tick
+    startAt: timestamp("start_at", { withTimezone: true }).notNull().defaultNow(),
+    active: boolean("active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    activeIdx: index("newsletter_warmup_active_idx").on(t.active),
+  }),
+);
+
+export type NewsletterWarmupRow = typeof newsletterWarmup.$inferSelect;
+export type NewNewsletterWarmupRow = typeof newsletterWarmup.$inferInsert;
