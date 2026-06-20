@@ -3,8 +3,8 @@
 //
 //   set -a && . ./.env.local && set +a   # or export DATABASE_URL inline
 //
-//   pnpm tsx scripts/newsletter/start-warmup.ts <issueId>                 # start (caps 200,400,700 + rest)
-//   pnpm tsx scripts/newsletter/start-warmup.ts <issueId> --caps 400,900  # custom ramp
+//   pnpm tsx scripts/newsletter/start-warmup.ts <issueId>                   # start (3-day ramp: 400,900 + rest)
+//   pnpm tsx scripts/newsletter/start-warmup.ts <issueId> --caps 200,400,700 # custom ramp (4-day, conservative)
 //   pnpm tsx scripts/newsletter/start-warmup.ts <issueId> --chunk 150     # emails per 30-min tick
 //   pnpm tsx scripts/newsletter/start-warmup.ts --status                  # show active plan + progress
 //   pnpm tsx scripts/newsletter/start-warmup.ts --stop                    # pause/stop the active plan
@@ -102,7 +102,10 @@ async function main() {
     process.exit(1);
   }
 
-  const caps = (values.caps ? values.caps.split(/[\s,]+/) : ["200", "400", "700"])
+  // Default = aggressive-but-safe 3-day ramp (400 → 900 → rest). The domain is
+  // already warm from issue #002, so this stays inside Resend's slope limits.
+  // Pass --caps 200,400,700 for the conservative 4-day ramp.
+  const caps = (values.caps ? values.caps.split(/[\s,]+/) : ["400", "900"])
     .map((n) => Number.parseInt(n, 10))
     .filter((n) => Number.isFinite(n) && n > 0);
   const chunkSize = values.chunk ? Number.parseInt(values.chunk, 10) : 100;
