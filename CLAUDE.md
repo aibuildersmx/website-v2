@@ -471,6 +471,7 @@ The project deploys on **Railway**. Key points:
 | Change global styles/colors | `app/globals.css` |
 | Update site metadata (SEO) | `app/layout.tsx` → `metadata` object |
 | Add a new image/asset | Place file in `/public`, reference as `"/filename.ext"` |
+| Convert an HTML newsletter into a draft | Use the `newsletter-from-html` skill (`.claude/skills/`) — maps the HTML to the `Issue` format, wraps links, creates the Railway draft |
 | Add a new blog post | Copy `docs/blog/_template.mdx` → `content/blog/<slug>.mdx`; read [docs/blog/CONTRIBUTING.md](docs/blog/CONTRIBUTING.md) first |
 | Edit an existing blog post | Edit the matching `content/blog/<slug>.mdx`; check [components.md](docs/blog/components.md) before inventing styles |
 | Add a new blog MDX component | Create in `components/blog/mdx/<name>.tsx`, register in `mdx-components.tsx`, document in `docs/blog/components.md` — all in the same commit |
