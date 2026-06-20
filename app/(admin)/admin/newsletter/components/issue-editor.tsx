@@ -10,8 +10,10 @@ import {
   retryFailed,
   getIssueProgress,
   type IssueProgress,
+  type IssueEngagement,
 } from "@/lib/actions/newsletter";
 import { EditableCanvas } from "./editable-canvas";
+import { EngagementPanel } from "./engagement-panel";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
@@ -20,11 +22,13 @@ export function IssueEditor({
   initialData,
   status: initialStatus,
   initialProgress,
+  engagement,
 }: {
   id: string;
   initialData: Issue;
   status: string;
   initialProgress: IssueProgress;
+  engagement?: IssueEngagement | null;
 }) {
   const [issue, setIssue] = useState<Issue>(initialData);
   const [saveState, setSaveState] = useState<SaveState>("idle");
@@ -219,6 +223,8 @@ export function IssueEditor({
           {message.text}
         </div>
       )}
+
+      {sent && engagement && <EngagementPanel data={engagement} />}
 
       <EditableCanvas issue={issue} onChange={onIssueChange} />
 

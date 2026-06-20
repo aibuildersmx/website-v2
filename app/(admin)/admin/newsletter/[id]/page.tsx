@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getIssue, getIssueProgress } from "@/lib/actions/newsletter";
+import { getIssue, getIssueProgress, getIssueEngagement } from "@/lib/actions/newsletter";
 import { IssueEditor } from "../components/issue-editor";
 
 export const dynamic = "force-dynamic";
@@ -14,6 +14,8 @@ export default async function NewsletterIssuePage({
   if (!issue) notFound();
 
   const progress = await getIssueProgress(id);
+  // Engagement only matters once an issue is out the door.
+  const engagement = issue.status === "sent" ? await getIssueEngagement(id) : null;
 
   return (
     <div>
@@ -22,6 +24,7 @@ export default async function NewsletterIssuePage({
         initialData={issue.data}
         status={issue.status}
         initialProgress={progress}
+        engagement={engagement}
       />
     </div>
   );

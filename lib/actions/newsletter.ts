@@ -13,6 +13,12 @@ import { loadNewsletterConfig, MissingEnvError } from "@/lib/newsletter/resend";
 import { subscribedRecipients, chunk } from "@/lib/newsletter/recipients";
 import { injectUnsubscribe, siteUrl } from "@/lib/newsletter/unsubscribe";
 import { stripTracking } from "@/lib/newsletter/tracking";
+import {
+  engagementSummary,
+  topClickedLinks,
+  type EngagementSummary,
+  type LinkClicks,
+} from "@/lib/newsletter/engagement";
 import { getBoss, SEND_BATCH_QUEUE } from "@/lib/queue/boss";
 
 const LIST_PATH = "/admin/newsletter";
@@ -272,6 +278,22 @@ export interface IssueProgress {
   sent: number;
   failed: number;
   pending: number;
+}
+
+export interface IssueEngagement extends EngagementSummary {
+  topLinks: LinkClicks[];
+}
+
+export async function getIssueEngagement(id: string): Promise<IssueEngagement> {
+  const empty: IssueEngagement = {
+    sent: 0, opens: 0, clicks: 0, openRate: 0, clickRate: 0, hasData: false, topLinks: [],
+  };
+  if (await gate()) return empty;
+  const [summary, topLinks] = await Promise.all([
+    engagementSummary(id),
+    topClickedLinks(id),
+  ]);
+  return { ...summary, topLinks };
 }
 
 export async function getIssueProgress(id: string): Promise<IssueProgress> {

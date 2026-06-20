@@ -2,6 +2,7 @@ import { sql, eq, gte, desc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { contacts, newsletterIssues } from "@/lib/db/schema";
 import { events as upcomingEventsData } from "@/components/events-data";
+import { engagementSummary } from "@/lib/newsletter/engagement";
 import { eventToSummary, type EventSummary } from "./format";
 
 // Re-export para que la página importe todo lo del dashboard desde un solo lugar.
@@ -21,6 +22,7 @@ export type DashboardMetrics = {
   newsletter: {
     subscribers: number | null;
     lastIssueSentAt: Date | null;
+    lastEngagement: { openRate: number; clickRate: number; hasData: boolean } | null;
     recentIssues: RecentIssue[];
   };
   events: { upcomingCount: number | null; upcoming: EventSummary[] };
@@ -45,11 +47,20 @@ async function getNewsletterMetrics(): Promise<DashboardMetrics["newsletter"]> {
     .where(eq(contacts.newsletterSubscribed, true));
 
   const sentRows = await db
-    .select({ sentAt: newsletterIssues.sentAt })
+    .select({ id: newsletterIssues.id, sentAt: newsletterIssues.sentAt })
     .from(newsletterIssues)
     .where(eq(newsletterIssues.status, "sent"))
     .orderBy(desc(newsletterIssues.sentAt))
     .limit(1);
+
+  const lastSent = sentRows[0];
+  const lastEngagement = lastSent
+    ? await engagementSummary(lastSent.id).then((e) => ({
+        openRate: e.openRate,
+        clickRate: e.clickRate,
+        hasData: e.hasData,
+      }))
+    : null;
 
   const recentIssues = await db
     .select({
@@ -63,7 +74,12 @@ async function getNewsletterMetrics(): Promise<DashboardMetrics["newsletter"]> {
     .orderBy(desc(newsletterIssues.updatedAt))
     .limit(3);
 
-  return { subscribers, lastIssueSentAt: sentRows[0]?.sentAt ?? null, recentIssues };
+  return {
+    subscribers,
+    lastIssueSentAt: lastSent?.sentAt ?? null,
+    lastEngagement,
+    recentIssues,
+  };
 }
 
 async function getEventsMetrics(): Promise<DashboardMetrics["events"]> {
@@ -89,7 +105,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     newsletter:
       newsletterR.status === "fulfilled"
         ? newsletterR.value
-        : { subscribers: null, lastIssueSentAt: null, recentIssues: [] },
+        : { subscribers: null, lastIssueSentAt: null, lastEngagement: null, recentIssues: [] },
     events:
       eventsR.status === "fulfilled"
         ? eventsR.value

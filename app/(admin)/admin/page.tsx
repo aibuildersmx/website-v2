@@ -39,7 +39,13 @@ export default async function AdminHome() {
         <StatCard
           eyebrow="Newsletter"
           value={formatCount(m.newsletter.subscribers)}
-          sublabel={`Último envío: ${formatDate(m.newsletter.lastIssueSentAt)}`}
+          sublabel={
+            m.newsletter.lastEngagement?.hasData
+              ? `Último envío ${formatDate(m.newsletter.lastIssueSentAt)} · ${Math.round(
+                  m.newsletter.lastEngagement.clickRate * 100,
+                )}% clics`
+              : `Último envío: ${formatDate(m.newsletter.lastIssueSentAt)}`
+          }
           href="/admin/newsletter"
         />
         <StatCard
