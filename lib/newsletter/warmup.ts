@@ -1,7 +1,7 @@
 import type { PgBoss } from "pg-boss";
 import { and, asc, eq, gte, notExists, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { contacts, newsletterIssues, newsletterSends, newsletterWarmup } from "@/lib/db/schema";
+import { contacts, newsletterEvents, newsletterIssues, newsletterSends, newsletterWarmup } from "@/lib/db/schema";
 import { SEND_BATCH_QUEUE } from "@/lib/queue/boss";
 import { chunk } from "./recipients";
 
@@ -83,8 +83,14 @@ export async function warmupTick(boss: PgBoss): Promise<WarmupTickResult> {
         ),
       ),
     )
-    // Seed contacts first (always in the first batch), then longest-standing.
-    .orderBy(sql`(${SEED_TAG} = any(${contacts.tags})) desc`, asc(contacts.createdAt))
+    // Order: seed contacts first (always in the first batch), then contacts who
+    // engaged with any prior issue (open/click — warms reputation faster), then
+    // longest-standing. Engagement ordering kicks in once we have event data.
+    .orderBy(
+      sql`(${SEED_TAG} = any(${contacts.tags})) desc`,
+      sql`(exists (select 1 from ${newsletterEvents} where ${newsletterEvents.contactId} = ${contacts.id})) desc`,
+      asc(contacts.createdAt),
+    )
     .limit(quotaLeft);
 
   if (!next.length) {

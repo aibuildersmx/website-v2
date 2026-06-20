@@ -12,6 +12,7 @@ import { renderBuildLog } from "@/lib/newsletter/render";
 import { loadNewsletterConfig, MissingEnvError } from "@/lib/newsletter/resend";
 import { subscribedRecipients, chunk } from "@/lib/newsletter/recipients";
 import { injectUnsubscribe, siteUrl } from "@/lib/newsletter/unsubscribe";
+import { stripTracking } from "@/lib/newsletter/tracking";
 import { getBoss, SEND_BATCH_QUEUE } from "@/lib/queue/boss";
 
 const LIST_PATH = "/admin/newsletter";
@@ -29,7 +30,9 @@ async function gate(): Promise<ActionError | null> {
 // link instead of a literal token. The real token is only injected by Resend
 // when it sends an actual broadcast.
 function previewHtml(issue: Issue): string {
-  return renderBuildLog(issue).replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, "#");
+  return stripTracking(
+    renderBuildLog(issue).replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, "#"),
+  );
 }
 
 export interface IssueListItem {
@@ -160,12 +163,15 @@ export async function sendTest(
     .from(contacts)
     .where(eq(contacts.email, to))
     .limit(1);
-  const html = contact
-    ? injectUnsubscribe(renderBuildLog(data), contact.id)
-    : renderBuildLog(data).replace(
-        /\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g,
-        `${siteUrl()}/unsubscribe`,
-      );
+  // Strip the open pixel — a test send has no persisted issue id to attribute to.
+  const html = stripTracking(
+    contact
+      ? injectUnsubscribe(renderBuildLog(data), contact.id)
+      : renderBuildLog(data).replace(
+          /\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g,
+          `${siteUrl()}/unsubscribe`,
+        ),
+  );
 
   const res = await cfg.resend.emails.send({
     from: cfg.from,

@@ -5,6 +5,7 @@ import { contacts, newsletterIssues, newsletterSends } from "@/lib/db/schema";
 import type { Issue } from "./types";
 import { renderBuildLog } from "./render";
 import { injectUnsubscribe, unsubscribeHeaders } from "./unsubscribe";
+import { injectTracking } from "./tracking";
 
 export interface SendBatchDeps {
   db: DB;
@@ -57,7 +58,7 @@ export async function processSendBatch(
       from,
       to: [r.email],
       subject: issue.subject,
-      html: injectUnsubscribe(html, r.contactId),
+      html: injectTracking(injectUnsubscribe(html, r.contactId), r.contactId, issueId),
       replyTo,
       headers: unsubscribeHeaders(r.contactId),
     })),

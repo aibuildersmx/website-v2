@@ -145,3 +145,32 @@ export const newsletterWarmup = pgTable(
 
 export type NewsletterWarmupRow = typeof newsletterWarmup.$inferSelect;
 export type NewNewsletterWarmupRow = typeof newsletterWarmup.$inferInsert;
+
+// First-party engagement events (opens, clicks). We measure these ourselves on
+// aibuilders.mx instead of via Resend's tracking (which rewrites links and serves
+// a third-party pixel — spam signals). Append-only: one row per event, so we can
+// derive CTR / time-to-open / "did they engage" later. Future event types
+// (delivered/bounce/complaint via Resend webhooks) reuse this same table.
+export const newsletterEvents = pgTable(
+  "newsletter_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id")
+      .notNull()
+      .references(() => newsletterIssues.id, { onDelete: "cascade" }),
+    contactId: uuid("contact_id")
+      .notNull()
+      .references(() => contacts.id, { onDelete: "cascade" }),
+    type: text("type").notNull(), // "open" | "click" | (future: delivered/bounce/complaint)
+    url: text("url"), // click destination, if a click
+    userAgent: text("user_agent"), // to filter bot/proxy prefetch later
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    issueTypeIdx: index("newsletter_events_issue_type_idx").on(t.issueId, t.type),
+    contactIdx: index("newsletter_events_contact_idx").on(t.contactId),
+  }),
+);
+
+export type NewsletterEventRow = typeof newsletterEvents.$inferSelect;
+export type NewNewsletterEventRow = typeof newsletterEvents.$inferInsert;

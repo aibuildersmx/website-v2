@@ -255,6 +255,9 @@ export function renderBuildLog(issue: Issue): string {
 </table>
 </td></tr>
 </table>
+<!-- First-party open pixel. Swapped for a signed per-contact URL at send time
+     (lib/newsletter/tracking.ts); stripped in previews/tests. -->
+<img src="{{{OPEN_PIXEL}}}" width="1" height="1" alt="" style="display:block;width:1px;height:1px;border:0;overflow:hidden;">
 </body>
 </html>`;
 }
