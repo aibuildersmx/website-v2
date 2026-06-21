@@ -1,6 +1,7 @@
 import { getOverview } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
 import { StatCard } from "../components/stat-card";
+import { RangeChannelPicker } from "./components/range-channel-picker";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,12 @@ export default async function ComunidadPulso({
       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
         Salud de la comunidad de un vistazo.
       </p>
+
+      {overview && (
+        <div className="mt-6">
+          <RangeChannelPicker channels={overview.groups} />
+        </div>
+      )}
 
       {error || !overview ? (
         <p className="mt-8 rounded-2xl border border-black/5 bg-white p-6 text-sm text-gray-500 dark:border-white/10 dark:bg-neutral-900">
