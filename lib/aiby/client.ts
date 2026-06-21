@@ -114,3 +114,9 @@ export const getShowcase = (range: AibyRange, limit = 30) =>
 
 export const patchJobStatus = (id: number, status: JobStatus) =>
   patch<{ ok: boolean; id: number; status: string }>(`/jobs/${id}`, { status });
+
+export const patchPersonName = (jid: string, curatedName: string | null) =>
+  patch<{ ok: boolean; jid: string; curated_name: string | null }>(
+    `/person/${encodeURIComponent(jid)}`,
+    { curated_name: curatedName },
+  );
