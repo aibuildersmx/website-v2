@@ -4,6 +4,10 @@ import type {
   VolumeData,
   HeatmapData,
   RecentMessages,
+  TopicsPage,
+  PeoplePage,
+  TopicDetailData,
+  PersonDetailData,
 } from "./types";
 
 export type AibyRange = {
@@ -67,3 +71,11 @@ export const getVolume = (range: AibyRange) => get<VolumeData>("/volume", range)
 export const getHeatmap = (range: AibyRange) => get<HeatmapData>("/heatmap", range);
 export const getRecent = (range: AibyRange, limit = 30) =>
   get<RecentMessages>("/recent", range, { limit });
+export const getTopics = (range: AibyRange, opts?: { offset?: number; limit?: number }) =>
+  get<TopicsPage>("/topics", range, { offset: opts?.offset ?? 0, limit: opts?.limit ?? 25 });
+export const getPeople = (range: AibyRange, opts?: { offset?: number; limit?: number }) =>
+  get<PeoplePage>("/people", range, { offset: opts?.offset ?? 0, limit: opts?.limit ?? 25 });
+export const getTopic = (slug: string, range: AibyRange) =>
+  get<TopicDetailData>(`/topic/${encodeURIComponent(slug)}`, range);
+export const getPerson = (jid: string, range: AibyRange) =>
+  get<PersonDetailData>(`/person/${encodeURIComponent(jid)}`, range);
