@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Mail, Users, MessageCircle, Hash, UserRound, Briefcase, Menu, X, ChevronUp } from "lucide-react";
+import { Home, Mail, Users, MessageCircle, Hash, UserRound, Briefcase, Sparkles, Menu, X, ChevronUp } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { identityForEmail } from "@/lib/admin/avatars";
 
@@ -101,6 +101,7 @@ const NAV: { href: string; label: string; section: string; icon: typeof Home; ex
   { href: "/admin/comunidad/temas", label: "Temas", section: "Comunidad", icon: Hash },
   { href: "/admin/comunidad/personas", label: "Personas", section: "Comunidad", icon: UserRound },
   { href: "/admin/comunidad/jobs", label: "Jobs", section: "Comunidad", icon: Briefcase },
+  { href: "/admin/comunidad/showcase", label: "Showcase", section: "Comunidad", icon: Sparkles },
   { href: "/admin/contactos", label: "Contactos", section: "Comunidad", icon: Users },
 ];
 
