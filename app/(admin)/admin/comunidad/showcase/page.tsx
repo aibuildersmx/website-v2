@@ -5,7 +5,7 @@ import { ListPager } from "../components/list-pager";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 6;
 
 const dateFmt = new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short", year: "numeric" });
 
