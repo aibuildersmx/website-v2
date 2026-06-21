@@ -70,3 +70,50 @@ export interface PersonDetailData {
   showcase: Array<{ id: number; date: string; group_alias: string; title: string; description: string; links: string[]; tags: string[] }>;
   profile: { expertise: string[]; projects: unknown[]; links_authored: string[]; style_notes: string | null } | null;
 }
+
+export type JobStatus = "open" | "closed" | "hidden";
+
+export interface JobPosting {
+  id: number;
+  date: string;
+  first_ts: string;
+  last_ts: string;
+  group_alias: string;
+  sender_jid: string;
+  sender_phone: string;
+  sender_name: string | null;
+  title: string;
+  company: string | null;
+  summary: string;
+  location: string | null;
+  mode: string | null;
+  seniority: string | null;
+  employment_type: string | null;
+  stack: string[];
+  salary: string | null;
+  contact: string | null;
+  links: string[];
+  tags: string[];
+  raw_text: string;
+  source_msg_ids: number[];
+  status: string;
+}
+
+export interface JobsList {
+  range: { fromDate: string; toDate: string };
+  items: JobPosting[];
+  total: number;
+  facets: {
+    modes: Array<{ key: string; count: number }>;
+    tags: Array<{ key: string; count: number }>;
+  };
+}
+
+export interface ShowcaseList {
+  range: { fromDate: string; toDate: string };
+  group: string | null;
+  items: Array<{
+    id: number; date: string; group_alias: string; author_name: string | null; author_jid: string;
+    title: string; description: string; links: string[]; tags: string[]; reaction_score: number;
+  }>;
+}

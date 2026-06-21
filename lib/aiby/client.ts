@@ -8,6 +8,9 @@ import type {
   PeoplePage,
   TopicDetailData,
   PersonDetailData,
+  JobsList,
+  ShowcaseList,
+  JobStatus,
 } from "./types";
 
 export type AibyRange = {
@@ -79,3 +82,35 @@ export const getTopic = (slug: string, range: AibyRange) =>
   get<TopicDetailData>(`/topic/${encodeURIComponent(slug)}`, range);
 export const getPerson = (jid: string, range: AibyRange) =>
   get<PersonDetailData>(`/person/${encodeURIComponent(jid)}`, range);
+
+async function patch<T>(path: string, body: Record<string, unknown>): Promise<T> {
+  const { base, key } = config();
+  const res = await fetch(`${base}/dashboard/api${path}`, {
+    method: "PATCH",
+    headers: { "x-api-key": key, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    throw new AibyApiError(`aiby API ${res.status} en PATCH ${path}`, res.status);
+  }
+  return (await res.json()) as T;
+}
+
+export const getJobs = (
+  range: AibyRange,
+  filters?: { mode?: string; tag?: string; status?: string; search?: string; limit?: number; offset?: number },
+) =>
+  get<JobsList>("/jobs", range, {
+    mode: filters?.mode,
+    tag: filters?.tag,
+    status: filters?.status,
+    search: filters?.search,
+    limit: filters?.limit,
+    offset: filters?.offset,
+  });
+
+export const getShowcase = (range: AibyRange, limit = 30) =>
+  get<ShowcaseList>("/showcase", range, { limit });
+
+export const patchJobStatus = (id: number, status: JobStatus) =>
+  patch<{ ok: boolean; id: number; status: string }>(`/jobs/${id}`, { status });
