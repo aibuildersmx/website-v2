@@ -9,7 +9,7 @@ import { CuratorProvider, EditButton } from "./components/curator";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 // El scrape deja nombres basura (".", "J", "Fp", "H.S"). Solo aceptamos un
 // nombre si tiene 3+ caracteres y al menos una letra; si no, caemos al teléfono.

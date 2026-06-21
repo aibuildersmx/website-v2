@@ -5,7 +5,7 @@ import { ListPager } from "../components/list-pager";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 8;
 
 const dateFmt = new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -57,17 +57,17 @@ export default async function ShowcasePage({
         <RangeChannelPicker channels={[]} />
       </div>
 
-      <div className="mt-6 flex flex-col gap-3">
-        {error ? (
-          <p className="rounded-2xl border border-black/5 bg-white px-6 py-16 text-center text-sm text-gray-400 dark:border-white/10 dark:bg-neutral-900">
-            {error}
-          </p>
-        ) : items.length === 0 ? (
-          <p className="rounded-2xl border border-black/5 bg-white px-6 py-16 text-center text-sm text-gray-400 dark:border-white/10 dark:bg-neutral-900">
-            Sin proyectos en este rango.
-          </p>
-        ) : (
-          items.map((s) => {
+      {error ? (
+        <p className="mt-6 rounded-2xl border border-black/5 bg-white px-6 py-16 text-center text-sm text-gray-400 dark:border-white/10 dark:bg-neutral-900">
+          {error}
+        </p>
+      ) : items.length === 0 ? (
+        <p className="mt-6 rounded-2xl border border-black/5 bg-white px-6 py-16 text-center text-sm text-gray-400 dark:border-white/10 dark:bg-neutral-900">
+          Sin proyectos en este rango.
+        </p>
+      ) : (
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          {items.map((s) => {
             const score = Math.round(s.reaction_score);
             return (
               <div
@@ -115,9 +115,9 @@ export default async function ShowcasePage({
                 )}
               </div>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
 
       <ListPager
         page={page}

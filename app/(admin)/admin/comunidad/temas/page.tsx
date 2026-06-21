@@ -6,7 +6,7 @@ import { ListPager } from "../components/list-pager";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 function buildHref(sp: Record<string, string | string[] | undefined>, page: number): string {
   const params = new URLSearchParams();

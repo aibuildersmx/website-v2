@@ -6,7 +6,7 @@ import { JobStatusControl } from "./components/job-status-control";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 const STATUS_FILTERS: { value: string; label: string }[] = [
   { value: "", label: "Todas" },
