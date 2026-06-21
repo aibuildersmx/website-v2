@@ -57,9 +57,21 @@ export default async function ComunidadPulso({
         <>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard eyebrow="Mensajes" value={formatCount(overview.totals.messages)} />
-            <StatCard eyebrow="Gente activa" value={formatCount(overview.totals.activePeople)} />
-            <StatCard eyebrow="Topics" value={formatCount(overview.totals.topics)} />
-            <StatCard eyebrow="Showcase" value={formatCount(overview.totals.showcase)} />
+            <StatCard
+              eyebrow="Gente activa"
+              value={formatCount(overview.totals.activePeople)}
+              href="/admin/comunidad/personas"
+            />
+            <StatCard
+              eyebrow="Topics"
+              value={formatCount(overview.totals.topics)}
+              href="/admin/comunidad/temas"
+            />
+            <StatCard
+              eyebrow="Showcase"
+              value={formatCount(overview.totals.showcase)}
+              href="/admin/comunidad/showcase"
+            />
           </div>
 
           <div className="mt-4 grid gap-4 lg:grid-cols-3">

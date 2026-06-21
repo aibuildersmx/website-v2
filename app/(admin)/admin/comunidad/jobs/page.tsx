@@ -1,9 +1,12 @@
 import { getJobs } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
 import { RangeChannelPicker } from "../components/range-channel-picker";
+import { ListPager } from "../components/list-pager";
 import { JobStatusControl } from "./components/job-status-control";
 
 export const dynamic = "force-dynamic";
+
+const PAGE_SIZE = 25;
 
 const STATUS_FILTERS: { value: string; label: string }[] = [
   { value: "", label: "Todas" },
@@ -33,6 +36,21 @@ function filterHref(
   return qs ? `/admin/comunidad/jobs?${qs}` : "/admin/comunidad/jobs";
 }
 
+// Como filterHref, pero conservando los filtros actuales y fijando la página.
+function pageHref(
+  sp: Record<string, string | string[] | undefined>,
+  page: number,
+): string {
+  const params = new URLSearchParams();
+  for (const k of ["preset", "group", "mode", "status", "q"]) {
+    const v = str(sp[k]);
+    if (v) params.set(k, v);
+  }
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return qs ? `/admin/comunidad/jobs?${qs}` : "/admin/comunidad/jobs";
+}
+
 export default async function JobsPage({
   searchParams,
 }: {
@@ -43,16 +61,21 @@ export default async function JobsPage({
   const status = str(sp.status);
   const mode = str(sp.mode);
   const search = str(sp.q);
+  const pageRaw = Number.parseInt(str(sp.page) || "1", 10);
+  const page = Number.isNaN(pageRaw) || pageRaw < 1 ? 1 : pageRaw;
+  const offset = (page - 1) * PAGE_SIZE;
 
   let data: Awaited<ReturnType<typeof getJobs>> | null = null;
   let error: string | null = null;
   try {
-    data = await getJobs(range, { status, mode, search, limit: 100 });
+    data = await getJobs(range, { status, mode, search, limit: PAGE_SIZE, offset });
   } catch {
     error = "No se pudo cargar la data del bot.";
   }
 
   const items = data?.items ?? [];
+  const total = data?.total ?? 0;
+  const hasNext = offset + items.length < total;
 
   return (
     <div>
@@ -179,6 +202,15 @@ export default async function JobsPage({
           ))
         )}
       </div>
+
+      <ListPager
+        page={page}
+        pageSize={PAGE_SIZE}
+        count={items.length}
+        hasNext={hasNext}
+        total={total}
+        hrefFor={(p) => pageHref(sp, p)}
+      />
     </div>
   );
 }

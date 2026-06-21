@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTopics } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
 import { RangeChannelPicker } from "../components/range-channel-picker";
+import { ListPager } from "../components/list-pager";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export default async function TemasPage({
     error = "No se pudo cargar la data del bot.";
   }
 
-  const hasPrev = page > 1;
+  const maxCount = topics.reduce((m, t) => Math.max(m, t.count), 0) || 1;
   const hasNext = topics.length === PAGE_SIZE;
 
   return (
@@ -64,15 +65,20 @@ export default async function TemasPage({
               <li key={t.slug}>
                 <Link
                   href={`/admin/comunidad/temas/${encodeURIComponent(t.slug)}`}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 px-6 py-3 transition hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
+                  className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-4 px-6 py-3 transition hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
                 >
-                  <span className="w-6 text-right font-mono text-xs text-gray-300 dark:text-gray-600">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-y-1.5 left-0 z-0 rounded-r-full bg-black/[0.04] dark:bg-white/[0.06]"
+                    style={{ width: `${Math.max(2, (t.count / maxCount) * 100)}%` }}
+                  />
+                  <span className="relative w-6 text-right font-mono text-xs text-gray-300 dark:text-gray-600">
                     {offset + i + 1}
                   </span>
-                  <span className="truncate text-sm font-medium text-gray-800 hover:underline dark:text-gray-100">
+                  <span className="relative truncate text-sm font-medium text-gray-800 group-hover:underline dark:text-gray-100">
                     {t.display_name}
                   </span>
-                  <span className="font-mono text-xs text-gray-400 dark:text-gray-500">
+                  <span className="relative font-mono text-xs text-gray-500 dark:text-gray-400">
                     {t.count.toLocaleString("es-MX")}
                   </span>
                 </Link>
@@ -82,23 +88,13 @@ export default async function TemasPage({
         )}
       </div>
 
-      {(hasPrev || hasNext) && (
-        <div className="mt-6 flex items-center justify-between gap-4">
-          <p className="text-xs font-medium text-gray-400 dark:text-gray-500">Página {page}</p>
-          <div className="flex items-center gap-2">
-            <Pager href={buildHref(sp, page - 1)} disabled={!hasPrev}>Anterior</Pager>
-            <Pager href={buildHref(sp, page + 1)} disabled={!hasNext}>Siguiente</Pager>
-          </div>
-        </div>
-      )}
+      <ListPager
+        page={page}
+        pageSize={PAGE_SIZE}
+        count={topics.length}
+        hasNext={hasNext}
+        hrefFor={(p) => buildHref(sp, p)}
+      />
     </div>
   );
-}
-
-function Pager({ href, disabled, children }: { href: string; disabled: boolean; children: React.ReactNode }) {
-  const base = "rounded-full border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] transition";
-  if (disabled) {
-    return <span className={`${base} cursor-not-allowed border-black/5 text-gray-300 dark:border-white/5 dark:text-gray-600`}>{children}</span>;
-  }
-  return <Link href={href} className={`${base} border-black/10 text-gray-700 hover:bg-black/5 dark:border-white/15 dark:text-gray-200 dark:hover:bg-white/10`}>{children}</Link>;
 }
