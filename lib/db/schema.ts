@@ -36,6 +36,26 @@ export const contacts = pgTable(
 export type Contact = typeof contacts.$inferSelect;
 export type NewContact = typeof contacts.$inferInsert;
 
+export const communityPeople = pgTable(
+  "community_people",
+  {
+    jid: text("jid").primaryKey(),
+    contactId: uuid("contact_id").references(() => contacts.id, { onDelete: "set null" }),
+    displayName: text("display_name"),
+    notes: text("notes"),
+    tags: text("tags").array().notNull().default([]),
+    phone: text("phone"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    contactIdx: index("community_people_contact_idx").on(t.contactId),
+  }),
+);
+
+export type CommunityPerson = typeof communityPeople.$inferSelect;
+export type NewCommunityPerson = typeof communityPeople.$inferInsert;
+
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   email: text("email").notNull().unique(), // always lowercased before insert

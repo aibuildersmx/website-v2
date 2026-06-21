@@ -43,6 +43,13 @@
       "when": 1781987472861,
       "tag": "0005_graceful_malice",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1782022394857,
+      "tag": "0006_unknown_rogue",
+      "breakpoints": true
     }
   ]
 }
