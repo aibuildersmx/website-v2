@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { getPerson } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
+import { getOverlay } from "@/lib/db/queries/community-people";
 import { StatCard } from "../../../components/stat-card";
 import { DashboardSection } from "../../../components/dashboard-section";
+import { PersonEditor } from "../components/person-editor";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,8 @@ export default async function PersonDetail({
     error = "No se pudo cargar la persona.";
   }
 
+  const overlay = await getOverlay(jid);
+
   return (
     <div>
       <Link
@@ -46,7 +50,7 @@ export default async function PersonDetail({
       ) : (
         <>
           <h1 className="mt-3 text-3xl font-medium text-gray-800 dark:text-gray-100">
-            {person.name || person.phone}
+            {overlay?.displayName || person.name || person.phone}
           </h1>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -54,6 +58,17 @@ export default async function PersonDetail({
             <StatCard eyebrow="Top topics" value={String(person.topTopics.length)} />
             <StatCard eyebrow="Showcase" value={String(person.showcase.length)} />
           </div>
+
+          <PersonEditor
+            jid={jid}
+            initial={{
+              displayName: overlay?.displayName ?? person.name ?? "",
+              notes: overlay?.notes ?? "",
+              tags: overlay?.tags ?? [],
+              contact: overlay?.contact ?? null,
+              phone: person.phone ?? null,
+            }}
+          />
 
           {person.profile && (
             <div className="mt-8 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
