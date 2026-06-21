@@ -1,9 +1,10 @@
-import { getOverview, getVolume } from "@/lib/aiby/client";
+import { getOverview, getVolume, getHeatmap } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
 import { StatCard } from "../components/stat-card";
 import { RangeChannelPicker } from "./components/range-channel-picker";
 import { VolumeChart } from "./components/volume-chart";
 import { ChannelDonut } from "./components/channel-donut";
+import { Heatmap } from "./components/heatmap";
 
 export const dynamic = "force-dynamic";
 
@@ -20,9 +21,14 @@ export default async function ComunidadPulso({
 
   let overview: Awaited<ReturnType<typeof getOverview>> | null = null;
   let volume: Awaited<ReturnType<typeof getVolume>> | null = null;
+  let heatmap: Awaited<ReturnType<typeof getHeatmap>> | null = null;
   let error: string | null = null;
   try {
-    [overview, volume] = await Promise.all([getOverview(range), getVolume(range)]);
+    [overview, volume, heatmap] = await Promise.all([
+      getOverview(range),
+      getVolume(range),
+      getHeatmap(range),
+    ]);
   } catch {
     error = "No se pudo cargar la data del bot.";
   }
@@ -67,6 +73,15 @@ export default async function ComunidadPulso({
               <div className="mt-4">
                 <ChannelDonut groups={overview.groups} />
               </div>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
+            <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
+              Actividad por hora
+            </p>
+            <div className="mt-4">
+              <Heatmap cells={heatmap?.cells ?? []} />
             </div>
           </div>
         </>
