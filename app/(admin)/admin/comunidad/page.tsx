@@ -1,10 +1,11 @@
-import { getOverview, getVolume, getHeatmap } from "@/lib/aiby/client";
+import { getOverview, getVolume, getHeatmap, getRecent } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
 import { StatCard } from "../components/stat-card";
 import { RangeChannelPicker } from "./components/range-channel-picker";
 import { VolumeChart } from "./components/volume-chart";
 import { ChannelDonut } from "./components/channel-donut";
 import { Heatmap } from "./components/heatmap";
+import { RecentFeed } from "./components/recent-feed";
 
 export const dynamic = "force-dynamic";
 
@@ -22,12 +23,14 @@ export default async function ComunidadPulso({
   let overview: Awaited<ReturnType<typeof getOverview>> | null = null;
   let volume: Awaited<ReturnType<typeof getVolume>> | null = null;
   let heatmap: Awaited<ReturnType<typeof getHeatmap>> | null = null;
+  let recent: Awaited<ReturnType<typeof getRecent>> | null = null;
   let error: string | null = null;
   try {
-    [overview, volume, heatmap] = await Promise.all([
+    [overview, volume, heatmap, recent] = await Promise.all([
       getOverview(range),
       getVolume(range),
       getHeatmap(range),
+      getRecent(range, 12),
     ]);
   } catch {
     error = "No se pudo cargar la data del bot.";
@@ -82,6 +85,15 @@ export default async function ComunidadPulso({
             </p>
             <div className="mt-4">
               <Heatmap cells={heatmap?.cells ?? []} />
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
+            <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
+              Mensajes recientes
+            </p>
+            <div className="mt-2">
+              <RecentFeed messages={recent?.messages ?? []} />
             </div>
           </div>
         </>
