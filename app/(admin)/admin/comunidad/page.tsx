@@ -3,6 +3,7 @@ import { parseRange } from "@/lib/aiby/range";
 import { StatCard } from "../components/stat-card";
 import { RangeChannelPicker } from "./components/range-channel-picker";
 import { VolumeChart } from "./components/volume-chart";
+import { ChannelDonut } from "./components/channel-donut";
 
 export const dynamic = "force-dynamic";
 
@@ -52,12 +53,20 @@ export default async function ComunidadPulso({
             <StatCard eyebrow="Showcase" value={formatCount(overview.totals.showcase)} />
           </div>
 
-          <div className="mt-4 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
-            <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
-              Volumen de mensajes
-            </p>
-            <div className="mt-4">
-              <VolumeChart series={volume?.series ?? []} />
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            <div className="rounded-2xl border border-black/5 bg-white p-6 lg:col-span-2 dark:border-white/10 dark:bg-neutral-900">
+              <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
+                Volumen de mensajes
+              </p>
+              <div className="mt-4">
+                <VolumeChart series={volume?.series ?? []} />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-neutral-900">
+              <p className="text-xs font-medium text-gray-400 dark:text-gray-500">Por canal</p>
+              <div className="mt-4">
+                <ChannelDonut groups={overview.groups} />
+              </div>
             </div>
           </div>
         </>
