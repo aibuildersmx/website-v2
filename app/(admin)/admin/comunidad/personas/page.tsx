@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getPeople } from "@/lib/aiby/client";
 import { parseRange } from "@/lib/aiby/range";
+import { getOverlays } from "@/lib/db/queries/community-people";
 import { RangeChannelPicker } from "../components/range-channel-picker";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +39,8 @@ export default async function PersonasPage({
     error = "No se pudo cargar la data del bot.";
   }
 
+  const overlays = await getOverlays(people.map((p) => p.jid));
+
   const hasPrev = page > 1;
   const hasNext = people.length === PAGE_SIZE;
 
@@ -70,7 +73,12 @@ export default async function PersonasPage({
                     {offset + i + 1}
                   </span>
                   <span className="truncate text-sm font-medium text-gray-800 hover:underline dark:text-gray-100">
-                    {p.name || p.phone}
+                    {overlays.get(p.jid)?.displayName || p.name || p.phone}
+                    {overlays.get(p.jid)?.contact && (
+                      <span className="ml-2 font-mono text-[10px] uppercase tracking-widest text-gray-300 dark:text-gray-600">
+                        ✓ contacto
+                      </span>
+                    )}
                   </span>
                   <span className="font-mono text-xs text-gray-400 dark:text-gray-500">
                     {p.count.toLocaleString("es-MX")}
