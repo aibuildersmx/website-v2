@@ -85,7 +85,7 @@ export function useCurationState(initial: CurationInitial) {
             <button
               type="button"
               onClick={() => setContact(null)}
-              className="shrink-0 font-mono text-[11px] uppercase tracking-[0.15em] text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              className="shrink-0 font-mono text-[11px] font-bold uppercase tracking-normal text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             >
               Desvincular
             </button>

@@ -56,7 +56,7 @@ function buildMatchHref(sp: Record<string, string | string[] | undefined>, match
 }
 
 function FilterChip({ active, href, children }: { active: boolean; href: string; children: React.ReactNode }) {
-  const base = "rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] transition";
+  const base = "rounded-full border px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-normal transition";
   return (
     <Link
       href={href}

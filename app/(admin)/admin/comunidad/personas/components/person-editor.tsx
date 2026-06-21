@@ -29,7 +29,7 @@ export function PersonEditor({ jid, initial }: { jid: string; initial: CurationI
           type="button"
           onClick={save}
           disabled={pending}
-          className="rounded-full bg-gray-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-black disabled:opacity-50 dark:bg-white dark:text-gray-900"
+          className="rounded-full bg-gray-900 px-5 py-2 text-sm font-bold text-white transition hover:bg-black disabled:opacity-50 dark:bg-white dark:text-gray-900"
         >
           {pending ? "Guardando…" : "Guardar"}
         </button>

@@ -59,7 +59,7 @@ function PagerLink({
   children: React.ReactNode;
 }) {
   const base =
-    "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.15em] transition";
+    "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-normal transition";
   if (disabled) {
     return (
       <span

@@ -44,7 +44,7 @@ export function EditButton({ index }: { index: number }) {
         e.stopPropagation();
         open(index);
       }}
-      className="relative z-10 rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 opacity-0 transition group-hover:opacity-100 focus:opacity-100 max-sm:opacity-100 dark:border-white/15 dark:bg-neutral-900 dark:text-gray-300"
+      className="relative z-10 rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-normal text-gray-500 opacity-0 transition group-hover:opacity-100 focus:opacity-100 max-sm:opacity-100 dark:border-white/15 dark:bg-neutral-900 dark:text-gray-300"
     >
       Editar
     </button>
@@ -153,7 +153,7 @@ function CuratorForm({
           type="button"
           onClick={() => save(false)}
           disabled={pending}
-          className="rounded-full bg-gray-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-black disabled:opacity-50 dark:bg-white dark:text-gray-900"
+          className="rounded-full bg-gray-900 px-5 py-2 text-sm font-bold text-white transition hover:bg-black disabled:opacity-50 dark:bg-white dark:text-gray-900"
         >
           {pending ? "Guardando…" : "Guardar"}
         </button>
@@ -162,7 +162,7 @@ function CuratorForm({
             type="button"
             onClick={() => save(true)}
             disabled={pending}
-            className="rounded-full border border-black/10 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-black/5 disabled:opacity-50 dark:border-white/15 dark:text-gray-200 dark:hover:bg-white/10"
+            className="rounded-full border border-black/10 px-5 py-2 text-sm font-bold text-gray-700 transition hover:bg-black/5 disabled:opacity-50 dark:border-white/15 dark:text-gray-200 dark:hover:bg-white/10"
           >
             Guardar y siguiente →
           </button>
