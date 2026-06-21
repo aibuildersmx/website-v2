@@ -31,7 +31,7 @@ export default async function NewsletterListPage() {
         <form action={createIssue}>
           <button
             type="submit"
-            className="rounded-full bg-gray-900 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.15em] text-white transition hover:bg-gray-700 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="rounded-full bg-gray-900 px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-normal text-white transition hover:bg-gray-700 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             Nuevo issue
           </button>

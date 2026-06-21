@@ -143,7 +143,7 @@ export function IssueEditor({
         <div className="flex items-center gap-2">
           <span className="text-lg font-medium text-gray-800 dark:text-gray-100">Issue {issue.slug}</span>
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${
               sent
                 ? "bg-green-500/10 text-green-700 dark:text-green-400"
                 : sending
@@ -168,7 +168,7 @@ export function IssueEditor({
           <button
             type="button"
             onClick={() => setShowEmail(true)}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-bold uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Ver email real
           </button>
@@ -182,7 +182,7 @@ export function IssueEditor({
           <button
             type="button"
             onClick={onSendTest}
-            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
+            className="rounded-full border border-black/10 px-3 py-1.5 font-sans text-xs font-bold uppercase tracking-normal text-gray-600 transition hover:border-black/30 dark:border-white/15 dark:text-gray-300 dark:hover:border-white/40"
           >
             Enviar prueba
           </button>
@@ -196,7 +196,7 @@ export function IssueEditor({
             <button
               type="button"
               onClick={onRetryFailed}
-              className="rounded-full border border-red-500/30 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-red-600 transition hover:border-red-500/60"
+              className="rounded-full border border-red-500/30 px-3 py-1.5 font-sans text-xs font-bold uppercase tracking-normal text-red-600 transition hover:border-red-500/60"
             >
               Reintentar {progress.failed} fallidos
             </button>
@@ -205,7 +205,7 @@ export function IssueEditor({
             type="button"
             onClick={onSendIssue}
             disabled={sent || sending}
-            className="rounded-full bg-gray-900 px-4 py-1.5 font-sans text-xs font-medium uppercase tracking-normal text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="rounded-full bg-gray-900 px-4 py-1.5 font-sans text-xs font-bold uppercase tracking-normal text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             {sent ? "Enviado" : sending ? "Enviando…" : "Enviar newsletter"}
           </button>
@@ -245,7 +245,7 @@ export function IssueEditor({
               <button
                 type="button"
                 onClick={() => setShowEmail(false)}
-                className="font-mono text-xs uppercase tracking-[0.15em] text-white/40 transition hover:text-white"
+                className="font-mono text-xs font-bold uppercase tracking-normal text-white/40 transition hover:text-white"
               >
                 Cerrar ×
               </button>

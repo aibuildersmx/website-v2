@@ -127,7 +127,7 @@ function PagerLink({
   children: React.ReactNode;
 }) {
   const base =
-    "rounded-full border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] transition";
+    "rounded-full border px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-normal transition";
   if (disabled) {
     return (
       <span
