@@ -27,6 +27,18 @@ export type BlogPostSource = {
     label: string
 }
 
+/**
+ * Credit for the cover image. Rendered as a small caption directly under the
+ * cover in [PostShell](/components/blog/post-shell.tsx) so the attribution
+ * lives next to the photo instead of at the bottom of the article.
+ */
+export type BlogPostCredit = {
+    /** Display label, e.g. "Eugene Golovesov / Unsplash". */
+    label: string
+    /** Optional URL the label links to (the photo / author page). */
+    url?: string
+}
+
 export type BlogPostMeta = {
     slug: string
     title: string
@@ -38,6 +50,8 @@ export type BlogPostMeta = {
     tags?: string[]
     /** Cover image path in /public, e.g. "/images/blog/foo/cover.png" */
     cover?: string
+    /** Optional credit for the cover image, shown as a small caption under it */
+    coverCredit?: BlogPostCredit
     author?: string
     /** Optional attribution to the original source (tweet, article, etc.) */
     source?: BlogPostSource
@@ -70,6 +84,16 @@ function toSource(raw: unknown): BlogPostSource | undefined {
     if (typeof r.url !== 'string' || r.url.length === 0) return undefined
     const label = typeof r.label === 'string' && r.label.length > 0 ? r.label : 'Fuente original'
     return { url: r.url, label }
+}
+
+function toCredit(raw: unknown): BlogPostCredit | undefined {
+    if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined
+    const r = raw as { label?: unknown; url?: unknown }
+    if (typeof r.label !== 'string' || r.label.length === 0) return undefined
+    return {
+        label: r.label,
+        url: typeof r.url === 'string' && r.url.length > 0 ? r.url : undefined,
+    }
 }
 
 function toTocItems(raw: unknown): BlogTocItem[] {
@@ -112,6 +136,7 @@ function parsePost(slug: string): BlogPost | null {
         readTime: typeof data.readTime === 'string' ? data.readTime : '',
         tags: Array.isArray(data.tags) ? data.tags.map(String) : undefined,
         cover: typeof data.cover === 'string' ? data.cover : undefined,
+        coverCredit: toCredit(data.coverCredit),
         author: typeof data.author === 'string' ? data.author : undefined,
         source: toSource(data.source),
         draft: data.draft === true ? true : undefined,

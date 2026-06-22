@@ -1,5 +1,3 @@
-'use client'
-
 import type { ReactNode } from 'react'
 import {
     Bot,
@@ -16,8 +14,6 @@ import {
     Terminal as TerminalIcon,
     Zap,
 } from 'lucide-react'
-import { useBlogTheme } from '@/app/(site)/(blog)/layout'
-import { cn } from '@/lib/utils'
 
 /**
  * Named icons accepted by `<CommandReference>`'s `icon` prop.
@@ -72,7 +68,7 @@ export type CommandReferenceGroup = {
 
 /**
  * Grouped command reference — a series of "category → rows of {cmd, desc}"
- * blocks. Used for "Comandos útiles" / cheat-sheet sections.
+ * blocks. Used for "Comandos útiles" / cheat-sheet sections. Binary B/W.
  *
  * Pass icons by name (e.g. `icon: 'stethoscope'`) rather than importing
  * lucide components yourself — MDX files are server components and icon
@@ -93,46 +89,26 @@ export type CommandReferenceGroup = {
  * ```
  */
 export function CommandReference({ groups }: { groups: CommandReferenceGroup[] }) {
-    const { theme } = useBlogTheme()
-    const isDark = theme === 'dark'
-
     return (
         <>
             {groups.map((group) => {
                 const Icon = group.icon ? ICON_MAP[group.icon] : null
                 return (
                     <div key={group.category} className="my-6">
-                        <p
-                            className={cn(
-                                'text-sm font-medium mb-3 flex items-center gap-2',
-                                isDark ? 'text-[#cdd6f4]' : 'text-black',
-                            )}
-                        >
-                            {Icon ? <Icon className="w-4 h-4" /> : null}
+                        <p className="text-sm font-medium mb-3 flex items-center gap-2 text-black">
+                            {Icon ? <Icon className="w-4 h-4 text-black/60" /> : null}
                             {group.category}
                         </p>
                         <div className="space-y-2">
                             {group.commands.map((c) => (
                                 <div
                                     key={c.cmd}
-                                    className={cn(
-                                        'flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 rounded-lg border px-4 py-3',
-                                        isDark
-                                            ? 'border-white/5 bg-white/[0.02]'
-                                            : 'border-black/5 bg-black/[0.02]',
-                                    )}
+                                    className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 rounded-lg border border-black/10 bg-black/[0.02] px-4 py-3"
                                 >
-                                    <code
-                                        className={cn(
-                                            'text-xs font-mono shrink-0',
-                                            isDark ? 'text-[#f38ba8]' : 'text-[#d20f39]',
-                                        )}
-                                    >
+                                    <code className="text-xs font-mono shrink-0 text-black">
                                         {c.cmd}
                                     </code>
-                                    <span className={cn('text-xs', isDark ? 'text-[#6c7086]' : 'text-black/40')}>
-                                        {c.desc}
-                                    </span>
+                                    <span className="text-sm text-black/60">{c.desc}</span>
                                 </div>
                             ))}
                         </div>

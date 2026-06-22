@@ -19,6 +19,7 @@ The canonical TypeScript shape is [`BlogPostMeta`](../../lib/blog/posts.ts) — 
 | `tocItems`  | ✅       | array of `{ id, label }` (or `[id, label]` tuples) | One entry per `<SectionTitle id="…">` in the post. Ordered top to bottom. |
 | `tags`      | optional | string[]                   | Free-form. Shown on the index card as mono chips. |
 | `cover`     | optional | string (path in `/public`) | Hero image for OG card and index thumbnail. |
+| `coverCredit` | optional | `{ label, url? }`         | Small photo credit shown under the cover image. |
 | `author`    | optional | string                     | Defaults to the AIBM collective byline when omitted. |
 | `source`    | optional | `{ url, label }`           | Attribution pill in the article header pointing to the original publication (e.g. a tweet). |
 | `draft`     | optional | `true` (omit otherwise)    | When `true`, the post is excluded from the index and sitemap but still routable. |
@@ -137,6 +138,23 @@ Recommended: 1600×840 JPG or PNG, under 200 KB. Store it in `public/images/blog
 
 ```yaml
 cover: "/images/blog/mi-post/cover.jpg"
+```
+
+### `coverCredit` *(optional)*
+
+Photo credit for the `cover`. Renders as a small mono caption directly under
+the cover image (`Foto: <label>`), so the attribution lives next to the photo
+instead of at the bottom of the post. Ignored when there is no `cover`.
+
+Keys:
+
+- `label` *(required)* — short credit string, e.g. `"Eugene Golovesov / Unsplash"`.
+- `url` *(optional)* — link for the label (the photo or author page).
+
+```yaml
+coverCredit:
+  label: "Eugene Golovesov / Unsplash"
+  url: "https://unsplash.com/photos/zUuJz_idfqM"
 ```
 
 ### `author` *(optional)*

@@ -57,6 +57,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             tocItems={post.meta.tocItems}
             author={getAuthor(post.meta.author)}
             cover={post.meta.cover}
+            coverCredit={post.meta.coverCredit}
             source={post.meta.source}
         >
             <PostMDX />

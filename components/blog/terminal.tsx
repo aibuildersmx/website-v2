@@ -3,54 +3,20 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Check, Copy } from 'lucide-react'
-import { useBlogTheme } from '@/app/(site)/(blog)/layout'
 
-/* ── Catppuccin Palettes ── */
-
-const catppuccin = {
-  mocha: {
-    base:     '#12121b',
-    mantle:   '#181825',
-    crust:    '#0a0a12',
-    surface0: '#313244',
-    surface1: '#45475a',
-    surface2: '#585b70',
-    overlay0: '#6c7086',
-    overlay1: '#7f849c',
-    text:     '#cdd6f4',
-    subtext0: '#a6adc8',
-    subtext1: '#bac2de',
-    green:    '#a6e3a1',
-    red:      '#f38ba8',
-    yellow:   '#f9e2af',
-    blue:     '#89b4fa',
-    mauve:    '#cba6f7',
-    // traffic lights
-    closeBg:  '#f38ba8',
-    minBg:    '#f9e2af',
-    maxBg:    '#a6e3a1',
-  },
-  latte: {
-    base:     '#eff1f5',
-    mantle:   '#e6e9ef',
-    crust:    '#dce0e8',
-    surface0: '#ccd0da',
-    surface1: '#bcc0cc',
-    surface2: '#acb0be',
-    overlay0: '#9ca0b0',
-    overlay1: '#8c8fa1',
-    text:     '#4c4f69',
-    subtext0: '#6c6f85',
-    subtext1: '#5c5f77',
-    green:    '#40a02b',
-    red:      '#d20f39',
-    yellow:   '#df8e1d',
-    blue:     '#1e66f5',
-    mauve:    '#8839ef',
-    closeBg:  '#d20f39',
-    minBg:    '#df8e1d',
-    maxBg:    '#40a02b',
-  },
+/* ── Palette ──
+   Fixed monochrome dark surface (`#212121`, the brand warm black) on the
+   light page. No color: traffic lights and prompt are white opacities. */
+const palette = {
+  base:     '#212121',
+  border:   'rgba(255, 255, 255, 0.1)',
+  titleBar: 'rgba(255, 255, 255, 0.03)',
+  overlay0: 'rgba(255, 255, 255, 0.4)',  // title, comment
+  overlay1: 'rgba(255, 255, 255, 0.55)', // copy button
+  command:  'rgba(255, 255, 255, 0.92)', // typed command + cursor
+  prompt:   'rgba(255, 255, 255, 0.4)',  // $ symbol
+  output:   'rgba(255, 255, 255, 0.7)',  // output lines
+  light:    'rgba(255, 255, 255, 0.2)',  // window traffic lights
 }
 
 interface TerminalLine {
@@ -65,7 +31,7 @@ interface TerminalProps {
   className?: string
 }
 
-function AnimatedLine({ line, isVisible, palette }: { line: TerminalLine; isVisible: boolean; index: number; palette: typeof catppuccin.mocha }) {
+function AnimatedLine({ line, isVisible }: { line: TerminalLine; isVisible: boolean; index: number }) {
   const [displayedChars, setDisplayedChars] = useState(0)
   const [showCursor, setShowCursor] = useState(false)
   const [typingDone, setTypingDone] = useState(false)
@@ -117,15 +83,15 @@ function AnimatedLine({ line, isVisible, palette }: { line: TerminalLine; isVisi
   if (line.type === 'command') {
     return (
       <div className="flex items-start gap-2 text-sm leading-relaxed">
-        <span className="shrink-0 select-none" style={{ color: palette.green }}>$</span>
-        <span style={{ color: palette.green }}>
+        <span className="shrink-0 select-none" style={{ color: palette.prompt }}>$</span>
+        <span style={{ color: palette.command }}>
           {line.text.slice(0, displayedChars)}
           {showCursor && (
             <motion.span
               animate={{ opacity: [1, 0] }}
               transition={{ duration: 0.6, repeat: Infinity, repeatType: 'reverse' }}
               className="inline-block w-[7px] h-[14px] ml-px translate-y-[2px]"
-              style={{ backgroundColor: palette.green }}
+              style={{ backgroundColor: palette.command }}
             />
           )}
         </span>
@@ -140,7 +106,7 @@ function AnimatedLine({ line, isVisible, palette }: { line: TerminalLine; isVisi
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className="text-sm leading-relaxed whitespace-pre-wrap pl-5"
-      style={{ color: palette.subtext0 }}
+      style={{ color: palette.output }}
     >
       {line.text}
     </motion.div>
@@ -152,9 +118,6 @@ export default function Terminal({ title = '~/terminal', lines, className = '' }
   const isInView = useInView(ref, { once: true, amount: 0.3 })
   const [visibleLines, setVisibleLines] = useState<number>(0)
   const [copied, setCopied] = useState(false)
-
-  const { theme } = useBlogTheme()
-  const palette = theme === 'dark' ? catppuccin.mocha : catppuccin.latte
 
   const commandText = lines
     .filter(l => l.type === 'command')
@@ -202,25 +165,19 @@ export default function Terminal({ title = '~/terminal', lines, className = '' }
   return (
     <div
       ref={ref}
-      className={`relative group rounded-xl border overflow-hidden ${className}`}
-      style={{
-        backgroundColor: palette.base,
-        borderColor: palette.surface0,
-      }}
+      className={`relative group my-6 rounded-xl border overflow-hidden ${className}`}
+      style={{ backgroundColor: palette.base, borderColor: palette.border }}
     >
       {/* Title bar */}
       <div
         className="flex items-center justify-between px-4 py-3 border-b"
-        style={{
-          borderColor: palette.surface0,
-          backgroundColor: palette.mantle,
-        }}
+        style={{ borderColor: palette.border, backgroundColor: palette.titleBar }}
       >
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.closeBg }} />
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.minBg }} />
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.maxBg }} />
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.light }} />
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.light }} />
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.light }} />
           </div>
           <span className="ml-3 text-xs font-mono" style={{ color: palette.overlay0 }}>{title}</span>
         </div>
@@ -231,7 +188,7 @@ export default function Terminal({ title = '~/terminal', lines, className = '' }
             style={{ color: palette.overlay1 }}
             title="Copiar comandos"
           >
-            {copied ? <Check className="w-3.5 h-3.5" style={{ color: palette.green }} /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
         )}
       </div>
@@ -244,7 +201,6 @@ export default function Terminal({ title = '~/terminal', lines, className = '' }
             line={line}
             isVisible={i < visibleLines}
             index={i}
-            palette={palette}
           />
         ))}
       </div>
