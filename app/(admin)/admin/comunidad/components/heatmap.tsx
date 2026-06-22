@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { heatmapGrid, DOW_LABELS } from "@/lib/aiby/heatmap";
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
@@ -31,45 +32,42 @@ export function Heatmap({
   const busiestHour = hourTotals.indexOf(Math.max(...hourTotals));
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_180px] lg:gap-8">
-      {/* Grilla — se estira a todo el ancho disponible */}
-      <div>
-        <div className="flex flex-col gap-1">
+    <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-stretch lg:gap-12">
+      {/* Grilla — celdas cuadradas (aspect-square) que llenan el ancho */}
+      <div className="min-w-0">
+        <div
+          className="grid items-center gap-1"
+          style={{ gridTemplateColumns: "1.75rem repeat(24, minmax(0, 1fr))" }}
+        >
           {rows.map((row, dow) => (
-            <div key={dow} className="flex items-center gap-1">
-              <span className="w-7 shrink-0 text-right font-mono text-[10px] text-gray-400 dark:text-gray-500">
+            <Fragment key={dow}>
+              <span className="text-right font-mono text-[10px] text-gray-400 dark:text-gray-500">
                 {DOW_LABELS[dow]}
               </span>
-              <div className="flex flex-1 gap-1">
-                {row.map((count, hour) => (
-                  <span
-                    key={hour}
-                    title={`${DOW_LABELS[dow]} ${pad(hour)}:00 — ${fmt(count)} mensajes`}
-                    className="h-5 flex-1 rounded-[3px] bg-black dark:bg-white"
-                    style={{ opacity: count === 0 ? 0.04 : 0.16 + 0.84 * (count / max) }}
-                  />
-                ))}
-              </div>
-            </div>
+              {row.map((count, hour) => (
+                <span
+                  key={hour}
+                  title={`${DOW_LABELS[dow]} ${pad(hour)}:00 — ${fmt(count)} mensajes`}
+                  className="aspect-square w-full rounded-[4px] bg-black dark:bg-white"
+                  style={{ opacity: count === 0 ? 0.04 : 0.16 + 0.84 * (count / max) }}
+                />
+              ))}
+            </Fragment>
           ))}
 
-          {/* Marcas de hora — mismo flex que la grilla, así se alinean solas */}
-          <div className="mt-0.5 flex items-center gap-1">
-            <span className="w-7 shrink-0" />
-            <div className="flex flex-1 gap-1">
-              {HOURS.map((h) => (
-                <span
-                  key={h}
-                  className="flex-1 text-center font-mono text-[10px] text-gray-400 dark:text-gray-500"
-                >
-                  {h % 3 === 0 ? pad(h) : ""}
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Marcas de hora — comparten la misma grilla, así se alinean solas */}
+          <span />
+          {HOURS.map((h) => (
+            <span
+              key={h}
+              className="mt-1 text-center font-mono text-[10px] text-gray-400 dark:text-gray-500"
+            >
+              {h % 3 === 0 ? pad(h) : ""}
+            </span>
+          ))}
         </div>
 
-        <div className="mt-4 flex items-center gap-1.5">
+        <div className="mt-5 flex items-center gap-1.5">
           <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
             menos
           </span>
@@ -86,37 +84,55 @@ export function Heatmap({
         </div>
       </div>
 
-      {/* Insights — llenan la columna derecha con info útil */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-black/5 lg:dark:divide-white/10">
+      {/* Insights — grid 2×2 del doble de ancho, centrado para llenar el alto */}
+      <div className="grid grid-cols-2 lg:content-center">
         <Insight
           label="Hora pico"
           value={`${DOW_LABELS[peak.dow]} · ${pad(peak.hour)}:00`}
           sub={`${fmt(peak.count)} mensajes`}
+          className="pb-5 pr-6"
         />
         <Insight
           label="Día más activo"
           value={DOW_LABELS[busiestDay]}
           sub={`${fmt(dayTotals[busiestDay])} mensajes`}
+          className="border-l border-black/5 pb-5 pl-6 dark:border-white/10"
         />
         <Insight
           label="Franja pico"
           value={`${pad(busiestHour)}:00 h`}
           sub={`${fmt(hourTotals[busiestHour])} mensajes`}
+          className="border-t border-black/5 pr-6 pt-5 dark:border-white/10"
         />
-        <Insight label="Total" value={fmt(total)} sub="en el rango" />
+        <Insight
+          label="Total"
+          value={fmt(total)}
+          sub="en el rango"
+          className="border-l border-t border-black/5 pl-6 pt-5 dark:border-white/10"
+        />
       </div>
     </div>
   );
 }
 
-function Insight({ label, value, sub }: { label: string; value: string; sub: string }) {
+function Insight({
+  label,
+  value,
+  sub,
+  className = "",
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  className?: string;
+}) {
   return (
-    <div className="lg:py-4 lg:first:pt-0 lg:last:pb-0">
+    <div className={className}>
       <p className="font-mono text-[10px] uppercase tracking-widest text-gray-400">{label}</p>
-      <p className="mt-1 text-lg font-medium tabular-nums text-gray-800 dark:text-gray-100">
+      <p className="mt-1.5 text-xl font-medium tabular-nums text-gray-800 dark:text-gray-100">
         {value}
       </p>
-      <p className="text-xs text-gray-400 dark:text-gray-500">{sub}</p>
+      <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">{sub}</p>
     </div>
   );
 }
