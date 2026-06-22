@@ -30,7 +30,7 @@ export default async function ComunidadPulso({
       getOverview(range),
       getVolume(range),
       getHeatmap(range),
-      getRecent(range, 12),
+      getRecent(range, 16),
     ]);
   } catch {
     error = "No se pudo cargar la data del bot.";
