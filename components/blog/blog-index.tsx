@@ -1,13 +1,9 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 // Note: the cover image is intentionally NOT shown on the blog index cards —
 // we keep the grid typographic and only surface the hero image once the
 // reader opens the full article in `PostShell`.
-import { useBlogTheme } from '@/app/(site)/(blog)/layout'
-import { cn } from '@/lib/utils'
 import { getAuthor, type BlogAuthor } from '@/lib/blog/authors'
 import type { BlogPostMeta } from '@/lib/blog/posts'
 
@@ -19,50 +15,31 @@ export type BlogIndexPost = BlogPostMeta & {
 /**
  * Blog index (`/blog`) — design-system card grid of all published posts.
  *
- * Rendered as a client component so it can read the blog's Catppuccin
- * theme via `useBlogTheme()`. The parent server page is responsible for
- * pre-computing `formattedDate` so we keep the fs-backed data layer
- * off the browser bundle.
+ * Binary black/white, matching the rest of the site. The parent server page
+ * pre-computes `formattedDate` so the fs-backed data layer stays off the
+ * browser bundle.
  */
 export default function BlogIndex({ posts }: { posts: BlogIndexPost[] }) {
-    const { theme } = useBlogTheme()
-    const isDark = theme === 'dark'
-
     return (
         <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <div className="mb-12 sm:mb-16">
-                <span
-                    className={cn(
-                        'inline-block font-mono text-xs uppercase tracking-widest mb-4',
-                        isDark ? 'text-[#6c7086]' : 'text-black/40',
-                    )}
-                >
+                <span className="inline-block font-mono text-xs uppercase tracking-widest mb-4 text-black/40">
                     Blog
                 </span>
-                <h1
-                    className={cn(
-                        'text-4xl sm:text-5xl md:text-6xl font-instrument font-medium tracking-tight mb-4 leading-[1.1]',
-                        isDark ? 'text-[#cdd6f4]' : 'text-black',
-                    )}
-                >
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-instrument font-medium tracking-tight mb-4 leading-[1.1] text-black text-balance">
                     Notas y guías
                 </h1>
-                <p
-                    className={cn(
-                        'text-lg sm:text-xl max-w-2xl leading-relaxed',
-                        isDark ? 'text-[#a6adc8]' : 'text-black/60',
-                    )}
-                >
+                <p className="text-lg sm:text-xl max-w-2xl leading-relaxed text-black/60">
                     Escritura de la comunidad: cómo construimos con IA, qué aprendemos y cómo llevamos ideas a producción.
                 </p>
             </div>
 
             {posts.length === 0 ? (
-                <EmptyState isDark={isDark} />
+                <EmptyState />
             ) : (
                 <div className="grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
-                        <PostCard key={post.slug} post={post} isDark={isDark} />
+                        <PostCard key={post.slug} post={post} />
                     ))}
                 </div>
             )}
@@ -72,60 +49,26 @@ export default function BlogIndex({ posts }: { posts: BlogIndexPost[] }) {
 
 /* ── Card ── */
 
-function PostCard({ post, isDark }: { post: BlogIndexPost; isDark: boolean }) {
+function PostCard({ post }: { post: BlogIndexPost }) {
     const author = getAuthor(post.author)
     return (
         <Link href={`/blog/${post.slug}`} className="block group h-full">
-            <article
-                className={cn(
-                    'h-full overflow-hidden rounded-xl sm:rounded-2xl border transition-all duration-500 flex flex-col',
-                    isDark
-                        ? 'border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white/[0.04]'
-                        : 'border-black/10 hover:border-black/20 hover:shadow-lg hover:shadow-black/5 bg-white',
-                )}
-            >
+            <article className="h-full overflow-hidden rounded-xl sm:rounded-2xl border border-black/10 hover:border-black/20 hover:shadow-lg hover:shadow-black/5 bg-white transition-all duration-500 flex flex-col">
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4">
-                        <span
-                            className={cn(
-                                'font-mono text-xs',
-                                isDark ? 'text-[#6c7086]' : 'text-black/40',
-                            )}
-                        >
-                            {post.formattedDate}
-                        </span>
-                        <span className={isDark ? 'text-white/20' : 'text-black/20'}>·</span>
-                        <span
-                            className={cn(
-                                'font-mono text-xs',
-                                isDark ? 'text-[#6c7086]' : 'text-black/40',
-                            )}
-                        >
-                            {post.readTime}
-                        </span>
-                        {author && (
-                            <>
-                                <span className={isDark ? 'text-white/20' : 'text-black/20'}>·</span>
-                                <CardAuthor author={author} isDark={isDark} />
-                            </>
-                        )}
+                    <div className="mb-4 space-y-2">
+                        <div className="flex items-center gap-x-3 font-mono text-xs text-black/40">
+                            <span>{post.formattedDate}</span>
+                            <span className="text-black/20">·</span>
+                            <span>{post.readTime}</span>
+                        </div>
+                        {author && <CardAuthor author={author} />}
                     </div>
 
-                    <h2
-                        className={cn(
-                            'font-instrument font-medium text-2xl sm:text-3xl mb-3 leading-[1.15]',
-                            isDark ? 'text-[#cdd6f4]' : 'text-black',
-                        )}
-                    >
+                    <h2 className="font-instrument font-medium text-2xl sm:text-3xl mb-3 leading-[1.15] text-black text-balance">
                         {post.title}
                     </h2>
 
-                    <p
-                        className={cn(
-                            'text-base leading-relaxed mb-6 flex-grow',
-                            isDark ? 'text-[#a6adc8]' : 'text-black/60',
-                        )}
-                    >
+                    <p className="text-base leading-relaxed mb-6 flex-grow text-black/60">
                         {post.description}
                     </p>
 
@@ -135,12 +78,7 @@ function PostCard({ post, isDark }: { post: BlogIndexPost; isDark: boolean }) {
                                 {post.tags.slice(0, 2).map((tag) => (
                                     <span
                                         key={tag}
-                                        className={cn(
-                                            'inline-block font-mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full border',
-                                            isDark
-                                                ? 'border-white/10 text-[#6c7086]'
-                                                : 'border-black/10 text-black/40',
-                                        )}
+                                        className="inline-block font-mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full border border-black/10 text-black/40"
                                     >
                                         {tag}
                                     </span>
@@ -149,14 +87,7 @@ function PostCard({ post, isDark }: { post: BlogIndexPost; isDark: boolean }) {
                         ) : (
                             <span />
                         )}
-                        <span
-                            className={cn(
-                                'inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest transition-colors',
-                                isDark
-                                    ? 'text-[#6c7086] group-hover:text-[#cdd6f4]'
-                                    : 'text-black/40 group-hover:text-black',
-                            )}
-                        >
+                        <span className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-widest transition-colors text-black/40 group-hover:text-black">
                             Leer
                             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                         </span>
@@ -172,7 +103,7 @@ function PostCard({ post, isDark }: { post: BlogIndexPost; isDark: boolean }) {
  * [PostShell](/components/blog/post-shell.tsx) so the visual language stays
  * identical between the index and detail views.
  */
-function CardAuthor({ author, isDark }: { author: BlogAuthor; isDark: boolean }) {
+function CardAuthor({ author }: { author: BlogAuthor }) {
     return (
         <span className="inline-flex items-center gap-1.5">
             <Image
@@ -182,36 +113,17 @@ function CardAuthor({ author, isDark }: { author: BlogAuthor; isDark: boolean })
                 height={48}
                 className="size-5 rounded-full object-cover grayscale"
             />
-            <span
-                className={cn(
-                    'font-mono text-xs',
-                    isDark ? 'text-[#6c7086]' : 'text-black/40',
-                )}
-            >
-                {author.name}
-            </span>
+            <span className="font-mono text-xs text-black/40">{author.name}</span>
         </span>
     )
 }
 
 /* ── Empty state ── */
 
-function EmptyState({ isDark }: { isDark: boolean }) {
+function EmptyState() {
     return (
-        <div
-            className={cn(
-                'rounded-xl border p-12 text-center',
-                isDark ? 'border-white/10 bg-white/[0.02]' : 'border-black/10 bg-black/[0.02]',
-            )}
-        >
-            <p
-                className={cn(
-                    'font-mono text-sm',
-                    isDark ? 'text-[#6c7086]' : 'text-black/40',
-                )}
-            >
-                Aún no hay posts publicados.
-            </p>
+        <div className="rounded-xl border border-black/10 bg-black/[0.02] p-12 text-center">
+            <p className="font-mono text-sm text-black/40">Aún no hay posts publicados.</p>
         </div>
     )
 }

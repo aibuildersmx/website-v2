@@ -89,7 +89,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             alt={alt ?? ""}
             width={Number(width)}
             height={Number(height)}
-            className="rounded-xl border border-black/10 dark:border-white/10 my-6 w-full h-auto"
+            className="rounded-xl border border-black/10 my-6 w-full h-auto"
           />
         );
       }
@@ -105,7 +105,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           height={0}
           sizes="100vw"
           unoptimized
-          className="rounded-xl border border-black/10 dark:border-white/10 my-6 w-full h-auto"
+          className="rounded-xl border border-black/10 my-6 w-full h-auto"
         />
       );
     },
