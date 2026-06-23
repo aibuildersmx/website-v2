@@ -7,13 +7,13 @@ export function emptyIssue(slug: string): Issue {
   return {
     slug,
     subject: "",
-    preview: "Lo que importa esta semana para builders de IA en México.",
+    preview: "Lo que importa esta semana para nuestra comunidad.",
     issueLabel: `Issue ${slug}`,
     date: "",
     readingTime: "6 min de lectura",
     title: "The Build Log",
     subtitle:
-      "Lo que importa esta semana para builders de IA en México. Sin paja, sin hype.",
+      "Lo que importa esta semana para nuestra comunidad. Solo señal, cero ruido.",
     stories: [],
     essay: {
       eyebrow: "Ensayo · 3 min de lectura",
