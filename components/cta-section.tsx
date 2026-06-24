@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MessageCircle, Mail, Send, Linkedin } from 'lucide-react';
+import { ArrowRight, MessageCircle, Mail, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import SplitText from '@/components/SplitText';
+import { NewsletterSignup } from '@/components/newsletter-signup';
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants';
 
 export default function CTASection() {
@@ -89,23 +90,7 @@ export default function CTASection() {
                   Recibe herramientas, noticias y anuncions de eventos directamente en tu inbox. Sin spam, solo valor.
                 </p>
 
-                <form className="space-y-3 sm:space-y-4" action="https://aibuildersmx.beehiiv.com/" method="GET" target="_blank">
-                  <div className="relative">
-                    <input 
-                      type="email" 
-                      name="email"
-                      placeholder="tu@email.com" 
-                      className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
-                    />
-                  </div>
-                  <Button 
-                    type="submit"
-                    className="w-full bg-white text-black hover:bg-white/90 py-5 sm:py-6 text-sm sm:text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 group"
-                  >
-                    <span>Suscribirme</span>
-                    <Send className="size-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </Button>
-                </form>
+                <NewsletterSignup tone="onDark" />
                 
                 <p className="mt-4 sm:mt-6 text-[9px] sm:text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
                   Únete a +{BUILDER_COUNT_FORMATTED} builders hoy
