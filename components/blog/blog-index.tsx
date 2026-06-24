@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react'
 // reader opens the full article in `PostShell`.
 import { getAuthor, type BlogAuthor } from '@/lib/blog/authors'
 import type { BlogPostMeta } from '@/lib/blog/posts'
+import { NewsletterSignup } from '@/components/newsletter-signup'
 
 export type BlogIndexPost = BlogPostMeta & {
     /** ISO date already formatted for display, e.g. "20 Feb 2026" */
@@ -43,6 +44,17 @@ export default function BlogIndex({ posts }: { posts: BlogIndexPost[] }) {
                     ))}
                 </div>
             )}
+
+            <div className="mt-16 sm:mt-20 rounded-2xl border border-black/10 bg-black/[0.02] p-8 sm:p-12 max-w-2xl mx-auto text-center">
+                <span className="inline-block font-mono text-xs uppercase tracking-widest mb-4 text-black/40">
+                    Newsletter
+                </span>
+                <NewsletterSignup
+                    tone="light"
+                    heading="The Build Log"
+                    subtext="Lo que construimos con IA, cada semana. Sin spam, cancela cuando quieras."
+                />
+            </div>
         </section>
     )
 }
