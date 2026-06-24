@@ -1,4 +1,9 @@
-export type ContactSource = "beehiiv" | "cursor-event" | "lead" | "cursor-attendees";
+export type ContactSource =
+  | "beehiiv"
+  | "cursor-event"
+  | "lead"
+  | "cursor-attendees"
+  | "public-signup";
 
 /** One normalized row from a single CSV source. */
 export interface ContactInput {

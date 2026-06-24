@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { Briefcase, Mail, Newspaper, Send, Users } from 'lucide-react'
+import { Briefcase, Mail, Newspaper, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { HeroHeader } from '@/components/header'
+import { NewsletterSignup } from '@/components/newsletter-signup'
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants'
 
 const VALUE_CARDS = [
@@ -105,26 +106,7 @@ export default function NewsletterPage() {
                             <p className="text-white/60 mb-6 sm:mb-8 text-sm sm:text-base">
                                 Sin spam. Cancela cuando quieras.
                             </p>
-                            <form
-                                className="space-y-3 sm:space-y-4"
-                                action="https://aibuildersmx.beehiiv.com/"
-                                method="GET"
-                                target="_blank"
-                            >
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="tu@email.com"
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-base text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
-                                />
-                                <Button
-                                    type="submit"
-                                    className="w-full bg-white text-black hover:bg-white/90 py-6 text-base font-bold rounded-xl flex items-center justify-center gap-2 group"
-                                >
-                                    <span>Suscribirme</span>
-                                    <Send className="size-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                                </Button>
-                            </form>
+                            <NewsletterSignup tone="onDark" />
                             <p className="mt-6 text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
                                 Únete a +{BUILDER_COUNT_FORMATTED} builders hoy
                             </p>

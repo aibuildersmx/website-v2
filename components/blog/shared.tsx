@@ -3,6 +3,7 @@
 import { AlertTriangle, Info, Zap, Shield, List } from 'lucide-react'
 import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import { NewsletterSignup } from '@/components/newsletter-signup'
 
 /* ── Callout ──
    Binary black/white. Callout types are differentiated by a mono label and a
@@ -174,6 +175,13 @@ export function StickyTOC({ items }: { items: [string, string][] }) {
                         ))}
                     </ol>
                 </div>
+            </div>
+
+            <div className="mt-4 rounded-xl border border-black/10 bg-black/[0.02] p-5">
+                <p className="font-mono text-[10px] mb-3 uppercase tracking-widest text-black/40">
+                    Newsletter
+                </p>
+                <NewsletterSignup tone="light" />
             </div>
         </nav>
     )
