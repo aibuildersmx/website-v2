@@ -12,14 +12,16 @@ signup forms (`components/cta-section.tsx`, `app/(site)/newsletter/page.tsx`) PO
 **outward to Beehiiv** and never write to our own database.
 
 We want people to subscribe directly into our DB via:
-1. A canonical shareable link — a dedicated `/suscribete` page.
+1. A canonical shareable link — the **existing** `/newsletter` page (`app/(site)/newsletter/page.tsx`),
+   a polished landing page (hero + value cards + subscribe block) whose form currently POSTs
+   outward to Beehiiv. We rewire its form to the DB; no new page is created.
 2. A reusable CTA component dropped across the site (homepage, blog index, blog posts).
 
 ## Decisions (locked)
 
 | Topic | Decision |
 |---|---|
-| Link shape | **Both** — a `/suscribete` page (canonical link) + a reusable CTA component. |
+| Link shape | **Both** — the existing `/newsletter` page is the canonical link (rewired, not recreated) + a reusable CTA component. |
 | Opt-in | **Single opt-in now, double opt-in later.** Email goes straight in; schema/action designed so confirmation can be bolted on without a rewrite. |
 | Beehiiv | **Full cutover.** Replace the outward Beehiiv forms; new signups land only in Railway Postgres. |
 | Fields | **Email only.** `name` stays null (schema already allows it). |
@@ -46,11 +48,11 @@ We want people to subscribe directly into our DB via:
 │  contacts table (already exists)         │   no schema migration needed
 └──────────────────────────────────────────┘
 
-/suscribete page ── renders NewsletterSignup full-page (stacked variant)
+/newsletter page (existing) ── its Beehiiv form is replaced by NewsletterSignup
 ```
 
-The reusable component is the unit everything composes from. The `/suscribete` page is a
-thin wrapper that gives us a canonical shareable URL.
+The reusable component is the unit everything composes from. The existing `/newsletter`
+page is the canonical shareable URL; we only swap its form for the component.
 
 ## Components & responsibilities
 
@@ -91,6 +93,7 @@ Reusable CTA. Props:
 - `variant?: "inline" | "stacked"` (default `"inline"`). `inline` = email + button on one row (homepage/footer); `stacked` = heading + subtext + form block (page / blog index).
 - `heading?: string`, `subtext?: string` — optional copy overrides.
 - `source?: string` — optional source override (defaults to `"public-signup"`), so we can attribute signups per placement later if wanted.
+- `tone?: "light" | "onDark"` (default `"light"`). `light` = black text/controls on light backgrounds (homepage, blog). `onDark` = white text/controls for the black subscribe card on `/newsletter`. Still binary B/W — no new colors, just inverting which of black/white is foreground.
 
 Behavior:
 - States: `idle → submitting → success | error`, driven by `useActionState`/`useTransition` against `subscribe`.
@@ -99,17 +102,23 @@ Behavior:
 - Hidden honeypot `<input name="company">` (off-screen, `aria-hidden`, `tabIndex={-1}`, `autoComplete="off"`).
 - Styled strictly per the binary B/W design system: Geist Mono eyebrow (`font-mono uppercase tracking-widest`), Instrument Serif heading, black (`#212121`)/white only, neutrals via `black/5..60`, status via `green-500`/`red-500`. No new colors, no `dark:` classes.
 
-### `app/(site)/suscribete/page.tsx` (new)
+### `app/(site)/newsletter/page.tsx` (canonical page — rewire, do not recreate)
 
-Full-page wrapper. Section uses the canonical layout (`py-16 sm:py-24 md:py-32`,
-`mx-auto max-w-6xl px-4 sm:px-6`, `border-t border-black/5`). Renders `<NewsletterSignup variant="stacked" />`
-with a short line about The Build Log. Add page `metadata` (title/description) for the shareable link's social preview.
+Keep the page exactly as-is — hero, three value cards, the black subscribe block, footer,
+copy, and styling all stay. Only the inner `<form action="https://aibuildersmx.beehiiv.com/">`
+(lines ~108–127) is replaced by `<NewsletterSignup />`, styled to sit inside the black card
+(white-on-black treatment — the component must support this; see component props). The
+"Suscribirme" hero button keeps scrolling to `#subscribe`. `aibuilders.mx/newsletter` is the
+shareable link to hand out.
+
+Note: this page is currently `'use client'` only because of the Beehiiv form interactions;
+it can stay a client component since `<NewsletterSignup>` is itself a client component.
 
 ### Swap-in points (Beehiiv cutover)
 
 Replace the Beehiiv `<form action="https://aibuildersmx.beehiiv.com/">` blocks with `<NewsletterSignup />`:
 - `components/cta-section.tsx` (homepage) — `inline` variant.
-- `app/(site)/newsletter/page.tsx` — `stacked` variant (or redirect/merge with `/suscribete`; keep both pages for now, both use the component).
+- `app/(site)/newsletter/page.tsx` — inside the black subscribe card (see above).
 
 ### Blog placements
 
@@ -133,7 +142,7 @@ Replace the Beehiiv `<form action="https://aibuildersmx.beehiiv.com/">` blocks w
 - **Unit-test `subscribe()`** directly (server actions are callable in tests): valid insert,
   upsert dedupe, re-subscribe of an unsubscribed contact, honeypot rejection (no write),
   rate-limit trip, invalid email.
-- **Manual checklist:** `/suscribete`, homepage CTA, blog index CTA, blog post sidebar CTA,
+- **Manual checklist:** `/newsletter` (canonical page), homepage CTA, blog index CTA, blog post sidebar CTA,
   then confirm the new contact appears with `public-signup` source in `/admin/comunidad`
   (or the contacts list).
 
@@ -144,6 +153,7 @@ Replace the Beehiiv `<form action="https://aibuildersmx.beehiiv.com/">` blocks w
 - Per-placement source attribution analytics.
 - Shared/distributed rate-limit store (current in-memory is fine on single Railway instance).
 - Prefilled magic-link signup (`?email=`) — not requested for v1.
+- A separate `/suscribete` page — dropped; the existing `/newsletter` page is the canonical link.
 
 ## Files touched
 
@@ -151,9 +161,8 @@ Replace the Beehiiv `<form action="https://aibuildersmx.beehiiv.com/">` blocks w
 |---|---|
 | `lib/actions/subscribe.ts` | New — public `subscribe()` action + rate-limit helper. |
 | `lib/community/types.ts` | Add `"public-signup"` to `ContactSource`. |
-| `components/newsletter-signup.tsx` | New — reusable CTA component. |
-| `app/(site)/suscribete/page.tsx` | New — canonical signup page. |
+| `components/newsletter-signup.tsx` | New — reusable CTA component (`tone` light/onDark). |
+| `app/(site)/newsletter/page.tsx` | Replace Beehiiv form with `<NewsletterSignup tone="onDark" />` (page otherwise unchanged — canonical link). |
 | `components/cta-section.tsx` | Replace Beehiiv form with `<NewsletterSignup />`. |
-| `app/(site)/newsletter/page.tsx` | Replace Beehiiv form with `<NewsletterSignup />`. |
 | `components/blog/blog-index.tsx` | Add full-width CTA below post grid. |
 | `components/blog/shared.tsx` | Add compact CTA below the StickyTOC card. |
