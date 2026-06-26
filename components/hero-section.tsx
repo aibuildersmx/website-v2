@@ -72,7 +72,7 @@ export default function HeroSection() {
                   tag="h1"
                   textAlign="inherit"
                 />
-                <p className="mt-3 sm:mt-6 md:mt-8 text-pretty text-sm sm:text-lg md:text-xl text-white/80 max-w-lg">
+                <p className="mt-3 sm:mt-6 md:mt-8 max-w-lg font-sans text-pretty text-sm text-white/80 sm:text-lg md:text-xl">
                   Somos una comunidad de builders que transformamos ideas en
                   productos digitales reales usando IA como nuestro superpoder.
                 </p>
@@ -81,13 +81,13 @@ export default function HeroSection() {
                   <Button
                     asChild
                     size="lg"
-                    className="bg-white text-black hover:bg-white/90 px-10 py-7 text-lg font-medium rounded-xl"
+                    className="bg-white text-black hover:bg-white/90 px-10 py-7 font-sans text-lg font-medium rounded-xl"
                   >
                     <Link
                       href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm"
                       target="_blank"
                     >
-                      <span className="text-nowrap">
+                      <span className="font-sans text-nowrap">
                         Únete a nuestra comunidad
                       </span>
                     </Link>
@@ -146,13 +146,13 @@ export default function HeroSection() {
                   <Button
                     asChild
                     size="lg"
-                    className="flex-1 bg-white text-black hover:bg-white/90 px-4 sm:px-10 py-4 sm:py-7 text-sm sm:text-lg font-medium rounded-xl"
+                    className="flex-1 bg-white text-black hover:bg-white/90 px-4 sm:px-10 py-4 sm:py-7 font-sans text-sm font-medium rounded-xl sm:text-lg"
                   >
                     <Link
                       href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm"
                       target="_blank"
                     >
-                      <span className="text-nowrap">
+                      <span className="font-sans text-nowrap">
                         Únete a nuestra comunidad
                       </span>
                     </Link>

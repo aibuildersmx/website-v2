@@ -24,7 +24,7 @@ export default function ContentSection() {
                         Construyendo el futuro de la IA en México.
                     </h2>
                     <div className="space-y-6 sm:space-y-8">
-                        <p className="text-black/60 text-base sm:text-lg leading-relaxed">
+                        <p className="font-sans text-base leading-relaxed text-black/60 sm:text-lg">
                             AI Builders es más que una comunidad; es un ecosistema donde desarrolladores, diseñadores y emprendedores se reúnen para explorar nuevos tools, modelos y crear productos digitales.
                         </p>
 

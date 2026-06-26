@@ -41,7 +41,7 @@ export default function CTASection() {
               tag="h2"
             />
             
-            <p className="text-base sm:text-lg md:text-xl text-black/60 max-w-md mb-6 sm:mb-10 leading-relaxed">
+            <p className="mb-6 max-w-md font-sans text-base leading-relaxed text-black/60 sm:mb-10 sm:text-lg md:text-xl">
               Sé parte de la comunidad más activa de builders en México. Recibe las últimas noticias y conecta con otros expertos.
             </p>
 
@@ -49,12 +49,12 @@ export default function CTASection() {
               <Button
                 asChild
                 size="lg"
-                className="flex-1 sm:flex-none bg-black text-white hover:bg-black/90 px-5 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-medium rounded-xl group"
+                className="flex-1 bg-black px-5 py-5 font-sans text-sm font-medium text-white hover:bg-black/90 sm:flex-none sm:px-8 sm:py-6 sm:text-base rounded-xl group"
               >
                 <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank" className="flex items-center gap-2">
                   <MessageCircle className="size-4 sm:size-5" />
-                  <span className="hidden sm:inline">Comunidad WhatsApp</span>
-                  <span className="sm:hidden">WhatsApp</span>
+                  <span className="hidden font-sans sm:inline">Comunidad WhatsApp</span>
+                  <span className="font-sans sm:hidden">WhatsApp</span>
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -86,7 +86,7 @@ export default function CTASection() {
                   Newsletter 
                 </h3>
                 
-                <p className="text-white/60 mb-6 sm:mb-8 text-balance text-sm sm:text-base">
+                <p className="mb-6 font-sans text-balance text-sm text-white/60 sm:mb-8 sm:text-base">
                   Recibe herramientas, noticias y anuncions de eventos directamente en tu inbox. Sin spam, solo valor.
                 </p>
 

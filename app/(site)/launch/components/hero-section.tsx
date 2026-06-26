@@ -107,7 +107,7 @@ export default function HeroSection() {
                         asChild
                         size="lg"
                         variant="outline"
-                        className="border-white/20 text-white hover:bg-white/10 px-10 py-7 text-lg font-medium rounded-xl"
+                        className="border-white/20 text-white hover:bg-white/10 px-10 py-7 font-sans text-lg font-medium rounded-xl"
                     >
                         <a href="#programa" onClick={scrollTo('programa')}>
                             Conoce mas

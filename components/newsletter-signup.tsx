@@ -61,7 +61,7 @@ export function NewsletterSignup({
       {subtext && (
         <p
           className={cn(
-            "mb-6 sm:mb-8 text-sm sm:text-base",
+            "mb-6 font-sans text-sm sm:mb-8 sm:text-base",
             onDark ? "text-white/60" : "text-black/60",
           )}
         >
@@ -90,7 +90,7 @@ export function NewsletterSignup({
             required
             placeholder="tu@email.com"
             className={cn(
-              "w-full rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base focus:outline-none focus:ring-2 transition-all",
+              "w-full rounded-lg px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 sm:rounded-xl sm:px-5 sm:py-4 sm:text-base transition-all",
               onDark
                 ? "bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:ring-white/20"
                 : "bg-white border border-black/10 text-black placeholder:text-black/30 focus:ring-black/20",
@@ -100,13 +100,13 @@ export function NewsletterSignup({
             type="submit"
             disabled={pending}
             className={cn(
-              "w-full py-5 sm:py-6 text-sm sm:text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60",
+              "flex w-full items-center justify-center gap-2 rounded-lg py-5 font-sans text-sm font-bold transition-all disabled:opacity-60 sm:rounded-xl sm:py-6 sm:text-base",
               onDark
                 ? "bg-white text-black hover:bg-white/90"
                 : "bg-black text-white hover:bg-black/90",
             )}
           >
-            <span>{pending ? "Enviando…" : "Suscribirme"}</span>
+            <span className="font-sans">{pending ? "Enviando…" : "Suscribirme"}</span>
             {!pending && <Send className="size-4" />}
           </button>
           {status === "error" && (

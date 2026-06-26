@@ -112,7 +112,7 @@ export default function ResidencyPage() {
                             speedSegment={0.3}
                             delay={0.25}
                             as="p"
-                            className="mt-8 max-w-3xl text-xl sm:text-2xl md:text-3xl text-[#1a2a3a] font-medium leading-relaxed"
+                            className="mt-8 max-w-3xl font-sans text-xl font-medium leading-relaxed text-[#1a2a3a] sm:text-2xl md:text-3xl"
                         >
                             Seis semanas de espacio, mentoría y respaldo para builders con proyectos reales.
                         </TextEffect>
@@ -135,7 +135,7 @@ export default function ResidencyPage() {
                             <Button
                                 asChild
                                 size="lg"
-                                className="bg-[#1a2a3a] text-white hover:bg-[#2a3a4a] px-10 py-7 text-lg font-medium rounded-xl"
+                                className="bg-[#1a2a3a] text-white hover:bg-[#2a3a4a] px-10 py-7 font-sans text-lg font-medium rounded-xl"
                             >
                                 <Link href={applicationHref}>
                                     Aplicar a La Residencia
@@ -145,7 +145,7 @@ export default function ResidencyPage() {
                                 asChild
                                 size="lg"
                                 variant="outline"
-                                className="border-[#1a2a3a]/20 text-[#1a2a3a] hover:bg-[#1a2a3a]/5 px-10 py-7 text-lg font-medium rounded-xl"
+                                className="border-[#1a2a3a]/20 text-[#1a2a3a] hover:bg-[#1a2a3a]/5 px-10 py-7 font-sans text-lg font-medium rounded-xl"
                             >
                                 <a href="#programa" onClick={scrollTo('programa')}>
                                     Ver detalles
@@ -164,23 +164,24 @@ export default function ResidencyPage() {
                             Partners
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-[#1a2a3a]">
-                            <div className="inline-flex items-center" aria-label="OpenAI">
-                                <Image
-                                    src="/openai.svg"
-                                    alt=""
+                            <div className="inline-flex items-center gap-3" aria-label="Codex">
+                                <div
                                     aria-hidden
-                                    width={28}
-                                    height={28}
-                                    className="mr-3 h-7 w-7"
+                                    className="h-7 w-7 bg-current"
+                                    style={{
+                                        WebkitMaskImage: 'url(/codex.svg)',
+                                        maskImage: 'url(/codex.svg)',
+                                        WebkitMaskRepeat: 'no-repeat',
+                                        maskRepeat: 'no-repeat',
+                                        WebkitMaskPosition: 'center',
+                                        maskPosition: 'center',
+                                        WebkitMaskSize: 'contain',
+                                        maskSize: 'contain',
+                                    }}
                                 />
-                                <Image
-                                    src="/openai-text.svg"
-                                    alt=""
-                                    aria-hidden
-                                    width={96}
-                                    height={28}
-                                    className="h-6 w-auto"
-                                />
+                                <span className="font-mono text-xl font-semibold leading-none">
+                                    Codex
+                                </span>
                             </div>
                             <div
                                 role="img"
@@ -257,7 +258,7 @@ export default function ResidencyPage() {
                         speedSegment={0.3}
                         delay={0.2}
                         as="p"
-                        className="max-w-2xl text-lg text-[#3a5a7a] mb-16"
+                        className="mb-16 max-w-2xl font-sans text-lg text-[#3a5a7a]"
                     >
                         Esto no es solo un escritorio. Es tiempo, contexto y acceso para builders que pueden convertir
                         una oportunidad en impulso real.
@@ -284,10 +285,10 @@ export default function ResidencyPage() {
                                 className="flex h-full min-h-[270px] flex-col rounded-2xl border border-[#5a9fd4]/10 bg-[#f0f4f8]/60 p-8 transition-colors hover:bg-[#e8eff6]"
                             >
                                 <benefit.icon className="mb-6 size-8 text-[#5a9fd4]" strokeWidth={1.5} />
-                                <h3 className="min-h-[4.25rem] text-xl font-medium leading-tight text-[#1a2a3a]">
+                                <h3 className="min-h-[4.25rem] font-sans text-xl font-medium leading-tight text-[#1a2a3a]">
                                     {benefit.title}
                                 </h3>
-                                <p className="mt-5 text-sm leading-relaxed text-[#3a5a7a]">{benefit.description}</p>
+                                <p className="mt-5 font-sans text-sm leading-relaxed text-[#3a5a7a]">{benefit.description}</p>
                             </div>
                         ))}
                     </AnimatedGroup>
@@ -315,7 +316,7 @@ export default function ResidencyPage() {
                             speedSegment={0.3}
                             delay={0.2}
                             as="p"
-                            className="mt-6 max-w-md text-lg text-[#3a5a7a] leading-relaxed"
+                            className="mt-6 max-w-md font-sans text-lg leading-relaxed text-[#3a5a7a]"
                         >
                             Queremos gente que construya en serio y que haga que la comunidad se vea mejor por tenerla cerca.
                         </TextEffect>
@@ -342,7 +343,7 @@ export default function ResidencyPage() {
                                 className="flex gap-4 rounded-2xl border border-[#5a9fd4]/10 bg-white/80 px-5 py-5"
                             >
                                 <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[#5a9fd4]" strokeWidth={1.5} />
-                                <p className="text-base leading-relaxed text-[#2a3a4a]">{item}</p>
+                                <p className="font-sans text-base leading-relaxed text-[#2a3a4a]">{item}</p>
                             </div>
                         ))}
                     </AnimatedGroup>

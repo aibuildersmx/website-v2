@@ -46,22 +46,6 @@ export const events: EventCard[] = [
     link: "/residencia",
   },
   {
-    title: "How I Use AI #7: WhatsApp Voicebots",
-    description:
-      "Daniel Torres nos enseñará como programa su agente de voz \"Geeky\" para resumir los mensajes en forma de voicenote de grupos de WhatsApp.",
-    month: "JUN",
-    day: "18",
-    location: "Virtual, Google Meet",
-    attendees: "∞",
-    status: "ABIERTO",
-    price: "Gratis",
-    buttonText: "Registrarme",
-    buttonDisabled: false,
-    tags: ["Webinar", "AI"],
-    logo: "/favicon.svg",
-    link: "https://luma.com/vhwcyvjr",
-  },
-  {
     title: "How I Use AI: Juan Martínez",
     description:
       "Chat y Q&A con Juan Martinez, ex ingeniero de QA en Cursor y founder de un nuevo startup de AI.",
@@ -96,6 +80,14 @@ export const events: EventCard[] = [
 ];
 
 export const pastEvents: PastEvent[] = [
+  {
+    title: "How I Use AI #7: WhatsApp Voicebots",
+    month: "JUN",
+    day: "18",
+    location: "Virtual, Google Meet",
+    logo: "/favicon.svg",
+    link: "https://luma.com/vhwcyvjr",
+  },
   {
     title: "AIBM Vibe Coding Bootcamp",
     month: "MAY",
