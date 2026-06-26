@@ -9,6 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
   --font-serif: var(--font-instrument-serif);
   --font-instrument-serif: var(--font-instrument-serif);
   --font-instrument-sans: var(--font-instrument-sans);

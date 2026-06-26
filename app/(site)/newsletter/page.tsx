@@ -10,27 +10,27 @@ import { BUILDER_COUNT_FORMATTED } from '@/lib/constants'
 const VALUE_CARDS = [
     {
         icon: Newspaper,
-        title: 'Updates semanales',
+        title: 'IA al día',
         description:
-            'Lanzamientos de modelos, papers que importan y herramientas nuevas — curado, no firehose.',
+            'Los lanzamientos, modelos, herramientas y research que vale la pena seguir — explicado sin ruido.',
     },
     {
         icon: Users,
-        title: 'Comunidad y eventos',
+        title: 'LatAm tech y AI',
         description:
-            'Qué está pasando en AI Builders Mexico y en la escena de IA local: meetups, workshops, hackathons.',
+            'Qué está pasando en México y Latinoamérica: startups, comunidades, eventos, talento e infraestructura.',
     },
     {
         icon: Briefcase,
-        title: 'Bolsa de trabajo',
+        title: 'Oportunidades',
         description:
-            'Ofertas curadas de roles de AI/ML/eng en empresas mexicanas que están construyendo en serio.',
+            'Roles, proyectos y señales del mercado para quienes están construyendo productos de IA en la región.',
     },
 ]
 
 export default function NewsletterPage() {
     return (
-        <div className="relative min-h-screen bg-white text-black">
+        <div className="relative min-h-screen bg-white text-black font-inter">
             <HeroHeader />
 
             {/* Hero — calm, no dither, no animation */}
@@ -42,14 +42,14 @@ export default function NewsletterPage() {
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-instrument font-medium leading-[1.1] text-balance">
                         Las mejores actualizaciones de IA, cada semana.
                     </h1>
-                    <p className="text-base sm:text-lg md:text-xl text-black/60 leading-relaxed max-w-2xl mx-auto">
+                    <p className="font-inter text-base sm:text-lg md:text-xl text-black/60 leading-relaxed max-w-2xl mx-auto">
                         Curado por builders en el ecosistema de IA en México — no es un digest traducido del inglés. Updates de modelos, comunidad, eventos y vacantes en una sola lectura semanal.
                     </p>
                     <div className="pt-4">
                         <Button
                             asChild
                             size="lg"
-                            className="bg-black text-white hover:bg-black/90 rounded-xl px-8 py-6 text-base"
+                            className="bg-black text-white hover:bg-black/90 rounded-xl px-8 py-6 font-inter text-base"
                         >
                             <Link href="#subscribe">Suscribirme</Link>
                         </Button>
@@ -72,7 +72,7 @@ export default function NewsletterPage() {
                                 <h2 className="mt-5 text-xl sm:text-2xl font-instrument font-medium">
                                     {card.title}
                                 </h2>
-                                <p className="mt-2 text-sm sm:text-base text-black/60 leading-relaxed">
+                                <p className="mt-2 font-inter text-sm sm:text-base text-black/60 leading-relaxed">
                                     {card.description}
                                 </p>
                             </article>
@@ -103,10 +103,10 @@ export default function NewsletterPage() {
                             <h2 className="text-2xl sm:text-3xl font-instrument font-medium mb-4">
                                 Suscríbete gratis
                             </h2>
-                            <p className="text-white/60 mb-6 sm:mb-8 text-sm sm:text-base">
+                            <p className="font-inter text-white/60 mb-6 sm:mb-8 text-sm sm:text-base">
                                 Sin spam. Cancela cuando quieras.
                             </p>
-                            <NewsletterSignup tone="onDark" />
+                            <NewsletterSignup tone="onDark" font="inter" />
                             <p className="mt-6 text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
                                 Únete a +{BUILDER_COUNT_FORMATTED} builders hoy
                             </p>
