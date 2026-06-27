@@ -17,14 +17,14 @@ export function EnterpriseHero() {
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-instrument font-medium leading-[1.1] text-balance">
                         {HERO_COPY.headline}
                     </h1>
-                    <p className="text-base sm:text-lg md:text-xl text-black/60 leading-relaxed max-w-2xl mx-auto">
+                    <p className="font-sans text-base sm:text-lg md:text-xl text-black/60 leading-relaxed max-w-2xl mx-auto">
                         {HERO_COPY.subhead}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                         <Button
                             asChild
                             size="lg"
-                            className="bg-black text-white hover:bg-black/90 px-8 py-6 text-base rounded-xl"
+                            className="h-auto bg-black text-white hover:bg-black/90 px-8 py-4 font-sans text-base rounded-xl"
                         >
                             <Link href={buildMailto(HERO_COPY.primaryCtaSubject)}>
                                 {HERO_COPY.primaryCtaLabel}

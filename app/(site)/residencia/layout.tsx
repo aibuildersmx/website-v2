@@ -20,7 +20,7 @@ export default function ResidencyLayout({
     children: React.ReactNode
 }>) {
     return (
-        <div className="min-h-screen bg-[#f0f4f8] text-[#1a2a3a]">
+        <div className="min-h-screen bg-white text-black">
             <HeroHeader />
             {children}
             <ResidencyFooter />

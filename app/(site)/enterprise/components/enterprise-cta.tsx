@@ -35,7 +35,7 @@ export function EnterpriseCTA() {
                                         href={buildMailto(service.subject)}
                                         className="group flex items-center justify-between border-b border-black/10 py-3 sm:py-4 hover:border-black/40 transition-colors"
                                     >
-                                        <span className="text-lg sm:text-xl font-instrument font-medium text-black">
+                                        <span className="font-sans text-lg sm:text-xl font-medium text-black">
                                             {service.label.replace(' →', '')}
                                         </span>
                                         <ArrowRight className="size-4 sm:size-5 text-black/40 transition-all group-hover:translate-x-1 group-hover:text-black" />
@@ -67,13 +67,13 @@ export function EnterpriseCTA() {
                                     {CTA_COPY.contactHeadline}
                                 </h3>
                                 {CTA_COPY.contactBody ? (
-                                    <p className="text-white/60 mb-6 sm:mb-8 text-balance text-sm sm:text-base">
+                                    <p className="font-sans text-white/60 mb-6 sm:mb-8 text-balance text-sm sm:text-base">
                                         {CTA_COPY.contactBody}
                                     </p>
                                 ) : null}
                                 <Button
                                     asChild
-                                    className="mt-6 sm:mt-8 w-full bg-white text-black hover:bg-white/90 py-5 sm:py-6 text-sm sm:text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 group"
+                                    className="mt-6 sm:mt-8 h-auto w-full bg-white text-black hover:bg-white/90 px-6 py-3.5 sm:px-8 sm:py-4 font-sans text-base font-bold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 group"
                                 >
                                     <Link
                                         href={buildMailto(CTA_COPY.contactCtaSubject)}

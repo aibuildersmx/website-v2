@@ -19,7 +19,7 @@ export function WorkshopsSection() {
                             {WORKSHOPS_COPY.headline}
                         </h2>
 
-                        <div className="mt-6 sm:mt-8 space-y-4 text-black/60 text-base sm:text-lg leading-relaxed">
+                        <div className="mt-6 sm:mt-8 space-y-4 font-sans text-black/60 text-base sm:text-lg leading-relaxed">
                             {WORKSHOPS_COPY.body.map((p, i) => (
                                 <p key={i}>{p}</p>
                             ))}
@@ -28,7 +28,7 @@ export function WorkshopsSection() {
                         <Button
                             asChild
                             size="lg"
-                            className="mt-6 sm:mt-8 bg-black text-white hover:bg-black/90 rounded-xl group"
+                            className="mt-6 sm:mt-8 h-auto bg-black text-white hover:bg-black/90 rounded-xl px-6 py-3.5 sm:px-8 sm:py-4 font-sans text-base group"
                         >
                             <Link href={buildMailto(WORKSHOPS_COPY.ctaSubject)} className="flex items-center gap-2">
                                 <span>{WORKSHOPS_COPY.ctaLabel}</span>
@@ -42,7 +42,7 @@ export function WorkshopsSection() {
                             <p className="mb-5 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-black/40">
                                 Herramientas
                             </p>
-                            <ul className="space-y-4 text-sm text-black/60 leading-relaxed">
+                            <ul className="space-y-4 font-sans text-sm text-black/60 leading-relaxed">
                                 {WORKSHOPS_COPY.tools.map((item) => (
                                     <li key={item.title}>
                                         <span className="font-medium text-black">{item.title}</span>
@@ -55,7 +55,7 @@ export function WorkshopsSection() {
                             <p className="mb-5 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-black/40">
                                 Resultados
                             </p>
-                            <ul className="space-y-4 text-sm text-black/60 leading-relaxed">
+                            <ul className="space-y-4 font-sans text-sm text-black/60 leading-relaxed">
                                 {WORKSHOPS_COPY.outcomes.map((item) => (
                                     <li key={item.title}>
                                         <span className="font-medium text-black">{item.title}</span>

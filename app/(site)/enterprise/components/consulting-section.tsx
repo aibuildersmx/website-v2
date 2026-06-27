@@ -31,7 +31,7 @@ export function ConsultingSection() {
                             </span>
                         </div>
 
-                        <div className="mt-6 sm:mt-8 space-y-4 text-black/60 text-base sm:text-lg leading-relaxed">
+                        <div className="mt-6 sm:mt-8 space-y-4 font-sans text-black/60 text-base sm:text-lg leading-relaxed">
                             {CONSULTING_COPY.body.map((p, i) => (
                                 <p key={i}>{p}</p>
                             ))}
@@ -40,7 +40,7 @@ export function ConsultingSection() {
                         <Button
                             asChild
                             size="lg"
-                            className="mt-6 sm:mt-8 bg-black text-white hover:bg-black/90 rounded-xl group"
+                            className="mt-6 sm:mt-8 h-auto bg-black text-white hover:bg-black/90 rounded-xl px-6 py-3.5 sm:px-8 sm:py-4 font-sans text-base group"
                         >
                             <Link href={buildMailto(CONSULTING_COPY.ctaSubject)} className="flex items-center gap-2">
                                 <span>{CONSULTING_COPY.ctaLabel}</span>

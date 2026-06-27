@@ -17,7 +17,7 @@ export function RecruitingSection() {
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-instrument font-medium leading-tight text-balance">
                         {RECRUITING_COPY.headline}
                     </h2>
-                    <p className="text-base sm:text-lg text-black/60 leading-relaxed max-w-2xl">
+                    <p className="font-sans text-base sm:text-lg text-black/60 leading-relaxed max-w-2xl">
                         {RECRUITING_COPY.subhead}
                     </p>
                 </header>
@@ -29,7 +29,7 @@ export function RecruitingSection() {
                             className="group relative border border-black/10 rounded-xl sm:rounded-2xl bg-white hover:border-black/20 hover:shadow-lg hover:shadow-black/5 transition-all duration-500 p-6 sm:p-8"
                         >
                             <h3 className="text-xl sm:text-2xl font-instrument font-medium">{card.title}</h3>
-                            <p className="mt-3 text-sm sm:text-base text-black/60 leading-relaxed">
+                            <p className="mt-3 font-sans text-sm sm:text-base text-black/60 leading-relaxed">
                                 {card.description}
                             </p>
                         </li>
@@ -40,7 +40,7 @@ export function RecruitingSection() {
                     <Button
                         asChild
                         size="lg"
-                        className="bg-black text-white hover:bg-black/90 rounded-xl group"
+                        className="h-auto bg-black text-white hover:bg-black/90 rounded-xl px-6 py-3.5 sm:px-8 sm:py-4 font-sans text-base group"
                     >
                         <Link href={buildMailto(RECRUITING_COPY.ctaSubject)} className="flex items-center gap-2">
                             <span>{RECRUITING_COPY.ctaLabel}</span>

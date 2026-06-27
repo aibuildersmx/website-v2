@@ -73,46 +73,47 @@ export default function ResidencyPage() {
     }
 
     return (
-        <main className="relative overflow-hidden bg-[#f0f4f8]">
+        <main className="relative overflow-hidden bg-white text-black">
             {/* Hero */}
-            <section className="relative min-h-screen flex items-center px-6 pt-24 pb-16 sm:pt-28">
+            <section className="relative flex min-h-screen items-center overflow-hidden px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
                 <Image
-                    src="/residency.png"
+                    src="/images/residencia/engraving-collage.jpg"
                     alt=""
                     fill
-                    className="absolute inset-0 h-full w-full object-cover -scale-x-100"
+                    priority
+                    className="absolute inset-0 h-full w-full object-cover opacity-45 mix-blend-multiply grayscale contrast-150"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#5a9fd4]/30 via-transparent to-[#f0f4f8]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.78),transparent_32%),linear-gradient(90deg,rgba(255,255,255,0.97)_0%,rgba(255,255,255,0.86)_42%,rgba(255,255,255,0.34)_100%)]" />
+                <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white to-transparent" />
                 <div className="relative mx-auto w-full max-w-6xl">
                     <div className="max-w-4xl">
                         <div className="mb-8 sm:mb-10">
                             <DecryptedText
-                                text="AIBM · 1 DE JUNIO – 15 DE JULIO"
+                                text="AIBM · 24 DE JUNIO – 7 DE AGOSTO"
                                 animateOn="view"
                                 revealDirection="start"
                                 sequential
                                 useOriginalCharsOnly={false}
-                                speed={70}
-                                className="font-mono text-[#1a2a3a]/70 uppercase text-xs sm:text-sm tracking-[0.3em]"
+                                speed={18}
+                                className="font-mono text-black/60 uppercase text-xs sm:text-sm tracking-[0.3em]"
                             />
                         </div>
 
                         <TextEffect
                             preset="fade-in-blur"
-                            speedSegment={0.3}
+                            speedSegment={1.2}
                             as="h1"
-                            className="font-instrument text-[3.25rem] sm:text-[5rem] md:text-[6.1rem] lg:text-[7rem] font-medium tracking-tight text-[#1a2a3a] leading-[1.02]"
+                            className="font-instrument text-[3.25rem] sm:text-[5rem] md:text-[6.1rem] lg:text-[7rem] font-medium text-black leading-[1.02]"
                         >
                             LA RESIDENCIA
                         </TextEffect>
 
                         <TextEffect
-                            per="word"
                             preset="fade-in-blur"
-                            speedSegment={0.3}
-                            delay={0.25}
+                            speedSegment={1.2}
+                            delay={0.05}
                             as="p"
-                            className="mt-8 max-w-3xl font-sans text-xl font-medium leading-relaxed text-[#1a2a3a] sm:text-2xl md:text-3xl"
+                            className="mt-8 max-w-3xl font-sans text-xl font-normal leading-relaxed text-black/65 sm:text-2xl md:text-3xl"
                         >
                             Seis semanas de espacio, mentoría y respaldo para builders con proyectos reales.
                         </TextEffect>
@@ -123,8 +124,8 @@ export default function ResidencyPage() {
                                 container: {
                                     visible: {
                                         transition: {
-                                            staggerChildren: 0.05,
-                                            delayChildren: 0.8,
+                                            staggerChildren: 0.015,
+                                            delayChildren: 0.12,
                                         },
                                     },
                                 },
@@ -135,7 +136,7 @@ export default function ResidencyPage() {
                             <Button
                                 asChild
                                 size="lg"
-                                className="bg-[#1a2a3a] text-white hover:bg-[#2a3a4a] px-10 py-7 font-sans text-lg font-medium rounded-xl"
+                                className="bg-black text-white hover:bg-black/90 px-10 py-7 font-sans text-lg font-medium rounded-xl"
                             >
                                 <Link href={applicationHref}>
                                     Aplicar a La Residencia
@@ -145,7 +146,7 @@ export default function ResidencyPage() {
                                 asChild
                                 size="lg"
                                 variant="outline"
-                                className="border-[#1a2a3a]/20 text-[#1a2a3a] hover:bg-[#1a2a3a]/5 px-10 py-7 font-sans text-lg font-medium rounded-xl"
+                                className="border-black/40 bg-white/40 text-black hover:border-black hover:bg-white/80 hover:text-black hover:ring-1 hover:ring-black focus-visible:border-black px-10 py-7 font-sans text-lg font-medium rounded-xl"
                             >
                                 <a href="#programa" onClick={scrollTo('programa')}>
                                     Ver detalles
@@ -160,10 +161,10 @@ export default function ResidencyPage() {
             <section className="relative px-6 pb-12 sm:pb-16">
                 <div className="mx-auto max-w-6xl">
                     <div className="flex flex-col items-center gap-5 text-center">
-                        <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#5a9fd4]">
+                        <p className="font-mono text-xs uppercase tracking-[0.3em] text-black/40">
                             Partners
                         </p>
-                        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-[#1a2a3a]">
+                        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-black">
                             <div className="inline-flex items-center gap-3" aria-label="Codex">
                                 <div
                                     aria-hidden
@@ -240,14 +241,14 @@ export default function ResidencyPage() {
             </section>
 
             {/* Benefits */}
-            <section id="programa" className="relative px-6 py-24 sm:py-32 bg-white">
+            <section id="programa" className="relative overflow-hidden border-t border-black/5 bg-white px-4 py-16 text-black sm:px-6 sm:py-24 md:py-32">
                 <div className="mx-auto max-w-6xl">
                     <TextEffect
                         triggerOnView
                         preset="fade-in-blur"
-                        speedSegment={0.3}
+                        speedSegment={1.2}
                         as="h2"
-                        className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#1a2a3a] mb-4"
+                        className="font-instrument text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.1] text-black mb-4"
                     >
                         Lo que recibes
                     </TextEffect>
@@ -255,10 +256,10 @@ export default function ResidencyPage() {
                         triggerOnView
                         per="line"
                         preset="fade-in-blur"
-                        speedSegment={0.3}
-                        delay={0.2}
+                        speedSegment={1.2}
+                        delay={0.05}
                         as="p"
-                        className="mb-16 max-w-2xl font-sans text-lg text-[#3a5a7a]"
+                        className="mb-16 max-w-2xl font-sans text-lg leading-relaxed text-black/60"
                     >
                         Esto no es solo un escritorio. Es tiempo, contexto y acceso para builders que pueden convertir
                         una oportunidad en impulso real.
@@ -270,8 +271,8 @@ export default function ResidencyPage() {
                             container: {
                                 visible: {
                                     transition: {
-                                        staggerChildren: 0.08,
-                                        delayChildren: 0.25,
+                                        staggerChildren: 0.02,
+                                        delayChildren: 0.05,
                                     },
                                 },
                             },
@@ -282,13 +283,13 @@ export default function ResidencyPage() {
                         {benefits.map((benefit) => (
                             <div
                                 key={benefit.title}
-                                className="flex h-full min-h-[270px] flex-col rounded-2xl border border-[#5a9fd4]/10 bg-[#f0f4f8]/60 p-8 transition-colors hover:bg-[#e8eff6]"
+                                className="flex h-full min-h-[270px] flex-col rounded-xl border border-black/10 bg-white p-8 transition-all duration-500 hover:border-black/20 hover:shadow-lg hover:shadow-black/5 sm:rounded-2xl"
                             >
-                                <benefit.icon className="mb-6 size-8 text-[#5a9fd4]" strokeWidth={1.5} />
-                                <h3 className="min-h-[4.25rem] font-sans text-xl font-medium leading-tight text-[#1a2a3a]">
+                                <benefit.icon className="mb-6 size-8 text-black/60" strokeWidth={1.5} />
+                                <h3 className="min-h-[4.25rem] font-sans text-xl font-medium leading-tight text-black">
                                     {benefit.title}
                                 </h3>
-                                <p className="mt-5 font-sans text-sm leading-relaxed text-[#3a5a7a]">{benefit.description}</p>
+                                <p className="mt-5 font-sans text-sm leading-relaxed text-black/60">{benefit.description}</p>
                             </div>
                         ))}
                     </AnimatedGroup>
@@ -297,15 +298,21 @@ export default function ResidencyPage() {
             </section>
 
             {/* Criteria */}
-            <section id="perfil" className="relative px-6 py-24 sm:py-32 border-y border-[#5a9fd4]/10 bg-[#f0f4f8]">
-                <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start">
+            <section id="perfil" className="relative overflow-hidden border-t border-black/5 bg-white px-4 py-16 text-black sm:px-6 sm:py-24 md:py-32">
+                <Image
+                    src="/images/residencia/engraving-collage.jpg"
+                    alt=""
+                    fill
+                    className="absolute inset-0 h-full w-full object-cover opacity-[0.08] mix-blend-multiply grayscale contrast-150"
+                />
+                <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start">
                     <div>
                         <TextEffect
                             triggerOnView
                             preset="fade-in-blur"
-                            speedSegment={0.3}
+                            speedSegment={1.2}
                             as="h2"
-                            className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#1a2a3a]"
+                            className="font-instrument text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.1] text-black"
                         >
                             A quién buscamos
                         </TextEffect>
@@ -313,10 +320,10 @@ export default function ResidencyPage() {
                             triggerOnView
                             per="line"
                             preset="fade-in-blur"
-                            speedSegment={0.3}
-                            delay={0.2}
+                            speedSegment={1.2}
+                            delay={0.05}
                             as="p"
-                            className="mt-6 max-w-md font-sans text-lg leading-relaxed text-[#3a5a7a]"
+                            className="mt-6 max-w-md font-sans text-lg leading-relaxed text-black/60"
                         >
                             Queremos gente que construya en serio y que haga que la comunidad se vea mejor por tenerla cerca.
                         </TextEffect>
@@ -328,8 +335,8 @@ export default function ResidencyPage() {
                             container: {
                                 visible: {
                                     transition: {
-                                        staggerChildren: 0.08,
-                                        delayChildren: 0.25,
+                                        staggerChildren: 0.02,
+                                        delayChildren: 0.05,
                                     },
                                 },
                             },
@@ -340,10 +347,10 @@ export default function ResidencyPage() {
                         {criteria.map((item) => (
                             <div
                                 key={item}
-                                className="flex gap-4 rounded-2xl border border-[#5a9fd4]/10 bg-white/80 px-5 py-5"
+                                className="relative flex gap-4 rounded-xl border border-black/10 bg-white/85 px-5 py-5 backdrop-blur-sm sm:rounded-2xl"
                             >
-                                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[#5a9fd4]" strokeWidth={1.5} />
-                                <p className="font-sans text-base leading-relaxed text-[#2a3a4a]">{item}</p>
+                                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-black/60" strokeWidth={1.5} />
+                                <p className="font-sans text-base leading-relaxed text-black/70">{item}</p>
                             </div>
                         ))}
                     </AnimatedGroup>
@@ -351,7 +358,7 @@ export default function ResidencyPage() {
             </section>
 
             {/* Three pillars */}
-            <section className="relative px-6 py-24 sm:py-32 bg-white">
+            <section className="relative border-t border-black/5 bg-white px-4 py-16 text-black sm:px-6 sm:py-24 md:py-32">
                 <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
                     {[
                         {
@@ -370,25 +377,31 @@ export default function ResidencyPage() {
                             description: 'La residencia está pensada para gente que puede construir con ambición local y distribución global.',
                         },
                     ].map((item) => (
-                        <div key={item.title} className="border-t border-[#5a9fd4]/15 pt-6">
-                            <item.icon className="size-6 text-[#5a9fd4] mb-4" strokeWidth={1.5} />
-                            <h3 className="text-xl text-[#1a2a3a] mb-2">{item.title}</h3>
-                            <p className="text-sm leading-relaxed text-[#3a5a7a]">{item.description}</p>
+                        <div key={item.title} className="border-t border-black/10 pt-6">
+                            <item.icon className="size-6 text-black/60 mb-4" strokeWidth={1.5} />
+                            <h3 className="text-xl text-black mb-2">{item.title}</h3>
+                            <p className="text-sm leading-relaxed text-black/60">{item.description}</p>
                         </div>
                     ))}
                 </div>
             </section>
 
             {/* CTA */}
-            <section id="aplica" className="px-2 pb-16 sm:pb-24 md:pb-32 bg-white">
-                <div className="mx-auto max-w-5xl rounded-3xl border border-[#5a9fd4]/15 bg-[#f0f4f8] px-6 py-12 md:py-20 lg:py-28">
-                    <div className="text-center">
+            <section id="aplica" className="bg-white px-2 pb-16 sm:pb-24 md:pb-32">
+                <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-black/10 bg-white px-6 py-12 md:py-20 lg:py-28">
+                    <Image
+                        src="/images/residencia/engraving-collage.jpg"
+                        alt=""
+                        fill
+                        className="absolute inset-0 h-full w-full object-cover opacity-15 mix-blend-multiply grayscale contrast-150"
+                    />
+                    <div className="relative text-center">
                         <TextEffect
                             triggerOnView
                             preset="fade-in-blur"
-                            speedSegment={0.3}
+                            speedSegment={1.2}
                             as="h2"
-                            className="text-balance text-3xl sm:text-4xl md:text-5xl font-medium text-[#1a2a3a]"
+                            className="text-balance font-instrument text-3xl sm:text-4xl md:text-5xl font-medium leading-[1.1] text-black"
                         >
                             Si eres la persona correcta, aplica.
                         </TextEffect>
@@ -396,12 +409,12 @@ export default function ResidencyPage() {
                             triggerOnView
                             per="line"
                             preset="fade-in-blur"
-                            speedSegment={0.3}
-                            delay={0.25}
+                            speedSegment={1.2}
+                            delay={0.05}
                             as="p"
-                            className="mt-6 text-lg sm:text-xl text-[#3a5a7a] font-mono"
+                            className="mt-6 text-lg sm:text-xl text-black/70 font-mono"
                         >
-                            Empieza junio 1. Queremos builders con criterio, ambición e integridad.
+                            Empieza junio 24. Queremos builders con criterio, ambición e integridad.
                         </TextEffect>
 
                         <AnimatedGroup
@@ -410,8 +423,8 @@ export default function ResidencyPage() {
                                 container: {
                                     visible: {
                                         transition: {
-                                            staggerChildren: 0.05,
-                                            delayChildren: 0.65,
+                                            staggerChildren: 0.015,
+                                            delayChildren: 0.1,
                                         },
                                     },
                                 },
@@ -422,17 +435,13 @@ export default function ResidencyPage() {
                             <Button
                                 asChild
                                 size="lg"
-                                className="bg-[#1a2a3a] text-white hover:bg-[#2a3a4a] px-10 py-7 text-lg font-medium rounded-xl"
+                                className="bg-black text-white hover:bg-black/90 px-10 py-7 font-sans text-lg font-medium rounded-xl"
                             >
                                 <Link href={applicationHref}>
                                     Abrir aplicación
                                 </Link>
                             </Button>
                         </AnimatedGroup>
-
-                        <p className="mt-8 text-[#5a9fd4]/60 text-xs font-mono uppercase tracking-widest">
-                            APLICACIÓN VÍA GOOGLE FORM
-                        </p>
                     </div>
                 </div>
             </section>

@@ -27,7 +27,7 @@ export function CheckList({ items, variant = 'light', className }: CheckListProp
                 className,
             )}
         >
-            <ul className={cn('space-y-3 text-sm', isDark ? 'text-[#bac2de]' : 'text-black/70')}>
+            <ul className={cn('space-y-3 font-sans text-sm', isDark ? 'text-[#bac2de]' : 'text-black/70')}>
                 {items.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                         <span className={cn('shrink-0 mt-0.5', isDark ? 'text-[#a6e3a1]' : 'text-green-600')}>✓</span>
@@ -52,7 +52,7 @@ function renderItem(item: CheckListItem, isDark: boolean): ReactNode {
         return (
             <>
                 {title ? (
-                    <strong className={isDark ? 'text-[#cdd6f4]' : 'text-black'}>{title}</strong>
+                    <strong className={cn('font-sans font-semibold', isDark ? 'text-[#cdd6f4]' : 'text-black')}>{title}</strong>
                 ) : null}
                 {title && description ? ' — ' : null}
                 {description}
