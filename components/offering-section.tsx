@@ -122,11 +122,11 @@ export default function OfferingSection() {
                 onMouseEnter={() => selectOffering(index)}
                 onFocus={() => selectOffering(index)}
                 className={cn(
-                  "group relative flex h-[36rem] min-h-0 cursor-pointer flex-col overflow-hidden rounded-xl border border-black/10 bg-white text-left shadow-sm shadow-black/5 outline-none transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-black/20 hover:shadow-2xl hover:shadow-black/10 focus-visible:border-black/30 focus-visible:ring-2 focus-visible:ring-black/10 sm:rounded-2xl lg:min-w-0",
+                  "group relative flex min-h-0 cursor-pointer flex-col overflow-hidden rounded-xl border border-black/10 bg-white text-left shadow-sm shadow-black/5 outline-none transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-black/20 hover:shadow-2xl hover:shadow-black/10 focus-visible:border-black/30 focus-visible:ring-2 focus-visible:ring-black/10 sm:rounded-2xl lg:h-[36rem] lg:min-w-0",
                   isActive && "lg:shadow-2xl lg:shadow-black/10",
                 )}
               >
-                <div className="relative h-44 shrink-0 overflow-hidden border-b border-black/5 bg-black/[0.02] sm:h-48">
+                <div className="relative h-36 shrink-0 overflow-hidden border-b border-black/5 bg-black/[0.02] sm:h-48">
                   <Image
                     src={offering.image}
                     alt={offering.alt}
@@ -156,16 +156,16 @@ export default function OfferingSection() {
                   <div
                     aria-hidden={!isActive}
                     className={cn(
-                      "mt-6 grid transition-[grid-template-rows] duration-500 ease-out sm:mt-7",
-                      isActive ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                      "mt-4 grid grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out sm:mt-7",
+                      isActive ? "lg:grid-rows-[1fr]" : "lg:grid-rows-[0fr]",
                     )}
                   >
                     <p
                       className={cn(
-                        "min-h-0 overflow-hidden font-sans text-sm leading-relaxed text-black/60",
+                        "min-h-0 overflow-hidden font-sans text-sm leading-relaxed text-black/60 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:5] lg:[-webkit-line-clamp:8]",
                         isActive
-                          ? "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:8]"
-                          : "opacity-0",
+                          ? ""
+                          : "lg:opacity-0",
                       )}
                     >
                       {offering.description}
@@ -176,7 +176,7 @@ export default function OfferingSection() {
                     aria-hidden="true"
                     className={cn(
                       "transition-[height] duration-500 ease-out",
-                      isActive ? "h-4 sm:h-5" : "h-2",
+                      isActive ? "h-4 sm:h-5" : "h-2 lg:h-2",
                     )}
                   />
 

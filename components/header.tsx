@@ -35,7 +35,7 @@ export const HeroHeader = () => {
                 <Link
                     href="/"
                     aria-label="home"
-                    className="flex items-center justify-center h-9 sm:h-10 px-2 rounded-full hover:bg-white/10 transition-colors"
+                    className="flex h-10 items-center justify-center rounded-full px-2 transition-colors hover:bg-white/10 sm:h-10"
                 >
                     <Image
                         src="/AIBM-logo-dark.svg"
@@ -64,7 +64,7 @@ export const HeroHeader = () => {
                     <Link
                         href="https://www.linkedin.com/company/aibuildersmexico"
                         target="_blank"
-                        className="flex items-center justify-center size-9 sm:size-10 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                        className="flex size-10 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                         aria-label="LinkedIn"
                     >
                         <Linkedin className="size-3.5 sm:size-4" />
@@ -72,7 +72,7 @@ export const HeroHeader = () => {
                     <Button
                         asChild
                         size="sm"
-                        className="rounded-full bg-white text-black hover:bg-white/90 px-4 sm:px-6 font-mono text-[10px] sm:text-xs uppercase tracking-widest h-9 sm:h-10"
+                        className="h-10 rounded-full bg-white px-4 font-mono text-[10px] uppercase tracking-widest text-black hover:bg-white/90 sm:px-6 sm:text-xs"
                     >
                         <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank">
                             Únete

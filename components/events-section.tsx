@@ -195,7 +195,7 @@ export default function EventsSection() {
                     asChild={!!event.link && !event.buttonDisabled}
                     disabled={event.buttonDisabled}
                     size="icon"
-                    className={`rounded-full size-9 sm:size-10 transition-all duration-300 ${
+                    className={`size-10 rounded-full transition-all duration-300 ${
                       event.buttonDisabled
                         ? "bg-transparent border border-black/10 text-black/20 cursor-default"
                         : "bg-black text-white cursor-pointer"

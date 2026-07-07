@@ -4,13 +4,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, MessageCircle, Mail, Linkedin } from 'lucide-react';
 import Link from 'next/link';
-import SplitText from '@/components/SplitText';
 import { NewsletterSignup } from '@/components/newsletter-signup';
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants';
 
 export default function CTASection() {
   return (
-    <section className="relative py-16 sm:py-24 md:py-32 overflow-hidden bg-white text-black border-t border-black/5">
+    <section className="relative py-12 sm:py-24 md:py-32 overflow-hidden bg-white text-black border-t border-black/5">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-black/[0.02] rounded-full blur-3xl" />
@@ -18,7 +17,7 @@ export default function CTASection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           {/* Left Column: Text Content */}
           <div className="flex flex-col items-start">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/5 bg-black/[0.02] mb-4 sm:mb-6">
@@ -28,18 +27,9 @@ export default function CTASection() {
               </span>
             </div>
             
-            <SplitText
-              text="Construye el futuro con nosotros"
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-instrument font-medium leading-[1.1] mb-4 sm:mb-6"
-              delay={30}
-              duration={0.8}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              textAlign="left"
-              tag="h2"
-            />
+            <h2 className="mb-4 text-3xl font-instrument font-medium leading-[1.1] text-balance sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
+              Construye el futuro con nosotros
+            </h2>
             
             <p className="mb-6 max-w-md font-sans text-base leading-relaxed text-black/60 sm:mb-10 sm:text-lg md:text-xl">
               Sé parte de la comunidad más activa de builders en México. Recibe las últimas noticias y conecta con otros expertos.
@@ -49,7 +39,7 @@ export default function CTASection() {
               <Button
                 asChild
                 size="lg"
-                className="flex-1 bg-black px-5 py-5 font-sans text-sm font-medium text-white hover:bg-black/90 sm:flex-none sm:px-8 sm:py-6 sm:text-base rounded-xl group"
+                className="h-12 flex-1 bg-black px-5 font-sans text-sm font-medium text-white hover:bg-black/90 sm:h-auto sm:flex-none sm:px-8 sm:py-6 sm:text-base rounded-xl group"
               >
                 <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank" className="flex items-center gap-2">
                   <MessageCircle className="size-4 sm:size-5" />

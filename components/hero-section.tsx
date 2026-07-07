@@ -114,6 +114,8 @@ export default function HeroSection() {
                       src="/hero1.avif"
                       alt="Hero 1"
                       fill
+                      priority
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 250px, (min-width: 640px) 200px, 50vw"
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
@@ -122,6 +124,7 @@ export default function HeroSection() {
                       src="/hero2.avif"
                       alt="Hero 2"
                       fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 250px, (min-width: 640px) 200px, 50vw"
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
@@ -130,6 +133,7 @@ export default function HeroSection() {
                       src="/hero3.avif"
                       alt="Hero 3"
                       fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 250px, (min-width: 640px) 200px, 50vw"
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
@@ -138,6 +142,7 @@ export default function HeroSection() {
                       src="/hero4.avif"
                       alt="Hero 4"
                       fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 250px, (min-width: 640px) 200px, 50vw"
                       className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"
                     />
                   </div>
@@ -146,7 +151,7 @@ export default function HeroSection() {
                   <Button
                     asChild
                     size="lg"
-                    className="flex-1 bg-white text-black hover:bg-white/90 px-4 sm:px-10 py-4 sm:py-7 font-sans text-sm font-medium rounded-xl sm:text-lg"
+                    className="h-11 flex-1 bg-white text-black hover:bg-white/90 px-4 sm:h-auto sm:px-10 sm:py-7 font-sans text-sm font-medium rounded-xl sm:text-lg"
                   >
                     <Link
                       href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm"
