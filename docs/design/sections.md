@@ -1,6 +1,6 @@
 # Section Templates
 
-> Copy-ready section skeletons. Every section on a marketing page should start from one of templates 1–5, then be filled with content. Template 6 covers long-form blog posts, which are authored as MDX files (not hand-rolled section compositions). If your new content doesn't fit any of these, stop and check [validation.md](./validation.md) before inventing a new layout.
+> Copy-ready section skeletons. Every section on a marketing page should start from one of templates 1–5, then be filled with content. Long-form editorial content now lives off-site at `https://aibuilders.lat`; this repo should link or redirect there instead of adding local blog routes.
 
 Tokens live in [tokens.md](./tokens.md). Primitives (Button, Card, Eyebrow, StatusDot, PillNav) live in [components.md](./components.md).
 
@@ -217,7 +217,7 @@ Lists of items (use Template 3). Narrow marketing features (don't force a 2-colu
 
 **Source of truth:** [components/events-section.tsx](../../components/events-section.tsx), [components/team.tsx](../../components/team.tsx).
 
-The most-used template: a section header over a responsive card grid. Use for events, team members, testimonials, case studies, blog previews.
+The most-used template: a section header over a responsive card grid. Use for events, team members, testimonials, case studies, or content teasers that link to external editorial destinations.
 
 ```tsx
 <section id="team" className="py-16 sm:py-24 md:py-32 bg-white text-black border-t border-black/5">
@@ -433,81 +433,12 @@ Narrative content (use Template 2). More than 4 items (use Template 3 with small
 
 ---
 
-## Template 6 — Blog Post
-
-**Source of truth:** [components/blog/post-shell.tsx](../../components/blog/post-shell.tsx) (layout shell) + [content/blog/*.mdx](../../content/blog/) (authored content) + [docs/blog/](../blog/) (authoring guide).
-
-Blog posts are **not** a section template you compose inside a marketing page — they are a dedicated page type under `/blog/<slug>` with its own approved deviations from the core design system. This template exists so you know when (and how) to use that path vs. the five marketing-section templates above.
-
-**TL;DR shape:**
-
-- A post lives as a single `.mdx` file in [`content/blog/`](../../content/blog/). The file's frontmatter + body are rendered by [`PostShell`](../../components/blog/post-shell.tsx), which emits the `<h1>` + meta + mobile TOC + sticky desktop TOC + article column + back link.
-- Authoring uses the MDX system documented in [docs/blog/](../blog/). Do **not** hand-roll a new `.tsx` route under `app/(blog)/<slug>/`.
-
-```mdx
----
-title: "Título del post"
-description: "Una o dos frases que hacen que valga la pena abrirlo."
-date: "2026-04-23"
-readTime: "5 min"
-tocItems:
-  - { id: "intro", label: "Introducción" }
-  - { id: "conclusion", label: "Conclusión" }
----
-
-Párrafo de apertura.
-
-<SectionTitle id="intro">Introducción</SectionTitle>
-
-Plain markdown, con componentes documentados como `<Callout>`, `<StepList>`, `<CheckList>`
-cuando el patrón se repite.
-
-<SectionTitle id="conclusion">Conclusión</SectionTitle>
-
-Cierre breve.
-```
-
-Full authoring reference:
-
-- [docs/blog/CONTRIBUTING.md](../blog/CONTRIBUTING.md) — 5-step flow, golden rules, pitfalls.
-- [docs/blog/frontmatter.md](../blog/frontmatter.md) — every YAML field.
-- [docs/blog/components.md](../blog/components.md) — every MDX component and when to use it.
-- [docs/blog/_template.mdx](../blog/_template.mdx) — copy-and-rename starter.
-
-### Approved deviations from the core system
-
-Blog posts are a **documented variant** (see [validation.md § Known Deviations](./validation.md#known-deviations-backlog)) — the deviations below are intentional and should not be "fixed" to match the marketing-page templates.
-
-- **Scoped theme toggle.** `/blog/*` uses a dedicated light/dark theme via `useBlogTheme()` in [`app/(blog)/layout.tsx`](../../app/(blog)/layout.tsx), separate from the global `next-themes`. This is the only place on the site with a user-facing theme switcher.
-- **Catppuccin palette for reading UI.** Post bodies, callouts, code blocks, and the terminal component use Catppuccin Mocha (dark) / Latte (light) for prose, accent, and code-surface colors. Black/white is still the brand anchor (header, nav, hero CTAs), but long-form reading benefits from a slightly warmer, higher-contrast palette.
-- **Reading-width column.** The article column sits inside `max-w-6xl` but its prose is further constrained by the sticky TOC on the right rail. Don't apply marketing-section grids inside a post.
-- **Instrument Serif for `<SectionTitle>`.** Same display type as the rest of the site; no new type family is introduced.
-
-### Rules that still apply
-
-- **Pill navigation** (the blog has its own `BlogHeader` in [`app/(blog)/layout.tsx`](../../app/(blog)/layout.tsx) with a matching pill shape).
-- **Container is still `max-w-6xl`** — the TOC + article column fit inside it.
-- **Typography roles are unchanged** — Instrument Serif for display, Geist Mono for meta (date, readTime, TOC labels, eyebrows), Geist Sans for body.
-- **Spanish copy** (`es_MX`) per the global rule.
-
-### When to use
-
-You're publishing long-form content: essays, tutorials, announcements, retrospectives. Anything with a byline, a date, and more than ~400 words of body copy.
-
-### When NOT to use
-
-- A marketing-page section with 2–3 paragraphs and a CTA → use Template 2 (Content With Media) or Template 4 (CTA With Inset).
-- A product changelog or release note → open a new section on an existing page; blog posts are for editorial content, not release notes.
-- A case study with heavy visual / interactive layout → discuss in a PR before shipping; may warrant its own dedicated route under `app/<slug>/`, not the blog.
-
----
-
 ## Choosing a Template
 
 ```mermaid
 flowchart TD
     start["New content needed"] --> q0{"Is it long-form editorial content<br/>(essay, tutorial, announcement)?"}
-    q0 -->|Yes| blog["Template 6: Blog Post<br/>(write an MDX file — see docs/blog/)"]
+    q0 -->|Yes| blog["Publish/link on aibuilders.lat<br/>(do not add a local blog route)"]
     q0 -->|No| q1{"Is it the top of the page?"}
     q1 -->|Yes| hero["Template 1: Hero"]
     q1 -->|No| q2{"Is it the last section before footer?"}

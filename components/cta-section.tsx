@@ -87,7 +87,7 @@ export default function CTASection() {
                 </h3>
                 
                 <p className="mb-6 font-sans text-balance text-sm text-white/60 sm:mb-8 sm:text-base">
-                  Recibe herramientas, noticias y anuncions de eventos directamente en tu inbox. Sin spam, solo valor.
+                  Recibe herramientas, noticias y anuncios de eventos directamente en tu inbox. Sin spam, solo valor.
                 </p>
 
                 <NewsletterSignup tone="onDark" />

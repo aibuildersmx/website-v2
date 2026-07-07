@@ -9,7 +9,6 @@ import { Linkedin } from 'lucide-react'
 const menuItems = [
     { name: 'Home', href: '/' },
     { name: 'Enterprise', href: '/enterprise' },
-    { name: 'Blog', href: '/blog' },
     { name: 'Bootcamp', href: '/designwithai' },
     { name: 'Residencia', href: '/residencia' },
 ]
