@@ -337,12 +337,21 @@ export default function EventsSection() {
           ))}
         </div>
 
-        <div className="mt-8 flex justify-center sm:mt-10">
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row">
           <Link
             href="/eventos"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-black px-6 font-mono text-[10px] font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-black/90 sm:h-12 sm:px-7 sm:text-xs"
           >
             Ver todos los eventos
+            <ArrowUpRight className="size-3.5" />
+          </Link>
+          <Link
+            href="https://aibuilders.lat/talks"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-6 font-mono text-[10px] font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:border-black/20 hover:bg-black/[0.02] sm:h-12 sm:px-7 sm:text-xs"
+          >
+            Eventos virtuales
             <ArrowUpRight className="size-3.5" />
           </Link>
         </div>

@@ -7,7 +7,6 @@ import EventsSection from "@/components/events-section";
 import OfferingSection from "@/components/offering-section";
 import TeamSection from "@/components/team";
 import CTASection from "@/components/cta-section";
-import { VirtualParticipationSection } from "@/components/virtual-participation-section";
 import { BootcampChatWidget } from "@/components/bootcamp-chat-widget";
 import Footer from "@/components/footer";
 import { useEffect, useRef, useState } from "react";
@@ -58,7 +57,6 @@ export default function Home() {
         <OfferingSection />
         <TeamSection />
         <CTASection />
-        <VirtualParticipationSection />
       </div>
       <div className="relative z-10 sm:hidden">
         <Footer />
