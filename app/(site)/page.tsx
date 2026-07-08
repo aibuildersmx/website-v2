@@ -9,10 +9,12 @@ import TeamSection from "@/components/team";
 import CTASection from "@/components/cta-section";
 import { VirtualParticipationSection } from "@/components/virtual-participation-section";
 import { BootcampChatWidget } from "@/components/bootcamp-chat-widget";
-import { useEffect, useRef } from "react";
+import Footer from "@/components/footer";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const heroWrapperRef = useRef<HTMLDivElement>(null);
+  const [footerRevealActive, setFooterRevealActive] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,11 +23,11 @@ export default function Home() {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      // Responsive reveal height
-      const revealHeight = window.innerWidth < 640 ? 120 : window.innerWidth < 768 ? 160 : 200;
+      const revealHeight = window.innerWidth < 768 ? 340 : 320;
       
       // Calculate distance from bottom
       const distanceToBottom = documentHeight - (scrollY + windowHeight);
+      setFooterRevealActive(distanceToBottom <= revealHeight);
       
       // If we are within the reveal zone (last 200px)
       if (distanceToBottom <= revealHeight) {
@@ -37,6 +39,7 @@ export default function Home() {
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -48,7 +51,7 @@ export default function Home() {
         <HeroSection />
       </div>
       
-      <div className="relative z-10 bg-black mt-[100vh] mb-[120px] sm:mb-[160px] md:mb-[200px] shadow-[0_20px_50px_rgba(0,0,0,1)]">
+      <div className="relative z-10 bg-black mt-[100vh] sm:mb-[340px] md:mb-[320px] shadow-[0_20px_50px_rgba(0,0,0,1)]">
         <StatsSection />
         <ContentSection />
         <EventsSection />
@@ -57,13 +60,12 @@ export default function Home() {
         <CTASection />
         <VirtualParticipationSection />
       </div>
+      <div className="relative z-10 sm:hidden">
+        <Footer />
+      </div>
       
       {/* Footer Reveal Section */}
-      <div className="fixed bottom-0 left-0 w-full h-[120px] sm:h-[160px] md:h-[200px] bg-[#212121] flex items-center justify-center -z-20">
-        <div className="text-white/30 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-center px-4">
-        2026 – built in v0, hand crafted in cursor, made with ♥︎ by aibuilders.mx
-        </div>
-      </div>
+      <Footer reveal revealActive={footerRevealActive} />
     </div>
   );
 }

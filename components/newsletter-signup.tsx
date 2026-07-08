@@ -18,17 +18,20 @@ const SUCCESS_COPY = "¡Listo! Te avisaremos en el próximo número.";
 export function NewsletterSignup({
   tone = "light",
   font = "sans",
+  size = "default",
   heading,
   subtext,
   className,
 }: {
   tone?: "light" | "onDark";
   font?: "sans" | "inter";
+  size?: "default" | "compact";
   heading?: string;
   subtext?: string;
   className?: string;
 }) {
   const onDark = tone === "onDark";
+  const compact = size === "compact";
   const fontClass = font === "inter" ? "font-inter" : "font-sans";
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -93,7 +96,8 @@ export function NewsletterSignup({
             required
             placeholder="tu@email.com"
             className={cn(
-              "w-full rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 sm:rounded-xl sm:px-5 sm:py-4 sm:text-base transition-all",
+              "w-full rounded-lg px-4 text-sm transition-all focus:outline-none focus:ring-2 sm:rounded-xl sm:px-5 sm:text-base",
+              compact ? "py-2.5 sm:py-3" : "py-3 sm:py-4",
               fontClass,
               onDark
                 ? "bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:ring-white/20"
@@ -104,7 +108,8 @@ export function NewsletterSignup({
             type="submit"
             disabled={pending}
             className={cn(
-              "flex w-full items-center justify-center gap-2 rounded-lg py-5 text-sm font-bold transition-all disabled:opacity-60 sm:rounded-xl sm:py-6 sm:text-base",
+              "flex w-full items-center justify-center gap-2 rounded-lg text-sm font-bold transition-all disabled:opacity-60 sm:rounded-xl sm:text-base",
+              compact ? "py-3 sm:py-3" : "py-5 sm:py-6",
               fontClass,
               onDark
                 ? "bg-white text-black hover:bg-white/90"

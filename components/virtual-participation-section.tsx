@@ -17,14 +17,14 @@ export function VirtualParticipationSection() {
             y pláticas virtuales.
           </p>
 
-          <div className="mx-auto mt-8 max-w-2xl space-y-3">
+          <div className="mx-auto mt-8 flex justify-center">
             <Link
               href={aiBuildersLatHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-6 font-sans text-sm font-medium text-white transition-colors duration-300 hover:bg-black/90 sm:text-base"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-black px-5 font-sans text-sm font-medium text-white transition-colors duration-300 hover:bg-black/90 sm:h-12 sm:px-6 sm:text-base"
             >
-              <Globe2 className="size-5" />
+              <Globe2 className="size-4 sm:size-5" />
               Visitar aibuilders.lat
             </Link>
           </div>

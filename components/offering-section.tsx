@@ -205,7 +205,7 @@ export default function OfferingSection() {
         <div className="mt-6 flex justify-center sm:mt-8">
           <Link
             href="/enterprise"
-            className="inline-flex h-14 w-full max-w-sm items-center justify-center rounded-full bg-black px-8 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 sm:max-w-md"
+            className="inline-flex h-10 items-center justify-center rounded-full bg-black px-6 font-mono text-[10px] font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 sm:h-11 sm:px-7 sm:text-xs"
           >
             Conoce más
           </Link>

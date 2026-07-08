@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MessageCircle, Mail, Linkedin } from 'lucide-react';
+import { ArrowRight, ExternalLink, MessageCircle, Mail, Linkedin } from 'lucide-react';
 import Link from 'next/link';
-import { NewsletterSignup } from '@/components/newsletter-signup';
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants';
+
+const aiBuildersLatHref = "https://aibuilders.lat";
 
 export default function CTASection() {
   return (
@@ -38,8 +39,8 @@ export default function CTASection() {
             <div className="flex flex-row gap-3 sm:gap-4 w-full sm:w-auto items-center">
               <Button
                 asChild
-                size="lg"
-                className="h-12 flex-1 bg-black px-5 font-sans text-sm font-medium text-white hover:bg-black/90 sm:h-auto sm:flex-none sm:px-8 sm:py-6 sm:text-base rounded-xl group"
+                size="sm"
+                className="h-11 flex-1 rounded-xl bg-black px-4 font-sans text-sm font-medium text-white hover:bg-black/90 sm:h-12 sm:flex-none sm:px-5 sm:text-base group"
               >
                 <Link href="https://chat.whatsapp.com/E7oCGyITLkX1aqFexJbbHm" target="_blank" className="flex items-center gap-2">
                   <MessageCircle className="size-4 sm:size-5" />
@@ -80,7 +81,20 @@ export default function CTASection() {
                   Recibe herramientas, noticias y anuncios de eventos directamente en tu inbox. Sin spam, solo valor.
                 </p>
 
-                <NewsletterSignup tone="onDark" />
+                <Button
+                  asChild
+                  className="h-11 w-full rounded-xl bg-white px-5 font-sans text-sm font-bold text-black hover:bg-white/90 sm:h-12 sm:text-base"
+                >
+                  <Link
+                    href={aiBuildersLatHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    Visitar aibuilders.lat
+                    <ExternalLink className="size-4" />
+                  </Link>
+                </Button>
                 
                 <p className="mt-4 sm:mt-6 text-[9px] sm:text-[10px] font-mono text-white/30 uppercase tracking-widest text-center">
                   Únete a +{BUILDER_COUNT_FORMATTED} builders hoy

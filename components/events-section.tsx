@@ -5,7 +5,7 @@ import { MapPin, ArrowUpRight, Ticket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { events, pastEvents, type EventCard } from "./events-data";
+import { events, type EventCard } from "./events-data";
 
 const isExternalLink = (link?: string) => Boolean(link?.startsWith("http"));
 const eventTypeStyles: Record<string, string> = {
@@ -112,7 +112,7 @@ export default function EventsSection() {
         {/* Upcoming Events Header */}
 
         {/* Upcoming Events Grid */}
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16 sm:mb-24 md:mb-32">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event, index) => (
             <div
               key={index}
@@ -337,67 +337,14 @@ export default function EventsSection() {
           ))}
         </div>
 
-        {/* Past Events Section */}
-        <div className="space-y-6 sm:space-y-12">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <h3 className="text-xl sm:text-2xl font-instrument font-medium whitespace-nowrap">
-              Eventos Pasados
-            </h3>
-            <div className="h-px flex-1 bg-black/5" />
-          </div>
-
-          <div className="grid auto-rows-fr gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            {pastEvents.map((event, index) => (
-              <div key={index} className={cn("h-full", index >= 5 && "hidden sm:block")}>
-                {event.link ? (
-                  <Link
-                    href={event.link}
-                    target="_blank"
-                    className="group flex h-full items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-pointer"
-                  >
-                    <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
-                      <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
-                        {event.month}
-                      </span>
-                      <span className="text-base sm:text-lg font-sans font-semibold leading-none">
-                        {event.day}
-                      </span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h4 className="text-sm sm:text-base font-sans font-medium leading-tight whitespace-normal break-words [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden group-hover:text-black/80 transition-colors">
-                        {event.title}
-                      </h4>
-                      <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
-                        <MapPin className="size-2 sm:size-2.5 shrink-0" />
-                        <span className="truncate">{event.location}</span>
-                      </div>
-                    </div>
-                    <ArrowUpRight className="size-4 shrink-0 text-black/40 group-hover:text-black transition-colors" />
-                  </Link>
-                ) : (
-                  <div className="group flex h-full items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-black/10 bg-white hover:border-black/20 hover:bg-black/[0.01] transition-all duration-300 cursor-default">
-                    <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md sm:rounded-lg bg-black/[0.03] border border-black/5 shrink-0">
-                      <span className="text-[7px] sm:text-[8px] font-mono font-bold text-black/40 leading-none mb-0.5">
-                        {event.month}
-                      </span>
-                      <span className="text-base sm:text-lg font-sans font-semibold leading-none">
-                        {event.day}
-                      </span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h4 className="text-sm sm:text-base font-sans font-medium leading-tight whitespace-normal break-words [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden group-hover:text-black/80 transition-colors">
-                        {event.title}
-                      </h4>
-                      <div className="flex items-center gap-1 sm:gap-1.5 mt-1 text-[9px] sm:text-[10px] font-mono text-black/40 uppercase tracking-tight">
-                        <MapPin className="size-2 sm:size-2.5 shrink-0" />
-                        <span className="truncate">{event.location}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="mt-8 flex justify-center sm:mt-10">
+          <Link
+            href="/eventos"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-black px-6 font-mono text-[10px] font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-black/90 sm:h-12 sm:px-7 sm:text-xs"
+          >
+            Ver todos los eventos
+            <ArrowUpRight className="size-3.5" />
+          </Link>
         </div>
       </div>
     </section>
