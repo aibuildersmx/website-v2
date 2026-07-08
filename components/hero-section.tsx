@@ -51,16 +51,20 @@ export default function HeroSection() {
         <div className="absolute inset-0 pointer-events-auto">
           <Dither />
         </div>
+        <div className="pointer-events-none absolute inset-0 z-[1] lg:hidden">
+          <div className="absolute inset-x-0 top-0 h-[52dvh] bg-[linear-gradient(to_bottom,#212121_0%,rgba(33,33,33,0.96)_36%,rgba(33,33,33,0.82)_72%,rgba(33,33,33,0)_100%)]" />
+          <div className="absolute inset-x-0 top-[18dvh] h-[30dvh] bg-[#212121]/55" />
+        </div>
 
         {/* Main content area - Side by side layout */}
         <div className="flex-1 flex items-center w-full pt-16 pb-2 sm:pt-20 sm:pb-4 md:pt-32 md:pb-8 relative z-10 overflow-hidden">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 lg:gap-16">
               {/* Left Column: Text Content */}
-              <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+              <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left relative z-10">
                 <SplitText
                   text="La comunidad líder de AI en México"
-                  className="text-balance text-3xl sm:text-4xl md:text-5xl font-medium text-white lg:text-6xl xl:text-7xl leading-[1.1] font-instrument text-center lg:text-left"
+                  className="max-w-[22rem] text-balance text-3xl sm:max-w-none sm:text-4xl md:text-5xl font-medium text-white lg:text-6xl xl:text-7xl leading-[1.1] font-instrument text-center lg:text-left [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]"
                   delay={30}
                   duration={0.8}
                   ease="power3.out"
@@ -72,7 +76,7 @@ export default function HeroSection() {
                   tag="h1"
                   textAlign="inherit"
                 />
-                <p className="mt-3 sm:mt-6 md:mt-8 max-w-lg font-sans text-pretty text-sm text-white/80 sm:text-lg md:text-xl">
+                <p className="mt-3 max-w-[20rem] font-sans text-pretty text-sm text-white/85 [text-shadow:0_1px_16px_rgba(0,0,0,0.95)] sm:mt-6 sm:max-w-lg sm:text-lg md:mt-8 md:text-xl">
                   Somos una comunidad de builders que transformamos ideas en
                   productos digitales reales usando IA como nuestro superpoder.
                 </p>

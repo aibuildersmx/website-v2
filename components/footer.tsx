@@ -55,6 +55,7 @@ const footerGroups: FooterGroup[] = [
   {
     title: "Contacto",
     links: [
+      { href: "/equipo", label: "Equipo", icon: Users },
       { href: "mailto:hola@aibuilders.lat", label: "hola@aibuilders.lat", icon: Mail },
       {
         href: "https://www.linkedin.com/company/aibuildersmexico",
@@ -103,10 +104,10 @@ export default function Footer({ reveal = false, revealActive = true }: FooterPr
       className={
         reveal
           ? [
-              "fixed bottom-0 left-0 z-0 hidden h-[340px] w-full items-center bg-[#212121] py-12 transition-opacity duration-300 sm:flex md:h-[320px]",
+              "fixed bottom-0 left-0 z-0 hidden h-[340px] w-full items-center bg-[#212121] pt-16 pb-12 transition-opacity duration-300 sm:flex md:h-[320px]",
               revealActive ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
             ].join(" ")
-          : "border-t border-white/10 bg-[#212121] py-16 text-white sm:py-20"
+          : "border-t border-white/10 bg-[#212121] pt-20 pb-16 text-white sm:pt-24 sm:pb-20"
       }
     >
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-16">

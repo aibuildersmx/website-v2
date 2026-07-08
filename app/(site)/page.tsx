@@ -5,7 +5,6 @@ import StatsSection from "@/components/stats";
 import ContentSection from "@/components/content-3";
 import EventsSection from "@/components/events-section";
 import OfferingSection from "@/components/offering-section";
-import TeamSection from "@/components/team";
 import CTASection from "@/components/cta-section";
 import { BootcampChatWidget } from "@/components/bootcamp-chat-widget";
 import Footer from "@/components/footer";
@@ -55,7 +54,6 @@ export default function Home() {
         <ContentSection />
         <EventsSection />
         <OfferingSection />
-        <TeamSection />
         <CTASection />
       </div>
       <div className="relative z-10 sm:hidden">

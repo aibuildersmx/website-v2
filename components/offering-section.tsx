@@ -103,7 +103,8 @@ export default function OfferingSection() {
         </header>
 
         <div
-          className="mt-10 flex flex-col gap-4 sm:mt-12 sm:gap-6 md:mt-14 lg:grid lg:items-stretch lg:transition-[grid-template-columns] lg:duration-500 lg:ease-out"
+          aria-label="Servicios para empresas"
+          className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 pr-4 scrollbar-none sm:mt-12 sm:gap-6 sm:pr-6 md:mt-14 lg:grid lg:items-stretch lg:overflow-visible lg:pr-0 lg:pb-0 lg:transition-[grid-template-columns] lg:duration-500 lg:ease-out"
           style={
             {
               gridTemplateColumns: OFFERING_COLUMN_LAYOUTS[activeIndex],
@@ -122,7 +123,7 @@ export default function OfferingSection() {
                 onMouseEnter={() => selectOffering(index)}
                 onFocus={() => selectOffering(index)}
                 className={cn(
-                  "group relative flex min-h-0 cursor-pointer flex-col overflow-hidden rounded-xl border border-black/10 bg-white text-left shadow-sm shadow-black/5 outline-none transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-black/20 hover:shadow-2xl hover:shadow-black/10 focus-visible:border-black/30 focus-visible:ring-2 focus-visible:ring-black/10 sm:rounded-2xl lg:h-[36rem] lg:min-w-0",
+                  "group relative flex min-h-0 min-w-[82vw] max-w-[22rem] shrink-0 snap-start cursor-pointer flex-col overflow-hidden rounded-xl border border-black/10 bg-white text-left shadow-sm shadow-black/5 outline-none transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-black/20 hover:shadow-2xl hover:shadow-black/10 focus-visible:border-black/30 focus-visible:ring-2 focus-visible:ring-black/10 sm:min-w-[22rem] sm:rounded-2xl lg:h-[36rem] lg:min-w-0 lg:max-w-none lg:shrink",
                   isActive && "lg:shadow-2xl lg:shadow-black/10",
                 )}
               >
