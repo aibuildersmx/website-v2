@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/aibmday",
+        destination: "/aibmday.pdf",
+      },
+    ];
+  },
   async redirects() {
     // The editorial blog now lives on the regional AI Builders LAT site.
     return [
