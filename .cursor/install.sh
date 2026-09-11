@@ -5,10 +5,11 @@
 set -euo pipefail
 
 # --- Node dependencies (pinned via pnpm-lock.yaml) ---------------------------
-# CI=1 keeps pnpm from writing "approve builds" placeholders into the tracked
-# pnpm-workspace.yaml, so the working tree stays clean.
+# Build-script decisions for sharp/msw/unrs-resolver are declared in
+# pnpm-workspace.yaml (allowBuilds), so pnpm 12 installs cleanly and does not
+# rewrite that file.
 corepack enable >/dev/null 2>&1 || true
-CI=1 pnpm install --frozen-lockfile
+pnpm install --frozen-lockfile
 
 # --- Local PostgreSQL server ------------------------------------------------
 # Installed once; the snapshot/base keeps it. Per-boot startup lives in start.sh.
