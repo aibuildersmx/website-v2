@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { Linkedin } from 'lucide-react'
+import { DiscordIcon } from '@/components/icons/discord-icon'
 
 const menuItems = [
     { name: 'Home', href: '/' },
@@ -68,6 +69,14 @@ export const HeroHeader = () => {
                         aria-label="LinkedIn"
                     >
                         <Linkedin className="size-3.5 sm:size-4" />
+                    </Link>
+                    <Link
+                        href="https://discord.gg/eUeTRTm36x"
+                        target="_blank"
+                        className="flex size-10 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        aria-label="Discord"
+                    >
+                        <DiscordIcon className="size-3.5 sm:size-4" />
                     </Link>
                     <Button
                         asChild

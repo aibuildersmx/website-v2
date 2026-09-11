@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ExternalLink, MessageCircle, Mail, Linkedin } from 'lucide-react';
+import { DiscordIcon } from '@/components/icons/discord-icon';
 import Link from 'next/link';
 import { BUILDER_COUNT_FORMATTED } from '@/lib/constants';
 
@@ -56,6 +57,14 @@ export default function CTASection() {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="size-4 sm:size-5" />
+              </Link>
+              <Link
+                href="https://discord.gg/eUeTRTm36x"
+                target="_blank"
+                className="flex items-center justify-center size-11 sm:size-12 rounded-xl border border-black/10 text-black/60 hover:text-black hover:border-black/20 hover:bg-black/[0.02] transition-all shrink-0"
+                aria-label="Discord"
+              >
+                <DiscordIcon className="size-4 sm:size-5" />
               </Link>
             </div>
           </div>
