@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import type { ComponentType } from "react";
+import { DiscordIcon } from "@/components/icons/discord-icon";
 
 type FooterLink = {
   href: string;
@@ -61,6 +62,12 @@ const footerGroups: FooterGroup[] = [
         href: "https://www.linkedin.com/company/aibuildersmexico",
         label: "LinkedIn",
         icon: Linkedin,
+        external: true,
+      },
+      {
+        href: "https://discord.gg/eUeTRTm36x",
+        label: "Discord",
+        icon: DiscordIcon,
         external: true,
       },
       {

@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { events, type EventCard } from "./events-data";
 
 const isExternalLink = (link?: string) => Boolean(link?.startsWith("http"));
+const isSoldOut = (status: string) =>
+  status === "CUPO LLENO" || status === "AGOTADO" || status === "LLENO";
 const eventTypeStyles: Record<string, string> = {
   Workshop: "border-blue-500/20 bg-blue-500/8 text-blue-700",
   Meetup: "border-emerald-500/20 bg-emerald-500/8 text-emerald-700",
@@ -143,7 +145,7 @@ export default function EventsSection() {
                       className={`size-1.5 rounded-full ${
                         event.status === "ABIERTO"
                           ? "bg-green-500 animate-pulse"
-                          : event.status === "CUPO LLENO" || event.status === "AGOTADO"
+                          : isSoldOut(event.status)
                             ? "bg-red-500"
                             : "bg-black/20"
                       }`}
@@ -232,7 +234,7 @@ export default function EventsSection() {
                       className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
                         event.status === "ABIERTO"
                           ? "border-black/5 bg-white"
-                          : event.status === "AGOTADO"
+                          : isSoldOut(event.status)
                             ? "border-red-200 bg-red-50"
                             : "border-black/5 bg-white"
                       }`}
@@ -241,14 +243,14 @@ export default function EventsSection() {
                         className={`size-1.5 rounded-full ${
                           event.status === "ABIERTO"
                             ? "bg-green-500 animate-pulse"
-                            : event.status === "CUPO LLENO" || event.status === "AGOTADO"
+                            : isSoldOut(event.status)
                               ? "bg-red-500"
                               : "bg-black/20"
                         }`}
                       />
                       <span
                         className={`text-[10px] font-mono uppercase tracking-wider font-medium ${
-                          event.status === "AGOTADO"
+                          isSoldOut(event.status)
                             ? "text-red-600"
                             : "text-black/60"
                         }`}

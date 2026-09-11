@@ -8,6 +8,7 @@ import { HeroHeader } from "./header";
 import Dither from "@/components/Dither";
 import SplitText from "@/components/SplitText";
 import { Linkedin } from "lucide-react";
+import { DiscordIcon } from "@/components/icons/discord-icon";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -104,6 +105,14 @@ export default function HeroSection() {
                   >
                     <Linkedin className="size-6" />
                   </Link>
+                  <Link
+                    href="https://discord.gg/eUeTRTm36x"
+                    target="_blank"
+                    className="flex items-center justify-center size-14 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 bg-white/10 transition-all z-50"
+                    aria-label="Discord"
+                  >
+                    <DiscordIcon className="size-6" />
+                  </Link>
                 </div>
               </div>
 
@@ -173,6 +182,14 @@ export default function HeroSection() {
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="size-5 sm:size-6" />
+                  </Link>
+                  <Link
+                    href="https://discord.gg/eUeTRTm36x"
+                    target="_blank"
+                    className="flex items-center justify-center w-11 sm:w-14 shrink-0 rounded-xl bg-white text-black hover:bg-white/90 transition-all"
+                    aria-label="Discord"
+                  >
+                    <DiscordIcon className="size-5 sm:size-6" />
                   </Link>
                 </div>
               </div>
