@@ -14,7 +14,9 @@
     "community:import": "tsx scripts/community/import-contacts.ts",
     "community:backfill": "tsx scripts/community/backfill-contacts.ts",
     "db:seed-admin": "tsx scripts/auth/seed-admin.ts",
-    "newsletter:test-send": "tsx scripts/newsletter/test-send.ts"
+    "newsletter:test-send": "tsx scripts/newsletter/test-send.ts",
+    "coupons:import": "tsx scripts/coupons/import.ts",
+    "coupons:refresh": "tsx scripts/coupons/refresh.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

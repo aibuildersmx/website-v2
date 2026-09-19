@@ -194,3 +194,36 @@ export const newsletterEvents = pgTable(
 
 export type NewsletterEventRow = typeof newsletterEvents.$inferSelect;
 export type NewNewsletterEventRow = typeof newsletterEvents.$inferInsert;
+
+// Cursor coupon codes handed out at community events.
+//
+// `sent_at` and `redeemed_at` are deliberately separate: the old MySQL table
+// had a single `is_used` flag that got set when a code was *emailed*, which
+// made 26 unredeemed $20 codes look spent. Cursor has no redemption webhook,
+// so `redeemed_at` can only be discovered by polling their referral endpoint —
+// that's what `checked_at` / `check_status` record.
+export const couponCodes = pgTable(
+  "coupon_codes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    code: text("code").notNull().unique(), // as printed, no surrounding whitespace
+    batch: text("batch").notNull(), // "aibm" | "cafe_cursor_toronto"
+    valueCents: integer("value_cents").notNull(),
+    sentAt: timestamp("sent_at", { withTimezone: true }), // we handed it to someone
+    sentTo: text("sent_to"), // email or note, free-form
+    redeemedAt: timestamp("redeemed_at", { withTimezone: true }), // Cursor says it's spent
+    checkedAt: timestamp("checked_at", { withTimezone: true }),
+    checkStatus: text("check_status"), // "available" | "used" | "invalid" | "unknown"
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    batchIdx: index("coupon_codes_batch_idx").on(t.batch),
+    // the claim query: unsent and not known-dead, oldest first
+    claimableIdx: index("coupon_codes_claimable_idx").on(t.sentAt, t.redeemedAt),
+    staleIdx: index("coupon_codes_stale_idx").on(t.checkedAt),
+  }),
+);
+
+export type CouponCodeRow = typeof couponCodes.$inferSelect;
+export type NewCouponCodeRow = typeof couponCodes.$inferInsert;
