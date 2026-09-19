@@ -8,6 +8,8 @@
  *   pnpm coupons:refresh --limit 300  # a full sweep
  */
 
+export {}; // keep this a module; otherwise `main` collides in the global scope
+
 async function main() {
   const args = process.argv.slice(2);
   const limitFlag = args.indexOf("--limit");
