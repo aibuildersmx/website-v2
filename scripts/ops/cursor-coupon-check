@@ -1,0 +1,86 @@
+#!/bin/bash
+# Ask Cursor whether coupon codes are still good. The DB flag lies — it only ever
+# meant "we emailed it" — so this is the only source of truth before handing a
+# code to a human.
+#
+#   cursor-coupon-check CODE [CODE...]
+#   cursor-coupon-check --stdin < codes.txt
+#   cursor-coupon-check --batch mexicocity_2026      # pulls claimable ones from the API
+#   cursor-coupon-check --batch all -j 10 -o out.tsv
+#
+# --batch needs COUPONS_API_KEY in the environment (and AIBM_SITE_BASE to point
+# somewhere other than production).
+set -uo pipefail
+
+ENDPOINT=https://cursor.com/api/dashboard/check-referral-code
+SITE=${AIBM_SITE_BASE:-https://aibuilders.mx}
+JOBS=6
+OUT=
+QUIET=
+BATCH=
+CODES=()
+
+die() { echo "$*" >&2; exit 1; }
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --stdin)  while IFS= read -r line; do [[ -n "$line" ]] && CODES+=("$line"); done \
+                < <(tr -d '\r' | sed 's/[[:space:]]*$//'); shift ;;
+    --batch)  BATCH="${2:-}"; [[ -n "$BATCH" ]] || die "--batch necesita un nombre (o 'all')"; shift 2 ;;
+    -j)       JOBS="${2:-6}"; shift 2 ;;
+    -o)       OUT="${2:-}"; shift 2 ;;
+    -q)       QUIET=1; shift ;;
+    -h|--help) sed -n '2,12p' "$0" | sed 's/^# \?//'; exit 0 ;;
+    -*)       die "opción desconocida: $1" ;;
+    *)        CODES+=("$1"); shift ;;
+  esac
+done
+
+if [[ -n "$BATCH" ]]; then
+  [[ -n "${COUPONS_API_KEY:-}" ]] || die "falta COUPONS_API_KEY en el entorno"
+  payload='{"action":"list","state":"claimable","limit":1000}'
+  [[ "$BATCH" != "all" ]] && payload="{\"action\":\"list\",\"state\":\"claimable\",\"limit\":1000,\"batch\":\"$BATCH\"}"
+  while IFS= read -r line; do [[ -n "$line" ]] && CODES+=("$line"); done < <(
+    curl -s -m 30 -X POST "$SITE/api/admin/coupons" \
+      -H 'content-type: application/json' \
+      -H "authorization: Bearer $COUPONS_API_KEY" \
+      -d "$payload" | jq -r '.coupons[].code // empty'
+  )
+  [[ ${#CODES[@]} -gt 0 ]] || die "la API no devolvió cupones para '$BATCH'"
+fi
+
+[[ ${#CODES[@]} -gt 0 ]] || die "nada que checar — pasa códigos, --stdin o --batch"
+
+check_one() {
+  local code="$1" body title
+  body=$(curl -s -m 20 -X POST "$ENDPOINT" -H 'content-type: application/json' \
+    -d "{\"referralCode\":\"$code\"}")
+  title=$(printf '%s' "$body" | sed -n 's/.*"title":"\([^"]*\)".*/\1/p')
+
+  if [[ "$body" == *'"isValid":true'* ]]; then
+    printf '%s\tAVAILABLE\t%s\n' "$code" "$title"
+  elif [[ "$title" == *"already been used"* ]]; then
+    printf '%s\tUSED\t%s\n' "$code" "$title"
+  elif [[ "$title" == *xpired* || "$title" == *"no longer"* ]]; then
+    printf '%s\tEXPIRED\t%s\n' "$code" "$title"
+  elif [[ "$body" == "{}" || -z "$body" ]]; then
+    printf '%s\tINVALID\tno existe\n' "$code"
+  else
+    # Never guess a coupon is spent because the network hiccuped.
+    printf '%s\tUNKNOWN\t%s\n' "$code" "${body:0:100}"
+  fi
+}
+export -f check_one
+export ENDPOINT
+
+results=$(printf '%s\n' "${CODES[@]}" | xargs -P "$JOBS" -I{} bash -c 'check_one "$@"' _ {})
+
+[[ -n "$OUT" ]] && printf '%s\n' "$results" > "$OUT"
+[[ -z "$QUIET" ]] && printf '%s\n' "$results"
+
+if [[ -z "$QUIET" ]]; then
+  echo "---" >&2
+  printf '%s\n' "$results" | cut -f2 | sort | uniq -c | sort -rn >&2
+fi
+
+exit 0
