@@ -20,6 +20,7 @@ import { sql } from "drizzle-orm";
 const VALUE_CENTS: Record<string, number> = {
   aibm: 2000,
   cafe_cursor_toronto: 5000,
+  mexicocity_2026: 5000,
 };
 
 type Parsed = {
