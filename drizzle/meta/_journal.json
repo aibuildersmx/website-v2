@@ -50,6 +50,13 @@
       "when": 1782022394857,
       "tag": "0006_unknown_rogue",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789861448751,
+      "tag": "0007_tough_the_santerians",
+      "breakpoints": true
     }
   ]
 }
