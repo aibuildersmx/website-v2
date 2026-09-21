@@ -142,6 +142,7 @@ export const pastEvents: PastEvent[] = [
     location: "CDMX, Juárez",
     logo: "/cursor-logo-event.svg",
     link: "https://luma.com/zb4zha51",
+    gallery: { slug: "build-with-cursor-mexico-city", year: "2026", cover: "DSC00129.jpg" },
   },
   {
     title: "How I Use AI #4 – OpenClaw",
@@ -183,6 +184,7 @@ export const pastEvents: PastEvent[] = [
     location: "Ciudad de México, Presencial",
     logo: "/cursor-logo-event.svg",
     link: "https://luma.com/2ye0p31y",
+    gallery: { slug: "cafe-cursor-mexico-city-2025", year: "2025", cover: "C-08.jpg" },
   },
   {
     title: "Workshop: Building Products with AI",
