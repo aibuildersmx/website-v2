@@ -15,7 +15,6 @@ export type Gallery = {
   slug: string;
   title: string;
   dateLabel: string;
-  location: string;
   link?: string;
   cover: GalleryPhoto;
   photos: GalleryPhoto[];
@@ -67,7 +66,6 @@ async function toGallery(event: GalleryEvent): Promise<Gallery> {
     slug,
     title: event.title,
     dateLabel: `${event.day} ${event.month} ${year}`,
-    location: event.location,
     link: event.link,
     cover: coverPhoto,
     photos: ordered,

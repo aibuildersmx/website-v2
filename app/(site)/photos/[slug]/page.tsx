@@ -47,7 +47,7 @@ export default async function GalleryPage({ params }: Props) {
         <div className="mt-6 flex flex-col gap-6 border-b border-black/5 pb-8 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-black/40">
-              {gallery.dateLabel} · {gallery.location} · {gallery.photos.length} fotos
+              {gallery.dateLabel} · {gallery.photos.length} fotos
             </p>
             <h1 className="mt-3 font-instrument text-5xl font-medium md:text-6xl">{gallery.title}</h1>
           </div>
