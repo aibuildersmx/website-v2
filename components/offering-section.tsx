@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PartnerLogoStrip } from "@/components/partner-logo-strip";
 import { ENTERPRISE_PARTNER_LOGOS } from "@/lib/enterprise-partners";
+import { BUILDER_COUNT_FORMATTED } from "@/lib/constants";
 import { useEffect, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +37,7 @@ const offerings = [
     eyebrow: "03",
     title: "Reclutamiento",
     description:
-      "Acceso a +3,880 builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.",
+      `Acceso a +${BUILDER_COUNT_FORMATTED} builders en México: ML/AI engineers senior, founding engineers y AI product leaders. Cuando publicamos un rol en la red, las mejores postulaciones llegan en días.`,
     image: "/images/offering/reclutamiento.png",
     alt: "Evento presencial de AI Builders México",
   },

@@ -12,12 +12,12 @@ const stats = [
   },
   {
     label: "Eventos IRL y Online",
-    value: "20+",
+    value: "45+",
     icon: Calendar,
   },
   {
     label: "Asistentes a eventos",
-    value: "1500+",
+    value: "2,500+",
     icon: UserCheck,
   },
 ];

@@ -97,6 +97,16 @@ export default function PartnerStrip() {
               style={partnerLogoStyle}
             />
           </div>
+          <div className="flex items-center">
+            <Image
+              className="mx-auto h-7 w-auto sm:h-8"
+              src="/spacexai-logo.svg"
+              alt="SpaceXAI Logo"
+              height={32}
+              width={262}
+              style={partnerLogoStyle}
+            />
+          </div>
         </InfiniteSlider>
       </div>
     </div>
