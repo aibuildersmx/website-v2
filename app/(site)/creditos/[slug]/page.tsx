@@ -32,13 +32,6 @@ export default async function CreditsPage({ params }: Props) {
   const event = findCouponEvent((await params).slug);
   if (!event) notFound();
 
-  const telemetry = [
-    { label: "Evento", value: event.title },
-    { label: "Fecha", value: event.date },
-    { label: "Crédito", value: `$${event.valueUsd} USD` },
-    { label: "Entrega", value: "Por correo" },
-  ];
-
   return (
     <main className="min-h-screen bg-[#212121] font-sans text-white caret-white selection:bg-white selection:text-[#212121]">
       <HeroHeader />
@@ -56,7 +49,7 @@ export default async function CreditsPage({ params }: Props) {
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#212121] via-[#212121]/70 to-[#212121]/20" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#212121]/95 via-[#212121]/60 to-[#212121]/10" />
 
-        <div className="mx-auto w-full max-w-6xl px-4 pt-40 pb-10 sm:px-6 sm:pb-14">
+        <div className="mx-auto w-full max-w-6xl px-4 pt-40 pb-16 sm:px-6 sm:pb-24">
           <h1 className="max-w-4xl font-instrument text-5xl leading-[0.95] font-medium tracking-[-0.02em] text-balance sm:text-7xl md:text-8xl">
             Tus ${event.valueUsd} USD en créditos de Cursor.
           </h1>
@@ -69,14 +62,6 @@ export default async function CreditsPage({ params }: Props) {
             <ClaimForm slug={event.slug} />
           </div>
 
-          <dl className="mt-16 grid grid-cols-2 gap-px border-y border-white/15 bg-white/15 sm:mt-24 md:grid-cols-4">
-            {telemetry.map((item) => (
-              <div key={item.label} className="bg-[#212121] py-5 pr-4 [&:nth-child(even)]:pl-4 md:pl-6 md:first:pl-0">
-                <dt className="font-mono text-[10px] tracking-widest text-white/50 uppercase sm:text-xs">{item.label}</dt>
-                <dd className="mt-2 font-mono text-sm tabular-nums text-white sm:text-base">{item.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 

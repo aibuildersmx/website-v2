@@ -11,8 +11,6 @@ export type CouponEvent = {
   title: string;
   /** Shown under the title, e.g. "Sábado 19 de septiembre · CDMX". */
   when: string;
-  /** Tabular date for the page's data strip, e.g. "19.09.2026". */
-  date: string;
   valueUsd: number;
   /** Full-bleed hero photo from the event, and a detail shot for the how-to. */
   heroImage: string;
@@ -25,7 +23,6 @@ export const COUPON_EVENTS: CouponEvent[] = [
     batch: "mexicocity_2026",
     title: "Café Cursor CDMX",
     when: "Sábado 19 de septiembre · CDMX",
-    date: "19.09.2026",
     valueUsd: 50,
     heroImage: "/images/event-photos/cafe-cursor-mexico/DSC00431.jpg",
     detailImage: "/images/event-photos/cafe-cursor-mexico/DSC00449.jpg",
