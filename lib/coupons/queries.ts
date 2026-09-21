@@ -1,7 +1,7 @@
 import "server-only";
 import { and, asc, count, eq, isNull, isNotNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { couponCodes, type CouponCodeRow } from "@/lib/db/schema";
+import { couponCodes, couponEligible, type CouponCodeRow } from "@/lib/db/schema";
 import { checkCoupon, type CouponStatus } from "./check";
 
 export type CouponFilter = {
@@ -66,26 +66,77 @@ export async function claimCoupon(input: {
   sentTo?: string | null;
 }): Promise<CouponCodeRow | null> {
   const { batch, sentTo = null } = input;
+  return db.transaction((tx) => claimInTx(tx, batch, sentTo));
+}
 
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+async function claimInTx(tx: Tx, batch: string, sentTo: string | null): Promise<CouponCodeRow | null> {
+  const [candidate] = await tx
+    .select({ id: couponCodes.id })
+    .from(couponCodes)
+    .where(and(eq(couponCodes.batch, batch), isNull(couponCodes.sentAt), isNull(couponCodes.redeemedAt)))
+    .orderBy(asc(couponCodes.id))
+    .limit(1)
+    .for("update", { skipLocked: true });
+
+  if (!candidate) return null;
+
+  const [claimed] = await tx
+    .update(couponCodes)
+    .set({ sentAt: new Date(), sentTo, updatedAt: new Date() })
+    .where(eq(couponCodes.id, candidate.id))
+    .returning();
+
+  return claimed ?? null;
+}
+
+export type AttendeeClaim =
+  | { kind: "not_eligible" }
+  | { kind: "sold_out" }
+  | { kind: "claimed"; coupon: CouponCodeRow; name: string | null; isNew: boolean };
+
+/**
+ * Hand an event attendee their coupon: only if they're on the guest list, and
+ * always the same code for the same email. Asking twice re-sends, never re-claims.
+ *
+ * The advisory lock serializes concurrent claims for one email (double-click,
+ * two tabs), which SKIP LOCKED alone would happily turn into two codes.
+ */
+export async function claimForAttendee(batch: string, email: string): Promise<AttendeeClaim> {
   return db.transaction(async (tx) => {
-    const [candidate] = await tx
-      .select({ id: couponCodes.id })
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`coupon:${batch}:${email}`}))`);
+
+    const [guest] = await tx
+      .select({ name: couponEligible.name })
+      .from(couponEligible)
+      .where(and(eq(couponEligible.batch, batch), eq(couponEligible.email, email)))
+      .limit(1);
+    if (!guest) return { kind: "not_eligible" };
+
+    const [existing] = await tx
+      .select()
       .from(couponCodes)
-      .where(and(eq(couponCodes.batch, batch), isNull(couponCodes.sentAt), isNull(couponCodes.redeemedAt)))
-      .orderBy(asc(couponCodes.id))
-      .limit(1)
-      .for("update", { skipLocked: true });
+      .where(and(eq(couponCodes.batch, batch), eq(couponCodes.sentTo, email)))
+      .orderBy(asc(couponCodes.sentAt))
+      .limit(1);
+    if (existing) return { kind: "claimed", coupon: existing, name: guest.name, isNew: false };
 
-    if (!candidate) return null;
-
-    const [claimed] = await tx
-      .update(couponCodes)
-      .set({ sentAt: new Date(), sentTo, updatedAt: new Date() })
-      .where(eq(couponCodes.id, candidate.id))
-      .returning();
-
-    return claimed ?? null;
+    const coupon = await claimInTx(tx, batch, email);
+    if (!coupon) return { kind: "sold_out" };
+    return { kind: "claimed", coupon, name: guest.name, isNew: true };
   });
+}
+
+/**
+ * Put a claimed code back on the shelf. Used when the email carrying it failed
+ * to send, so a Resend hiccup doesn't strand a $50 code on someone's name.
+ */
+export async function releaseCoupon(code: string) {
+  await db
+    .update(couponCodes)
+    .set({ sentAt: null, sentTo: null, updatedAt: new Date() })
+    .where(and(eq(couponCodes.code, code), isNull(couponCodes.redeemedAt)));
 }
 
 /** Write one live check result back to the row. */

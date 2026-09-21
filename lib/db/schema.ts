@@ -225,5 +225,22 @@ export const couponCodes = pgTable(
   }),
 );
 
+// Who may claim a coupon from a batch — the event's guest list (Luma export).
+// The claim page only hands out a code to an email on this list, one per email:
+// the code itself is found again via `coupon_codes.sent_to`.
+export const couponEligible = pgTable(
+  "coupon_eligible",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    batch: text("batch").notNull(),
+    email: text("email").notNull(), // always lowercased before insert
+    name: text("name"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    batchEmailIdx: uniqueIndex("coupon_eligible_batch_email_idx").on(t.batch, t.email),
+  }),
+);
+
 export type CouponCodeRow = typeof couponCodes.$inferSelect;
 export type NewCouponCodeRow = typeof couponCodes.$inferInsert;
