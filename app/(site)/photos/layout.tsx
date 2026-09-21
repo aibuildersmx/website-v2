@@ -1,6 +1,7 @@
 import React from "react"
 import type { Metadata } from 'next'
 import { HeroHeader } from "@/components/header"
+import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
     title: 'AI Builders MX - Fotos',
@@ -16,6 +17,7 @@ export default function PhotosLayout({
         <div className="min-h-screen bg-background text-foreground">
             <HeroHeader />
             {children}
+            <Footer />
         </div>
     )
 }

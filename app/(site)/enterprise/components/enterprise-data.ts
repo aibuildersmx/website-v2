@@ -45,7 +45,7 @@ export const WORKSHOPS_COPY = {
     ],
     ctaLabel: 'Solicitar workshop',
     ctaSubject: 'Consulta Enterprise — Workshops',
-    mediaSrc: '/images/event-photos/v0/DSC00048.jpg',
+    mediaSrc: '/images/event-photos/v0-prompt-to-production/DSC00048.jpg',
     mediaAlt: 'AI Builders workshop in progress',
 }
 

@@ -25,25 +25,16 @@ export type PastEvent = {
   location: string;
   logo?: string;
   link?: string;
+  /** Galería en /photos/<slug>. Las fotos viven en public/images/event-photos/<slug>/. */
+  gallery?: {
+    slug: string;
+    year: string;
+    /** Archivo de portada (default: la primera foto en orden alfabético). */
+    cover?: string;
+  };
 };
 
 export const events: EventCard[] = [
-  {
-    title: "Cafe Cursor Mexico",
-    description:
-      "Trae tu laptop y construye con otros usuarios de Cursor. Créditos, café gratis, regalos y bebidas.",
-    month: "SEPT",
-    day: "19",
-    location: "Condesa, CDMX",
-    attendees: "200 lugares",
-    status: "CUPO LLENO",
-    price: "Gratis",
-    buttonText: "Lista de espera",
-    buttonDisabled: false,
-    tags: ["Meetup", "AI"],
-    logo: "/cursor-logo-event.svg",
-    link: "https://luma.com/cursor-6f12",
-  },
   {
     title: "Grok Bot Meetup",
     description:
@@ -63,6 +54,15 @@ export const events: EventCard[] = [
 ];
 
 export const pastEvents: PastEvent[] = [
+  {
+    title: "Cafe Cursor Mexico",
+    month: "SEPT",
+    day: "19",
+    location: "Condesa, CDMX",
+    logo: "/cursor-logo-event.svg",
+    link: "https://luma.com/cursor-6f12",
+    gallery: { slug: "cafe-cursor-mexico", year: "2026", cover: "DSC00452.jpg" },
+  },
   {
     title: "How I Use AI: Andres Matte",
     month: "JUL",
@@ -174,6 +174,7 @@ export const pastEvents: PastEvent[] = [
     location: "Ciudad de México, Roma Norte",
     logo: "/v0-logo.svg",
     link: "https://luma.com/fdg8riz2",
+    gallery: { slug: "v0-prompt-to-production", year: "2026" },
   },
   {
     title: "Cafe Cursor Mexico City",
