@@ -244,3 +244,18 @@ export const couponEligible = pgTable(
 
 export type CouponCodeRow = typeof couponCodes.$inferSelect;
 export type NewCouponCodeRow = typeof couponCodes.$inferInsert;
+
+// Private pages: self-contained HTML (pitch decks, one-off docs) served at
+// /p/<token>. The content lives only here, never in git — this repo is public.
+// The token is the only access control, so it's long and random.
+export const privatePages = pgTable("private_pages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  token: text("token").notNull().unique(),
+  title: text("title").notNull(),
+  html: text("html").notNull(), // assets already inlined as data: URIs
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type PrivatePage = typeof privatePages.$inferSelect;
+export type NewPrivatePage = typeof privatePages.$inferInsert;

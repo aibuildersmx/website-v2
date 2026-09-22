@@ -17,7 +17,8 @@
     "newsletter:test-send": "tsx scripts/newsletter/test-send.ts",
     "coupons:import": "tsx scripts/coupons/import.ts",
     "coupons:allow": "tsx scripts/coupons/allow.ts",
-    "coupons:refresh": "tsx scripts/coupons/refresh.ts"
+    "coupons:refresh": "tsx scripts/coupons/refresh.ts",
+    "pages:publish": "tsx scripts/pages/publish.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
