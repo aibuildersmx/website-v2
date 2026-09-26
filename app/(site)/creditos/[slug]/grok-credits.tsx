@@ -41,7 +41,7 @@ export function GrokCredits({ event }: { event: Extract<CouponEvent, { theme: "g
           </p>
 
           <div className="mt-10 max-w-xl">
-            <ClaimForm slug={event.slug} checkClassName="text-[#00BCA6]" />
+            <ClaimForm slug={event.slug} closed={event.closed} checkClassName="text-[#00BCA6]" />
           </div>
         </div>
       </section>

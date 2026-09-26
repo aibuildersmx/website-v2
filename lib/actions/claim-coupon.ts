@@ -9,13 +9,15 @@ import { deliverEventCoupon } from "@/lib/coupons/deliver";
 
 export type ClaimCouponResult =
   | { ok: true; resent: boolean }
-  | { ok: false; error: "invalid" | "disposable" | "not_eligible" | "sold_out" | "rate_limited" | "error" };
+  | { ok: false; error: "invalid" | "disposable" | "not_eligible" | "sold_out" | "rate_limited" | "closed" | "error" };
 
 export async function claimEventCoupon(formData: FormData): Promise<ClaimCouponResult> {
+  const event = findCouponEvent(String(formData.get("event") ?? ""));
+  if (event?.closed) return { ok: false, error: "closed" };
+
   // Honeypot: bots fill it, humans never see it. Pretend it worked.
   if ((formData.get("company") as string | null)?.trim()) return { ok: true, resent: false };
 
-  const event = findCouponEvent(String(formData.get("event") ?? ""));
   const raw = (formData.get("email") as string | null)?.trim() ?? "";
   if (!event || !raw) return { ok: false, error: "invalid" };
   const email = raw.toLowerCase();

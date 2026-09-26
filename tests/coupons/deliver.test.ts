@@ -25,6 +25,17 @@ describe("deliverEventCoupon", () => {
     expect(sendCouponEmail).not.toHaveBeenCalled();
   });
 
+  it("still delivers for a closed event: only the public page is shut, not the admin send", async () => {
+    const { deliverEventCoupon } = await import("@/lib/coupons/deliver");
+    const event = findCouponEvent("grok-bot-cdmx");
+    expect(event?.closed).toBe(true);
+    claimForAttendee.mockResolvedValue({ kind: "claimed", coupon: { code: "ABC123" }, name: null, isNew: true });
+    sendCouponEmail.mockResolvedValue(undefined);
+
+    expect(await deliverEventCoupon(event!, "ana@example.com")).toEqual({ ok: true, code: "ABC123", resent: false });
+    expect(sendCouponEmail).toHaveBeenCalledWith(expect.objectContaining({ to: "ana@example.com" }));
+  });
+
   it("refuses a malformed local part before a code or Resend", async () => {
     const { deliverEventCoupon } = await import("@/lib/coupons/deliver");
     const event = findCouponEvent("cafe-cursor-cdmx");

@@ -38,7 +38,7 @@ export function CursorCredits({ event }: { event: Extract<CouponEvent, { theme: 
           </p>
 
           <div className="mt-10 max-w-xl">
-            <ClaimForm slug={event.slug} />
+            <ClaimForm slug={event.slug} closed={event.closed} />
           </div>
 
         </div>

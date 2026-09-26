@@ -22,6 +22,11 @@ type BaseEvent = {
    * see lib/coupons/alerts.ts.
    */
   open?: boolean;
+  /**
+   * The page stops handing out codes: the form is replaced by a notice and the
+   * claim action refuses. The admin API (Aiby) can still send by hand.
+   */
+  closed?: boolean;
 };
 
 export type CouponEvent =
@@ -41,6 +46,7 @@ export const COUPON_EVENTS: CouponEvent[] = [
     title: "Café Cursor CDMX",
     when: "Sábado 19 de septiembre · CDMX",
     valueUsd: 50,
+    closed: true,
     theme: "cursor",
     heroImage: "/images/event-photos/cafe-cursor-mexico/DSC00431.jpg",
     detailImage: "/images/event-photos/cafe-cursor-mexico/DSC00449.jpg",
@@ -53,6 +59,7 @@ export const COUPON_EVENTS: CouponEvent[] = [
     when: "Sábado 26 de septiembre · Polanco, CDMX",
     valueUsd: 50,
     open: true,
+    closed: true,
     theme: "grok",
   },
 ];
