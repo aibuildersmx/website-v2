@@ -15,7 +15,14 @@ import { StayAwake } from "./stay-awake";
  * package, errorCorrection M), pointing at this event's /creditos page.
  */
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = {
+  params: Promise<{ slug: string }>;
+  /**
+   * Venue WiFi, e.g. ?red=Igeneris&pass=… . Read from the URL, never stored:
+   * this repo is public, and each venue has its own network.
+   */
+  searchParams: Promise<{ red?: string; pass?: string }>;
+};
 
 const QR_SRC: Record<string, string> = {
   "grok-bot-cdmx": "/images/grok/qr-grok-bot-cdmx.svg",
@@ -32,8 +39,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function QrScreen({ params }: Props) {
+export default async function QrScreen({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { red, pass } = await searchParams;
   const event = findCouponEvent(slug);
   const qr = QR_SRC[slug];
   if (!event || !qr) notFound();
@@ -83,6 +91,18 @@ export default async function QrScreen({ params }: Props) {
           </p>
         </div>
         <p className="mt-[2.4vh] text-center font-mono text-[min(2.4vh,1.5vw)] text-white/50">aibuilders.mx/creditos/{event.slug}</p>
+        {red ? (
+          <p className="mt-[2.2vh] flex flex-wrap items-baseline justify-center gap-x-[1.4vh] font-mono text-[min(2.6vh,1.6vw)] text-white">
+            <span className="text-[#00BCA6] tracking-[0.16em] uppercase">WiFi</span>
+            <span>{red}</span>
+            {pass ? (
+              <>
+                <span className="text-white/40">·</span>
+                <span>{pass}</span>
+              </>
+            ) : null}
+          </p>
+        ) : null}
         </div>
       </div>
     </main>
