@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
 import { findCouponEvent } from "@/lib/coupons/events";
-import { couponEmailProblem } from "@/lib/coupons/email-policy";
+import { couponEmailProblem, couponIdentity } from "@/lib/coupons/email-policy";
 import { reportClaim } from "@/lib/coupons/alerts";
 import { deliverEventCoupon } from "@/lib/coupons/deliver";
 
@@ -30,7 +30,10 @@ export async function claimEventCoupon(formData: FormData): Promise<ClaimCouponR
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   // Per IP: stops guessing emails off the list. Per email: stops re-sends being
   // used to flood one attendee's inbox.
-  if (!rateLimit(`coupon:ip:${ip}`, 10, 10 * 60_000) || !rateLimit(`coupon:email:${email}`, 3, 60 * 60_000)) {
+  if (
+    !rateLimit(`coupon:ip:${ip}`, 10, 10 * 60_000) ||
+    !rateLimit(`coupon:email:${couponIdentity(email)}`, 3, 60 * 60_000)
+  ) {
     reportClaim({ event, email, ip, outcome: "rate_limited" });
     return { ok: false, error: "rate_limited" };
   }

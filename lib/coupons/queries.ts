@@ -1,8 +1,20 @@
 import "server-only";
-import { and, asc, count, eq, isNull, isNotNull, lt, or, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNull, isNotNull, lt, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { couponCodes, couponEligible, type CouponCodeRow } from "@/lib/db/schema";
 import { checkCoupon, type CouponStatus } from "./check";
+import { couponIdentity } from "./email-policy";
+
+/**
+ * `couponIdentity` in SQL, so guest rows stored as typed (`juan.perez+2@gmail.com`)
+ * still match their mailbox. Keep in step with lib/coupons/email-policy.ts.
+ */
+export function canonicalEmailSql(column: SQL | typeof couponEligible.email): SQL {
+  const email = sql`lower(${column})`;
+  return sql`(case when split_part(${email}, '@', 2) in ('gmail.com', 'googlemail.com')
+    then replace(split_part(split_part(${email}, '@', 1), '+', 1), '.', '') || '@gmail.com'
+    else ${email} end)`;
+}
 
 export type CouponFilter = {
   batch?: string;
@@ -102,20 +114,27 @@ export type AttendeeClaim =
  * never re-claims. The code is pinned on the guest-list row, not looked up by
  * email, because two events can share a batch and a guest of both gets two.
  *
- * The advisory lock serializes concurrent claims for one email (double-click,
- * two tabs), which SKIP LOCKED alone would happily turn into two codes.
+ * A guest is a mailbox, not a string: Gmail aliases (`a.b+2@gmail.com`,
+ * `ab@googlemail.com`) all find the same row, and a row that already holds a
+ * code wins, so an alias only ever gets that code re-sent.
+ *
+ * The advisory lock serializes concurrent claims for one mailbox (double-click,
+ * two tabs, a burst of aliases), which SKIP LOCKED alone would happily turn
+ * into two codes.
  */
 export async function claimForAttendee(
   event: { batch: string; guestList: string },
   email: string,
 ): Promise<AttendeeClaim> {
+  const identity = couponIdentity(email);
   return db.transaction(async (tx) => {
-    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`coupon:${event.guestList}:${email}`}))`);
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`coupon:${event.guestList}:${identity}`}))`);
 
     const [guest] = await tx
       .select({ id: couponEligible.id, name: couponEligible.name, couponId: couponEligible.couponId })
       .from(couponEligible)
-      .where(and(eq(couponEligible.batch, event.guestList), eq(couponEligible.email, email)))
+      .where(and(eq(couponEligible.batch, event.guestList), sql`${canonicalEmailSql(couponEligible.email)} = ${identity}`))
+      .orderBy(sql`${couponEligible.couponId} is null`, asc(couponEligible.createdAt))
       .limit(1);
     if (!guest) return { kind: "not_eligible" };
 
@@ -133,13 +152,20 @@ export async function claimForAttendee(
 
 /**
  * Put someone on an event's guest list by hand (a walk-in, a sponsor, someone
- * who registered with another email). No-op if they're already on it.
+ * who registered with another email). No-op if they're already on it, under
+ * this address or any alias of the same mailbox.
  */
 export async function addGuest(guestList: string, email: string, name: string | null) {
-  await db
-    .insert(couponEligible)
-    .values({ batch: guestList, email, name })
-    .onConflictDoNothing({ target: [couponEligible.batch, couponEligible.email] });
+  await db.execute(sql`
+    insert into ${couponEligible} (batch, email, name)
+    select ${guestList}, ${email}, ${name}
+    where not exists (
+      select 1 from ${couponEligible}
+      where ${couponEligible.batch} = ${guestList}
+        and ${canonicalEmailSql(couponEligible.email)} = ${couponIdentity(email)}
+    )
+    on conflict (batch, email) do nothing
+  `);
 }
 
 /**
