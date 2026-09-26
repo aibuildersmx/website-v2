@@ -7,6 +7,18 @@ function escapeHtml(s: string) {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 }
 
+/** Event eyebrow. Grok Bot gets the meetup's black card and teal dot; no images, so nothing for clients to block. */
+function header(event: CouponEvent) {
+  const title = escapeHtml(event.title);
+  if (event.theme === "grok") {
+    return `<div style="margin:0 0 28px;padding:22px 20px;background:#000000;border-radius:16px;">
+      <p style="margin:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6);"><span style="display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:4px;background:#00BCA6;vertical-align:1px;"></span>${title}</p>
+      <p style="margin:10px 0 0;font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-0.02em;color:#ffffff;">Gracias por venir. <span style="color:rgba(255,255,255,0.5);">Aquí van tus créditos.</span></p>
+    </div>`;
+  }
+  return `<p style="margin:0 0 24px;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(33,33,33,0.4);">${title}</p>`;
+}
+
 /**
  * The email that carries the code. The code only ever travels here, never back
  * to the page, so typing someone else's email just sends them their own code.
@@ -38,7 +50,7 @@ export async function sendCouponEmail(input: {
   const html = `<!doctype html>
 <html lang="es"><body style="margin:0;padding:32px 16px;background:#ffffff;color:#212121;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
   <div style="max-width:480px;margin:0 auto;">
-    <p style="margin:0 0 24px;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(33,33,33,0.4);">${escapeHtml(event.title)}</p>
+    ${header(event)}
     <p style="margin:0 0 16px;font-size:16px;line-height:1.6;">${hello}</p>
     <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:rgba(33,33,33,0.6);">Gracias por venir. Aquí están tus $${event.valueUsd}&nbsp;USD en créditos de Cursor.</p>
     <div style="margin:0 0 24px;padding:20px;border:1px solid rgba(33,33,33,0.1);border-radius:16px;text-align:center;">

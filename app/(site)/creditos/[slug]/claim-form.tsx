@@ -15,7 +15,8 @@ const ERROR_COPY: Record<string, string> = {
 
 type Sent = { email: string; resent: boolean };
 
-export function ClaimForm({ slug }: { slug: string }) {
+/** `checkClassName` colors the success ticks, so a themed page can use its accent. */
+export function ClaimForm({ slug, checkClassName = "text-green-500" }: { slug: string; checkClassName?: string }) {
   const [sent, setSent] = useState<Sent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -32,7 +33,7 @@ export function ClaimForm({ slug }: { slug: string }) {
     });
   }
 
-  if (sent) return <SentLog sent={sent} />;
+  if (sent) return <SentLog sent={sent} checkClassName={checkClassName} />;
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -95,7 +96,7 @@ export function ClaimForm({ slug }: { slug: string }) {
  * What just happened, told as the three steps the server actually ran. It
  * plays once, line by line, the way a launch readout does.
  */
-function SentLog({ sent }: { sent: Sent }) {
+function SentLog({ sent, checkClassName }: { sent: Sent; checkClassName: string }) {
   const reduce = useReducedMotion();
   const lines = [
     { label: "Lista de invitados", value: "Verificado" },
@@ -114,7 +115,7 @@ function SentLog({ sent }: { sent: Sent }) {
             transition={{ delay: i * 0.45, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-3 font-mono text-xs tracking-wide sm:text-sm"
           >
-            <Check className="size-4 shrink-0 text-green-500" aria-hidden="true" />
+            <Check className={`size-4 shrink-0 ${checkClassName}`} aria-hidden="true" />
             <span className="text-white/50 uppercase">{line.label}</span>
             <span className="min-w-0 truncate text-white">{line.value}</span>
           </motion.li>

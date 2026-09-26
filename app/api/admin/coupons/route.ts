@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/coupons/auth";
 import { redeemUrl } from "@/lib/coupons/check";
-import { claimCoupon, countByState, listCoupons, refreshCoupon } from "@/lib/coupons/queries";
+import { deliverEventCoupon } from "@/lib/coupons/deliver";
+import { COUPON_EVENTS, findCouponEvent } from "@/lib/coupons/events";
+import { addGuest, claimCoupon, countByState, listCoupons, refreshCoupon } from "@/lib/coupons/queries";
 import type { CouponCodeRow } from "@/lib/db/schema";
 
 export const runtime = "nodejs";
@@ -11,7 +13,10 @@ type Action =
   | { action: "list"; batch?: string; state?: "claimable" | "sent" | "redeemed" | "all"; limit?: number }
   | { action: "stats"; batch?: string }
   | { action: "check"; code: string }
-  | { action: "claim"; batch: string; sentTo?: string };
+  | { action: "claim"; batch: string; sentTo?: string }
+  | { action: "send"; event: string; email: string; name?: string };
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function present(row: CouponCodeRow) {
   return {
@@ -68,6 +73,28 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "no claimable coupons left in that batch" }, { status: 409 });
       }
       return NextResponse.json({ coupon: present(row) });
+    }
+
+    // Hand-picked send: puts the email on the event's guest list and mails
+    // them the code, exactly as if they'd claimed it on /creditos/<event>.
+    // The code ends up sent, not redeemed; asking again re-sends the same one.
+    case "send": {
+      const event = findCouponEvent(body.event?.trim() ?? "");
+      if (!event) {
+        return NextResponse.json(
+          { error: "unknown event", events: COUPON_EVENTS.map((e) => e.slug) },
+          { status: 400 },
+        );
+      }
+      const email = body.email?.trim().toLowerCase() ?? "";
+      if (!EMAIL_RE.test(email)) return NextResponse.json({ error: "valid email is required" }, { status: 400 });
+
+      await addGuest(event.guestList, email, body.name?.trim() || null);
+      const delivery = await deliverEventCoupon(event, email);
+      if (!delivery.ok) {
+        return NextResponse.json({ error: "no claimable coupons left in that batch" }, { status: 409 });
+      }
+      return NextResponse.json({ event: event.slug, email, code: delivery.code, resent: delivery.resent });
     }
 
     default:

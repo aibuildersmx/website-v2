@@ -97,35 +97,49 @@ export type AttendeeClaim =
   | { kind: "claimed"; coupon: CouponCodeRow; name: string | null; isNew: boolean };
 
 /**
- * Hand an event attendee their coupon: only if they're on the guest list, and
- * always the same code for the same email. Asking twice re-sends, never re-claims.
+ * Hand an event attendee their coupon: only if they're on the event's guest
+ * list, and always the same code for the same guest. Asking twice re-sends,
+ * never re-claims. The code is pinned on the guest-list row, not looked up by
+ * email, because two events can share a batch and a guest of both gets two.
  *
  * The advisory lock serializes concurrent claims for one email (double-click,
  * two tabs), which SKIP LOCKED alone would happily turn into two codes.
  */
-export async function claimForAttendee(batch: string, email: string): Promise<AttendeeClaim> {
+export async function claimForAttendee(
+  event: { batch: string; guestList: string },
+  email: string,
+): Promise<AttendeeClaim> {
   return db.transaction(async (tx) => {
-    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`coupon:${batch}:${email}`}))`);
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`coupon:${event.guestList}:${email}`}))`);
 
     const [guest] = await tx
-      .select({ name: couponEligible.name })
+      .select({ id: couponEligible.id, name: couponEligible.name, couponId: couponEligible.couponId })
       .from(couponEligible)
-      .where(and(eq(couponEligible.batch, batch), eq(couponEligible.email, email)))
+      .where(and(eq(couponEligible.batch, event.guestList), eq(couponEligible.email, email)))
       .limit(1);
     if (!guest) return { kind: "not_eligible" };
 
-    const [existing] = await tx
-      .select()
-      .from(couponCodes)
-      .where(and(eq(couponCodes.batch, batch), eq(couponCodes.sentTo, email)))
-      .orderBy(asc(couponCodes.sentAt))
-      .limit(1);
-    if (existing) return { kind: "claimed", coupon: existing, name: guest.name, isNew: false };
+    if (guest.couponId) {
+      const [existing] = await tx.select().from(couponCodes).where(eq(couponCodes.id, guest.couponId)).limit(1);
+      if (existing) return { kind: "claimed", coupon: existing, name: guest.name, isNew: false };
+    }
 
-    const coupon = await claimInTx(tx, batch, email);
+    const coupon = await claimInTx(tx, event.batch, email);
     if (!coupon) return { kind: "sold_out" };
+    await tx.update(couponEligible).set({ couponId: coupon.id }).where(eq(couponEligible.id, guest.id));
     return { kind: "claimed", coupon, name: guest.name, isNew: true };
   });
+}
+
+/**
+ * Put someone on an event's guest list by hand (a walk-in, a sponsor, someone
+ * who registered with another email). No-op if they're already on it.
+ */
+export async function addGuest(guestList: string, email: string, name: string | null) {
+  await db
+    .insert(couponEligible)
+    .values({ batch: guestList, email, name })
+    .onConflictDoNothing({ target: [couponEligible.batch, couponEligible.email] });
 }
 
 /**
@@ -133,10 +147,14 @@ export async function claimForAttendee(batch: string, email: string): Promise<At
  * to send, so a Resend hiccup doesn't strand a $50 code on someone's name.
  */
 export async function releaseCoupon(code: string) {
-  await db
-    .update(couponCodes)
-    .set({ sentAt: null, sentTo: null, updatedAt: new Date() })
-    .where(and(eq(couponCodes.code, code), isNull(couponCodes.redeemedAt)));
+  await db.transaction(async (tx) => {
+    const [row] = await tx
+      .update(couponCodes)
+      .set({ sentAt: null, sentTo: null, updatedAt: new Date() })
+      .where(and(eq(couponCodes.code, code), isNull(couponCodes.redeemedAt)))
+      .returning({ id: couponCodes.id });
+    if (row) await tx.update(couponEligible).set({ couponId: null }).where(eq(couponEligible.couponId, row.id));
+  });
 }
 
 /** Write one live check result back to the row. */

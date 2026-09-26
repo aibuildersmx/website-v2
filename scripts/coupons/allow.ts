@@ -4,14 +4,15 @@
  * Takes Luma's guest CSV export (Manage event → Guests → Download as CSV).
  * Guest emails are PII and this repo is public: keep the CSV out of git.
  *
- *   pnpm coupons:allow mexicocity_2026 ~/Downloads/guests.csv --checked-in-only
- *   pnpm coupons:allow mexicocity_2026 ~/Downloads/guests.csv --dry-run
+ *   pnpm coupons:allow grok-bot-cdmx ~/Downloads/guests.csv
+ *   pnpm coupons:allow cafe-cursor-cdmx ~/Downloads/guests.csv --checked-in-only --dry-run
  *
  * Idempotent: re-running with a newer export only adds the new emails.
  */
 
 import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";
+import { COUPON_EVENTS, findCouponEvent } from "@/lib/coupons/events";
 import { parseLumaGuests } from "@/lib/coupons/luma";
 
 async function main() {
@@ -22,14 +23,17 @@ async function main() {
       "dry-run": { type: "boolean", default: false },
     },
   });
-  const [batch, file] = positionals;
-  if (!batch || !file) {
-    console.error("uso: pnpm coupons:allow <batch> <luma.csv> [--checked-in-only] [--dry-run]");
+  const [slug, file] = positionals;
+  const event = slug ? findCouponEvent(slug) : undefined;
+  if (!event || !file) {
+    console.error("uso: pnpm coupons:allow <evento> <luma.csv> [--checked-in-only] [--dry-run]");
+    console.error(`eventos: ${COUPON_EVENTS.map((e) => e.slug).join(", ")}`);
     process.exit(1);
   }
+  const { batch, guestList } = event;
 
   const guests = parseLumaGuests(readFileSync(file, "utf8"), { checkedInOnly: values["checked-in-only"] });
-  console.log(`${guests.length} invitados${values["checked-in-only"] ? " con check-in" : " aprobados"} para ${batch}.`);
+  console.log(`${guests.length} invitados${values["checked-in-only"] ? " con check-in" : " aprobados"} para ${event.slug}.`);
   if (!guests.length) process.exit(1);
 
   if (values["dry-run"]) {
@@ -45,7 +49,7 @@ async function main() {
 
   const inserted = await db
     .insert(couponEligible)
-    .values(guests.map((g) => ({ batch, email: g.email, name: g.name })))
+    .values(guests.map((g) => ({ batch: guestList, email: g.email, name: g.name })))
     .onConflictDoNothing({ target: [couponEligible.batch, couponEligible.email] })
     .returning({ id: couponEligible.id });
   console.log(`listo: ${inserted.length} nuevos (${guests.length - inserted.length} ya estaban).`);

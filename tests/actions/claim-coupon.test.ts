@@ -2,14 +2,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const claimForAttendee = vi.fn();
 const releaseCoupon = vi.fn();
+const addGuest = vi.fn();
 const sendCouponEmail = vi.fn();
 const rateLimit = vi.fn();
 const headers = vi.fn();
+const reportClaim = vi.fn();
 
-vi.mock("@/lib/coupons/queries", () => ({ claimForAttendee, releaseCoupon }));
+vi.mock("@/lib/coupons/queries", () => ({ addGuest, claimForAttendee, releaseCoupon }));
 vi.mock("@/lib/coupons/email", () => ({ sendCouponEmail }));
 vi.mock("@/lib/rate-limit", () => ({ rateLimit }));
 vi.mock("next/headers", () => ({ headers }));
+vi.mock("@/lib/coupons/alerts", () => ({ reportClaim }));
 
 function fd(fields: Record<string, string>): FormData {
   const f = new FormData();
@@ -35,8 +38,25 @@ describe("claimEventCoupon", () => {
       ok: true,
       resent: false,
     });
-    expect(claimForAttendee).toHaveBeenCalledWith("mexicocity_2026", "ana@example.com");
+    expect(claimForAttendee).toHaveBeenCalledWith(
+      expect.objectContaining({ batch: "mexicocity_2026", guestList: "mexicocity_2026" }),
+      "ana@example.com",
+    );
     expect(sendCouponEmail).toHaveBeenCalledWith(expect.objectContaining({ to: "ana@example.com", code: "ABC123" }));
+    expect(addGuest).not.toHaveBeenCalled(); // Café Cursor still needs the Luma list
+    expect(reportClaim).toHaveBeenCalledWith(expect.objectContaining({ outcome: "claimed", ip: "1.2.3.4" }));
+  });
+
+  it("Grok Bot is open: any email joins its own guest list, codes come from the shared batch", async () => {
+    claimForAttendee.mockResolvedValue({ kind: "claimed", coupon, name: null, isNew: true });
+    const { claimEventCoupon } = await import("@/lib/actions/claim-coupon");
+
+    expect(await claimEventCoupon(fd({ event: "grok-bot-cdmx", email: "a@b.com" }))).toEqual({ ok: true, resent: false });
+    expect(addGuest).toHaveBeenCalledWith("grok_bot_cdmx_2026", "a@b.com", null);
+    expect(claimForAttendee).toHaveBeenCalledWith(
+      expect.objectContaining({ batch: "mexicocity_2026", guestList: "grok_bot_cdmx_2026" }),
+      "a@b.com",
+    );
   });
 
   it("says so when the code was already theirs", async () => {

@@ -3,8 +3,8 @@
 import { headers } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
 import { findCouponEvent } from "@/lib/coupons/events";
-import { claimForAttendee, releaseCoupon } from "@/lib/coupons/queries";
-import { sendCouponEmail } from "@/lib/coupons/email";
+import { reportClaim } from "@/lib/coupons/alerts";
+import { deliverEventCoupon } from "@/lib/coupons/deliver";
 
 export type ClaimCouponResult =
   | { ok: true; resent: boolean }
@@ -26,23 +26,21 @@ export async function claimEventCoupon(formData: FormData): Promise<ClaimCouponR
   // Per IP: stops guessing emails off the list. Per email: stops re-sends being
   // used to flood one attendee's inbox.
   if (!rateLimit(`coupon:ip:${ip}`, 10, 10 * 60_000) || !rateLimit(`coupon:email:${email}`, 3, 60 * 60_000)) {
+    reportClaim({ event, email, ip, outcome: "rate_limited" });
     return { ok: false, error: "rate_limited" };
   }
 
   try {
-    const claim = await claimForAttendee(event.batch, email);
-    if (claim.kind !== "claimed") return { ok: false, error: claim.kind };
-
-    try {
-      await sendCouponEmail({ to: email, name: claim.name, code: claim.coupon.code, event });
-    } catch (error) {
-      // Undelivered code goes back on the shelf; a re-sent one stays theirs.
-      if (claim.isNew) await releaseCoupon(claim.coupon.code);
-      throw error;
+    const delivery = await deliverEventCoupon(event, email);
+    if (!delivery.ok) {
+      if (delivery.error === "sold_out") reportClaim({ event, email, ip, outcome: "sold_out" });
+      return { ok: false, error: delivery.error };
     }
-    return { ok: true, resent: !claim.isNew };
+    reportClaim({ event, email, ip, outcome: delivery.resent ? "resent" : "claimed" });
+    return { ok: true, resent: delivery.resent };
   } catch (error) {
     console.error("claimEventCoupon failed:", error);
+    reportClaim({ event, email, ip, outcome: "error" });
     return { ok: false, error: "error" };
   }
 }
