@@ -82,6 +82,28 @@ function hasEdgeOrConsecutiveDots(part: string): boolean {
   return part.startsWith(".") || part.endsWith(".") || part.includes("..");
 }
 
+/** Gmail ignores dots and anything from `+` on, and googlemail.com is the same inbox. */
+export const GMAIL_DOMAINS = ["gmail.com", "googlemail.com"] as const;
+
+/**
+ * The mailbox an address really lands in, so aliases count as one person:
+ * `Juan.Perez+2@googlemail.com` → `juanperez@gmail.com`. Other domains are only
+ * lowercased: `ana+x@empresa.mx` stays distinct, since not every server treats
+ * `+` as a tag.
+ *
+ * `canonicalEmailSql` in lib/coupons/queries.ts is the same rule in SQL and must
+ * change with it.
+ */
+export function couponIdentity(email: string): string {
+  const normalized = email.trim().toLowerCase();
+  const at = normalized.lastIndexOf("@");
+  if (at === -1) return normalized;
+  const local = normalized.slice(0, at);
+  const domain = normalized.slice(at + 1);
+  if (!(GMAIL_DOMAINS as readonly string[]).includes(domain)) return normalized;
+  return `${local.split("+")[0].replace(/\./g, "")}@gmail.com`;
+}
+
 /**
  * Why this address must not receive a coupon, or null when it may.
  * A throwaway domain wins over a messy local-part, so `a..b@passinbox.com`
@@ -100,5 +122,6 @@ export function couponEmailProblem(email: string): CouponEmailProblem | null {
 
   if (isDisposableEmailDomain(domain)) return "disposable";
   if (hasEdgeOrConsecutiveDots(local) || hasEdgeOrConsecutiveDots(domain)) return "malformed";
+  if (couponIdentity(normalized).startsWith("@")) return "malformed"; // "+x@gmail.com"
   return null;
 }

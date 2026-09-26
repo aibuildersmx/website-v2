@@ -2,8 +2,24 @@ import { describe, expect, it } from "vitest";
 import {
   DISPOSABLE_EMAIL_DOMAINS,
   couponEmailProblem,
+  couponIdentity,
   isDisposableEmailDomain,
 } from "@/lib/coupons/email-policy";
+import { ABUSE_ALIASES, IDENTITY_FIXTURES } from "./fixtures/identity";
+
+describe("couponIdentity", () => {
+  it("maps every fixture to its mailbox", () => {
+    for (const [email, identity] of IDENTITY_FIXTURES) expect(couponIdentity(email), email).toBe(identity);
+  });
+
+  it("collapses the eight aliases from the grok-bot-cdmx abuse into one identity", () => {
+    expect(new Set(ABUSE_ALIASES.map(couponIdentity))).toEqual(new Set(["saidromero19@gmail.com"]));
+  });
+
+  it("leaves +tags on other domains distinct", () => {
+    expect(couponIdentity("user+tag@company.com")).not.toBe(couponIdentity("user@company.com"));
+  });
+});
 
 describe("couponEmailProblem", () => {
   it("includes the domain used in the coupon abuse", () => {
@@ -48,5 +64,12 @@ describe("couponEmailProblem", () => {
   it("accepts an ordinary address, including dots and a plus tag", () => {
     expect(couponEmailProblem("Ana.Maria+event@Example.com")).toBeNull();
     expect(couponEmailProblem("a@b.com")).toBeNull();
+    // A single +address still works once; uniqueness is on the mailbox.
+    expect(couponEmailProblem("saidromero19+1@gmail.com")).toBeNull();
+  });
+
+  it("rejects a Gmail address with no mailbox left once the tag is stripped", () => {
+    expect(couponEmailProblem("+x@gmail.com")).toBe("malformed");
+    expect(couponEmailProblem("+x@googlemail.com")).toBe("malformed");
   });
 });
