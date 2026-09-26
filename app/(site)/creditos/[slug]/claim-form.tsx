@@ -7,6 +7,7 @@ import { claimEventCoupon } from "@/lib/actions/claim-coupon";
 
 const ERROR_COPY: Record<string, string> = {
   invalid: "Ingresa un correo válido.",
+  disposable: "Usa un correo personal o de trabajo. No aceptamos correos temporales.",
   not_eligible: "Ese correo no está en la lista del evento. Usa el mismo con el que te registraste en Luma.",
   sold_out: "Ya no quedan códigos. Escríbenos a hola@aibuilders.lat.",
   rate_limited: "Demasiados intentos. Espera un momento y vuelve a intentar.",

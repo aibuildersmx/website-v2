@@ -3,14 +3,13 @@
 import { headers } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
 import { findCouponEvent } from "@/lib/coupons/events";
+import { couponEmailProblem } from "@/lib/coupons/email-policy";
 import { reportClaim } from "@/lib/coupons/alerts";
 import { deliverEventCoupon } from "@/lib/coupons/deliver";
 
 export type ClaimCouponResult =
   | { ok: true; resent: boolean }
-  | { ok: false; error: "invalid" | "not_eligible" | "sold_out" | "rate_limited" | "error" };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  | { ok: false; error: "invalid" | "disposable" | "not_eligible" | "sold_out" | "rate_limited" | "error" };
 
 export async function claimEventCoupon(formData: FormData): Promise<ClaimCouponResult> {
   // Honeypot: bots fill it, humans never see it. Pretend it worked.
@@ -18,8 +17,12 @@ export async function claimEventCoupon(formData: FormData): Promise<ClaimCouponR
 
   const event = findCouponEvent(String(formData.get("event") ?? ""));
   const raw = (formData.get("email") as string | null)?.trim() ?? "";
-  if (!event || !raw || !EMAIL_RE.test(raw)) return { ok: false, error: "invalid" };
+  if (!event || !raw) return { ok: false, error: "invalid" };
   const email = raw.toLowerCase();
+  // Before rate limits and before a code is assigned or emailed.
+  const problem = couponEmailProblem(email);
+  if (problem === "malformed") return { ok: false, error: "invalid" };
+  if (problem === "disposable") return { ok: false, error: "disposable" };
 
   const h = await headers();
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";

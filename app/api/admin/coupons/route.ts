@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/coupons/auth";
 import { redeemUrl } from "@/lib/coupons/check";
 import { deliverEventCoupon } from "@/lib/coupons/deliver";
+import { couponEmailProblem } from "@/lib/coupons/email-policy";
 import { COUPON_EVENTS, findCouponEvent } from "@/lib/coupons/events";
 import { addGuest, claimCoupon, countByState, listCoupons, refreshCoupon } from "@/lib/coupons/queries";
 import type { CouponCodeRow } from "@/lib/db/schema";
@@ -15,8 +16,6 @@ type Action =
   | { action: "check"; code: string }
   | { action: "claim"; batch: string; sentTo?: string }
   | { action: "send"; event: string; email: string; name?: string };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function present(row: CouponCodeRow) {
   return {
@@ -87,11 +86,24 @@ export async function POST(request: Request) {
         );
       }
       const email = body.email?.trim().toLowerCase() ?? "";
-      if (!EMAIL_RE.test(email)) return NextResponse.json({ error: "valid email is required" }, { status: 400 });
+      const problem = couponEmailProblem(email);
+      // Before the guest-list write, so a throwaway address never becomes eligible.
+      if (!email || problem === "malformed") {
+        return NextResponse.json({ error: "valid email is required" }, { status: 400 });
+      }
+      if (problem === "disposable") {
+        return NextResponse.json({ error: "disposable email addresses are not accepted" }, { status: 400 });
+      }
 
       await addGuest(event.guestList, email, body.name?.trim() || null);
       const delivery = await deliverEventCoupon(event, email);
       if (!delivery.ok) {
+        if (delivery.error === "disposable") {
+          return NextResponse.json({ error: "disposable email addresses are not accepted" }, { status: 400 });
+        }
+        if (delivery.error === "invalid") {
+          return NextResponse.json({ error: "valid email is required" }, { status: 400 });
+        }
         return NextResponse.json({ error: "no claimable coupons left in that batch" }, { status: 409 });
       }
       return NextResponse.json({ event: event.slug, email, code: delivery.code, resent: delivery.resent });
