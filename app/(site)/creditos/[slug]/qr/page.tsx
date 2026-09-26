@@ -72,15 +72,17 @@ export default async function QrScreen({ params }: Props) {
             <br />
             en créditos de Cursor.
           </p>
-          <p className="mt-[2.4vh] font-mono text-[min(2.4vh,1.5vw)] text-white/50">aibuilders.mx/creditos/{event.slug}</p>
         </div>
 
+        <div>
         <div className="rounded-[min(4vh,2.6vw)] bg-white p-[min(3.6vh,2.3vw)]">
           {/* Unoptimized: the SVG QR reaches the screen untouched, crisp at any projector size. */}
           <Image src={qr} alt={`Código QR a aibuilders.mx/creditos/${event.slug}`} width={33} height={33} unoptimized className="block size-[min(48vh,30vw)] [image-rendering:pixelated]" priority />
           <p className="mt-[2.6vh] text-center font-mono text-[2vh] tracking-[0.16em] text-black/50 uppercase">
             Escanea con tu cámara
           </p>
+        </div>
+        <p className="mt-[2.4vh] text-center font-mono text-[min(2.4vh,1.5vw)] text-white/50">aibuilders.mx/creditos/{event.slug}</p>
         </div>
       </div>
     </main>
