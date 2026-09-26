@@ -1,11 +1,12 @@
 import "server-only";
 import type { CouponEvent } from "./events";
+import { couponEmailProblem } from "./email-policy";
 import { addGuest, claimForAttendee, releaseCoupon } from "./queries";
 import { sendCouponEmail } from "./email";
 
 export type Delivery =
   | { ok: true; code: string; resent: boolean }
-  | { ok: false; error: "not_eligible" | "sold_out" };
+  | { ok: false; error: "not_eligible" | "sold_out" | "disposable" | "invalid" };
 
 /**
  * Claim a guest's code and email it. Shared by the /creditos page and the admin
@@ -16,6 +17,11 @@ export type Delivery =
  * error propagates; a re-sent code stays theirs.
  */
 export async function deliverEventCoupon(event: CouponEvent, email: string): Promise<Delivery> {
+  // Shared choke point: public claim and admin send both come through here.
+  const problem = couponEmailProblem(email);
+  if (problem === "disposable") return { ok: false, error: "disposable" };
+  if (problem === "malformed") return { ok: false, error: "invalid" };
+
   if (event.open) await addGuest(event.guestList, email, null);
   const claim = await claimForAttendee(event, email);
   if (claim.kind !== "claimed") return { ok: false, error: claim.kind };

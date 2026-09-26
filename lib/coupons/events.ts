@@ -16,8 +16,9 @@ type BaseEvent = {
   when: string;
   valueUsd: number;
   /**
-   * Open claims: any email gets a code (one per email), no Luma list needed.
-   * The guest list fills itself as people claim. Abuse is watched, not blocked:
+   * Open claims: any real email gets a code (one per email), no Luma list needed.
+   * The guest list fills itself as people claim. Throwaway domains are refused
+   * in lib/coupons/email-policy.ts. Other abuse is watched, not blocked:
    * see lib/coupons/alerts.ts.
    */
   open?: boolean;

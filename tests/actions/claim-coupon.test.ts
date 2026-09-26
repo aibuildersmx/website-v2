@@ -109,6 +109,37 @@ describe("claimEventCoupon", () => {
     expect(claimForAttendee).not.toHaveBeenCalled();
   });
 
+  it("rejects throwaway domains before assigning or emailing a code", async () => {
+    const { claimEventCoupon } = await import("@/lib/actions/claim-coupon");
+
+    expect(await claimEventCoupon(fd({ event: "grok-bot-cdmx", email: "a..b@PassInbox.com" }))).toEqual({
+      ok: false,
+      error: "disposable",
+    });
+    expect(await claimEventCoupon(fd({ event: "cafe-cursor-cdmx", email: "bot@mail.mailinator.com" }))).toEqual({
+      ok: false,
+      error: "disposable",
+    });
+    expect(claimForAttendee).not.toHaveBeenCalled();
+    expect(sendCouponEmail).not.toHaveBeenCalled();
+    expect(addGuest).not.toHaveBeenCalled();
+    expect(rateLimit).not.toHaveBeenCalled();
+    expect(reportClaim).not.toHaveBeenCalled();
+  });
+
+  it("rejects consecutive and edge dots before assigning or emailing a code", async () => {
+    const { claimEventCoupon } = await import("@/lib/actions/claim-coupon");
+
+    for (const email of ["a..b@gmail.com", ".a@gmail.com", "a.@gmail.com", "a@gmail..com"]) {
+      expect(await claimEventCoupon(fd({ event: "cafe-cursor-cdmx", email }))).toEqual({
+        ok: false,
+        error: "invalid",
+      });
+    }
+    expect(claimForAttendee).not.toHaveBeenCalled();
+    expect(sendCouponEmail).not.toHaveBeenCalled();
+  });
+
   it("stops when rate limited", async () => {
     rateLimit.mockReturnValue(false);
     const { claimEventCoupon } = await import("@/lib/actions/claim-coupon");
