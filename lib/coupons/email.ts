@@ -40,7 +40,8 @@ function cursorHtml({ hello, code, url, event }: Parts) {
 }
 
 /**
- * The meetup's look: black stage, white type, teal as the one accent, the orb
+ * The meetup's look, matching its Luma cover and QR card (the title and date
+ * are that cover's, so this template is this meetup's, not any Grok event's): black stage, white type, teal as the one accent, the orb
  * at the foot. Built from tables with bgcolor attributes and hex colors (no
  * rgba, no div backgrounds) because mail clients strip the rest. The orb is the
  * only image; with images blocked the email still reads complete.
@@ -53,8 +54,8 @@ function grokHtml({ hello, code, url, event }: Parts) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background:#000000;">
 <tr><td align="center" style="padding:40px 20px 0;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;font-family:${SANS};color:#ffffff;">
-    ${row(`<p style="margin:0;font-family:${MONO};font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#8c8c8c;"><span style="color:#00BCA6;">&#9679;</span>&nbsp; ${escapeHtml(event.title)}</p>`, "0 0 28px")}
-    ${row(`<p style="margin:0;font-size:34px;line-height:1.05;font-weight:500;letter-spacing:-0.03em;color:#ffffff;">Tus $${event.valueUsd}&nbsp;USD<br><span style="color:#737373;">en créditos de Cursor.</span></p>`, "0 0 28px")}
+    ${row(`<p style="margin:0;font-size:36px;line-height:1.06;font-weight:400;letter-spacing:-0.035em;color:#ffffff;">Grok Bot<br>Mexico City Meetup<br><span style="color:#737373;">Sábado, 26 de Sept</span></p>`, "0 0 28px")}
+    ${row(`<p style="margin:0;font-size:22px;line-height:1.25;font-weight:500;letter-spacing:-0.02em;color:#ffffff;">Tus <span style="color:#00BCA6;">$${event.valueUsd}&nbsp;USD</span><br>en créditos de Cursor.</p>`, "0 0 24px")}
     ${row(`<p style="margin:0 0 12px;font-size:16px;line-height:1.6;color:#ffffff;">${hello}</p><p style="margin:0;font-size:16px;line-height:1.6;color:#a3a3a3;">Gracias por venir al Grok Bot Meetup. Aquí está tu código.</p>`)}
     ${row(`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#141414" style="background:#141414;border:1px solid #2b2b2b;border-radius:16px;">
       <tr><td align="center" style="padding:22px 16px;">
