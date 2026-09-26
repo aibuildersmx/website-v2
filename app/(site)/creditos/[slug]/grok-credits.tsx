@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 import type { CouponEvent } from "@/lib/coupons/events";
 import { ClaimForm } from "./claim-form";
 import { STEPS } from "./cursor-credits";
-import { GrokCursor, GrokOrb } from "./grok-orb";
+import { GrokOrb, GrokPointer } from "./grok-orb";
 
 /**
  * Grok Bot Meetup look: the Luma cover's black stage, white type, the orb face
@@ -17,9 +17,17 @@ export function GrokCredits({ event }: { event: Extract<CouponEvent, { theme: "g
 
       <section className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden">
         {/* Phone: the orb peeks in from the top corner, above the copy. From sm up it rises from the bottom right, as on the Luma cover. */}
-        <GrokOrb className="absolute top-24 right-[-5rem] -z-10 w-56 sm:top-auto sm:right-[-14%] sm:bottom-[-34%] sm:w-[60vw] md:right-[-6%] md:bottom-[-30%] md:w-[52vw] md:max-w-[820px]" />
-        <GrokCursor className="absolute top-[22%] right-[10%] -z-10 hidden w-28 sm:block md:top-[18%] md:right-[16%] md:w-36" />
-
+        <GrokOrb
+          follow
+          className="absolute top-24 right-[-5rem] -z-10 w-56 sm:top-auto sm:right-[-14%] sm:bottom-[-34%] sm:w-[60vw] md:right-[-6%] md:bottom-[-30%] md:w-[52vw] md:max-w-[820px]"
+        />
+        {/* The cover's little teal bot with a pointer chasing it, plus a couple of bots drifting further back. */}
+        <div className="absolute top-[22%] right-[10%] -z-10 hidden items-start gap-3 sm:flex md:top-[18%] md:right-[16%]">
+          <GrokPointer className="mt-6 w-9 md:w-11" />
+          <GrokOrb ink="#00BCA6" follow float={10} seed={3} className="w-16 md:w-20" />
+        </div>
+        <GrokOrb ink="#54B9A6" float={14} seed={7} className="absolute top-[30%] left-[58%] -z-20 hidden w-7 opacity-50 md:block" />
+        <GrokOrb ink="#00BCA6" float={8} seed={11} className="absolute top-[13%] left-[6%] -z-20 w-6 opacity-40 sm:w-8" />
         <div className="mx-auto w-full max-w-6xl px-4 pt-40 pb-16 sm:px-6 sm:pb-24">
           <p className="flex items-center gap-2 font-mono text-xs tracking-widest text-white/60 uppercase">
             <span className="size-2 rounded-full bg-[#00BCA6]" aria-hidden="true" />
