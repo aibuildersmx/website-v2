@@ -42,15 +42,16 @@ export default async function QrScreen({ params }: Props) {
     <main className="relative isolate flex h-[100svh] w-full cursor-none items-center overflow-hidden bg-[#000] font-sans text-white">
       <StayAwake />
 
-      <GrokOrb className="absolute bottom-[-46vh] left-[-9vw] -z-10 w-[58vh]" />
-      <div className="absolute top-[9vh] left-[44vw] -z-10 flex items-start gap-[1.2vh]">
+      {/* The face rises from the bottom-left with both eyes in view, as on the phone layout. */}
+      <GrokOrb className="absolute bottom-[-21vh] left-[-3vw] -z-10 w-[min(60vh,36vw)]" />
+      <div className="absolute top-[8vh] left-[42vw] -z-10 flex items-start gap-[1.2vh]">
         <GrokPointer className="mt-[3vh] w-[4.5vh]" />
         <GrokOrb ink="#00BCA6" float={10} seed={3} className="w-[9vh]" />
       </div>
-      <GrokOrb ink="#54B9A6" float={14} seed={7} className="absolute top-[62vh] left-[47vw] -z-10 w-[3.5vh] opacity-50" />
+      <GrokOrb ink="#54B9A6" float={14} seed={7} className="absolute top-[70vh] left-[44vw] -z-10 w-[3.5vh] opacity-50" />
 
-      <div className="mx-auto grid w-full max-w-[92vw] grid-cols-[minmax(0,1fr)_auto] items-center gap-[6vw]">
-        <div>
+      <div className="mx-auto grid h-full w-full max-w-[92vw] grid-cols-[minmax(0,1fr)_auto] items-center gap-[6vw]">
+        <div className="self-start pt-[8vh]">
           <div className="flex items-center gap-[1.6vh]">
             <Image src="/AIBM-logo-dark.svg" alt="AI Builders México" width={393} height={95} className="h-[4.2vh] w-auto" />
             <span className="font-mono text-[2.4vh] text-white/40">×</span>
@@ -58,7 +59,7 @@ export default async function QrScreen({ params }: Props) {
             <Image src="/spacexai-logo.svg" alt="SpaceXAI" width={205} height={25} className="h-[2.4vh] w-auto invert" />
           </div>
 
-          <h1 className="mt-[7vh] font-sans text-[min(9vh,5.4vw)] leading-[1.02] font-normal tracking-[-0.035em]">
+          <h1 className="mt-[5vh] font-sans text-[min(7vh,4.2vw)] leading-[1.02] font-normal tracking-[-0.035em]">
             Grok Bot
             <br />
             Mexico City Meetup
@@ -66,7 +67,7 @@ export default async function QrScreen({ params }: Props) {
             <span className="text-white/45">Sábado, 26 de Sept</span>
           </h1>
 
-          <p className="mt-[6vh] text-[min(4.4vh,2.7vw)] leading-[1.2] font-medium tracking-[-0.02em]">
+          <p className="mt-[4vh] text-[min(3.6vh,2.2vw)] leading-[1.2] font-medium tracking-[-0.02em]">
             Escanea y reclama tus <span className="text-[#00BCA6]">${event.valueUsd} USD</span>
             <br />
             en créditos de Cursor.
@@ -76,7 +77,7 @@ export default async function QrScreen({ params }: Props) {
 
         <div className="rounded-[min(4vh,2.6vw)] bg-white p-[min(3.6vh,2.3vw)]">
           {/* Unoptimized: the SVG QR reaches the screen untouched, crisp at any projector size. */}
-          <Image src={qr} alt={`Código QR a aibuilders.mx/creditos/${event.slug}`} width={33} height={33} unoptimized className="block size-[min(62vh,40vw)] [image-rendering:pixelated]" priority />
+          <Image src={qr} alt={`Código QR a aibuilders.mx/creditos/${event.slug}`} width={33} height={33} unoptimized className="block size-[min(48vh,30vw)] [image-rendering:pixelated]" priority />
           <p className="mt-[2.6vh] text-center font-mono text-[2vh] tracking-[0.16em] text-black/50 uppercase">
             Escanea con tu cámara
           </p>

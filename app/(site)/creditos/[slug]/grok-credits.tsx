@@ -31,7 +31,7 @@ export function GrokCredits({ event }: { event: Extract<CouponEvent, { theme: "g
         <div className="mx-auto w-full max-w-6xl px-4 pt-40 pb-16 sm:px-6 sm:pb-24">
           <p className="flex items-center gap-2 font-mono text-xs tracking-widest text-white/60 uppercase">
             <span className="size-2 rounded-full bg-[#00BCA6]" aria-hidden="true" />
-            {event.title} · {event.when}
+            {event.title}
           </p>
           <h1 className="mt-6 max-w-3xl font-sans text-5xl leading-[0.98] font-medium tracking-[-0.035em] text-balance sm:text-7xl md:text-8xl">
             Tus ${event.valueUsd} USD <span className="text-white/45">en créditos de Cursor.</span>
