@@ -17,15 +17,17 @@ import { StayAwake } from "./stay-awake";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  /**
-   * Venue WiFi, e.g. ?red=Igeneris&pass=… . Read from the URL, never stored:
-   * this repo is public, and each venue has its own network.
-   */
+  /** Venue WiFi override, e.g. ?red=…&pass=… (wins over VENUE_WIFI). */
   searchParams: Promise<{ red?: string; pass?: string }>;
 };
 
 const QR_SRC: Record<string, string> = {
   "grok-bot-cdmx": "/images/grok/qr-grok-bot-cdmx.svg",
+};
+
+/** The venue's network, shown under the QR. Only for the day of the event. */
+const VENUE_WIFI: Record<string, { red: string; pass: string }> = {
+  "grok-bot-cdmx": { red: "Igeneris", pass: "IgenerisLuisUrbina4" },
 };
 
 export function generateStaticParams() {
@@ -41,7 +43,9 @@ export const metadata: Metadata = {
 
 export default async function QrScreen({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { red, pass } = await searchParams;
+  const query = await searchParams;
+  const red = query.red ?? VENUE_WIFI[slug]?.red;
+  const pass = query.pass ?? VENUE_WIFI[slug]?.pass;
   const event = findCouponEvent(slug);
   const qr = QR_SRC[slug];
   if (!event || !qr) notFound();
