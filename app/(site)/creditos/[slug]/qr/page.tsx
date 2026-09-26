@@ -71,7 +71,7 @@ export default async function QrScreen({ params, searchParams }: Props) {
           <p className="text-[min(3.2vh,1.8vw)] leading-tight font-medium whitespace-nowrap">{red}</p>
           {pass ? (
             <>
-              <p className="mt-[1.8vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/60 uppercase">Contraseña</p>
+              <p className="mt-[1.8vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/60 uppercase">Password</p>
               <p className="text-[min(2.8vh,1.5vw)] leading-tight font-medium whitespace-nowrap">{pass}</p>
             </>
           ) : null}
