@@ -60,7 +60,22 @@ export default async function QrScreen({ params, searchParams }: Props) {
         <GrokPointer className="mt-[3vh] w-[4.5vh]" />
         <GrokOrb ink="#00BCA6" float={10} seed={3} className="w-[9vh]" />
       </div>
-      <GrokOrb ink="#54B9A6" float={14} seed={7} className="absolute top-[70vh] left-[44vw] -z-10 w-[3.5vh] opacity-50" />
+      <GrokOrb ink="#54B9A6" float={14} seed={7} className="absolute top-[84vh] left-[52vw] -z-10 w-[3.5vh] opacity-50" />
+
+      {/* Venue WiFi in the gap between the copy and the QR, big enough to read from the back. */}
+      {red ? (
+        <div className="absolute top-[40vh] left-[41vw] max-w-[19vw]">
+          <p className="font-mono text-[min(2vh,1.25vw)] tracking-[0.18em] text-[#00BCA6] uppercase">WiFi</p>
+          <p className="mt-[1.6vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/45 uppercase">Red</p>
+          <p className="text-[min(3.4vh,2vw)] leading-tight font-medium break-all">{red}</p>
+          {pass ? (
+            <>
+              <p className="mt-[1.6vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/45 uppercase">Contraseña</p>
+              <p className="text-[min(3.4vh,2vw)] leading-tight font-medium break-all">{pass}</p>
+            </>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="mx-auto grid h-full w-full max-w-[92vw] grid-cols-[minmax(0,1fr)_auto] items-center gap-[6vw]">
         <div className="self-start pt-[8vh]">
@@ -95,18 +110,6 @@ export default async function QrScreen({ params, searchParams }: Props) {
           </p>
         </div>
         <p className="mt-[2.4vh] text-center font-mono text-[min(2.4vh,1.5vw)] text-white/50">aibuilders.mx/creditos/{event.slug}</p>
-        {red ? (
-          <p className="mt-[2.2vh] flex flex-wrap items-baseline justify-center gap-x-[1.4vh] font-mono text-[min(2.6vh,1.6vw)] text-white">
-            <span className="text-[#00BCA6] tracking-[0.16em] uppercase">WiFi</span>
-            <span>{red}</span>
-            {pass ? (
-              <>
-                <span className="text-white/40">·</span>
-                <span>{pass}</span>
-              </>
-            ) : null}
-          </p>
-        ) : null}
         </div>
       </div>
     </main>
