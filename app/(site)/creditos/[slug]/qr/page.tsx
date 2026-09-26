@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Wifi } from "lucide-react";
 import { notFound } from "next/navigation";
 import { COUPON_EVENTS, findCouponEvent } from "@/lib/coupons/events";
 import { GrokOrb, GrokPointer } from "../grok-orb";
@@ -64,14 +65,14 @@ export default async function QrScreen({ params, searchParams }: Props) {
 
       {/* Venue WiFi in the gap between the copy and the QR, big enough to read from the back. */}
       {red ? (
-        <div className="absolute top-[40vh] left-[41vw] max-w-[19vw]">
-          <p className="font-mono text-[min(2vh,1.25vw)] tracking-[0.18em] text-[#00BCA6] uppercase">WiFi</p>
-          <p className="mt-[1.6vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/45 uppercase">Red</p>
-          <p className="text-[min(3.4vh,2vw)] leading-tight font-medium break-all">{red}</p>
+        <div className="absolute top-[36vh] left-[40.5vw] flex w-[20vw] flex-col items-center rounded-[min(3vh,1.8vw)] border border-[#00BCA6]/50 bg-[#00BCA6]/15 px-[1.4vw] py-[3vh] text-center text-white">
+          <Wifi className="size-[min(5vh,3vw)]" strokeWidth={2} aria-hidden="true" />
+          <p className="mt-[2vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/60 uppercase">Red</p>
+          <p className="text-[min(3.2vh,1.8vw)] leading-tight font-medium whitespace-nowrap">{red}</p>
           {pass ? (
             <>
-              <p className="mt-[1.6vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/45 uppercase">Contraseña</p>
-              <p className="text-[min(3.4vh,2vw)] leading-tight font-medium break-all">{pass}</p>
+              <p className="mt-[1.8vh] font-mono text-[min(1.6vh,1vw)] tracking-[0.16em] text-white/60 uppercase">Contraseña</p>
+              <p className="text-[min(2.8vh,1.5vw)] leading-tight font-medium whitespace-nowrap">{pass}</p>
             </>
           ) : null}
         </div>
