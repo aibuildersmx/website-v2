@@ -11,16 +11,27 @@ const ERROR_COPY: Record<string, string> = {
   not_eligible: "Ese correo no está en la lista del evento. Usa el mismo con el que te registraste en Luma.",
   sold_out: "Ya no quedan códigos. Escríbenos a hola@aibuilders.lat.",
   rate_limited: "Demasiados intentos. Espera un momento y vuelve a intentar.",
+  closed: "Ya cerramos el reparto de códigos en esta página.",
   error: "No pudimos enviarlo. Intenta de nuevo en un momento.",
 };
 
 type Sent = { email: string; resent: boolean };
 
 /** `checkClassName` colors the success ticks, so a themed page can use its accent. */
-export function ClaimForm({ slug, checkClassName = "text-green-500" }: { slug: string; checkClassName?: string }) {
+export function ClaimForm({
+  slug,
+  closed = false,
+  checkClassName = "text-green-500",
+}: {
+  slug: string;
+  closed?: boolean;
+  checkClassName?: string;
+}) {
   const [sent, setSent] = useState<Sent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  if (closed) return <ClosedNotice />;
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -90,6 +101,18 @@ export function ClaimForm({ slug, checkClassName = "text-green-500" }: { slug: s
         {error}
       </p>
     </form>
+  );
+}
+
+function ClosedNotice() {
+  return (
+    <div role="status" className="rounded-2xl border border-white/20 bg-[#212121]/60 p-5 backdrop-blur-md sm:p-6">
+      <p className="font-mono text-xs tracking-widest text-white/50 uppercase">Reparto cerrado</p>
+      <p className="mt-3 text-sm leading-relaxed text-white/80">
+        Ya no estamos enviando códigos desde esta página. Si asististe al evento y no recibiste el tuyo,
+        escríbenos a hola@aibuilders.lat.
+      </p>
+    </div>
   );
 }
 

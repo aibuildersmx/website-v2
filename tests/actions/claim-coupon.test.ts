@@ -14,6 +14,19 @@ vi.mock("@/lib/rate-limit", () => ({ rateLimit }));
 vi.mock("next/headers", () => ({ headers }));
 vi.mock("@/lib/coupons/alerts", () => ({ reportClaim }));
 
+// The flow under test runs with claims open; the "closed" test flips one back.
+const closedSlugs = new Set<string>();
+vi.mock("@/lib/coupons/events", async (importActual) => {
+  const actual = await importActual<typeof import("@/lib/coupons/events")>();
+  return {
+    ...actual,
+    findCouponEvent: (slug: string) => {
+      const event = actual.findCouponEvent(slug);
+      return event && { ...event, closed: closedSlugs.has(slug) };
+    },
+  };
+});
+
 function fd(fields: Record<string, string>): FormData {
   const f = new FormData();
   for (const [k, v] of Object.entries(fields)) f.set(k, v);
@@ -25,6 +38,7 @@ const coupon = { code: "ABC123" };
 describe("claimEventCoupon", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    closedSlugs.clear();
     rateLimit.mockReturnValue(true);
     headers.mockResolvedValue(new Map([["x-forwarded-for", "1.2.3.4"]]));
     sendCouponEmail.mockResolvedValue(undefined);
@@ -138,6 +152,25 @@ describe("claimEventCoupon", () => {
     }
     expect(claimForAttendee).not.toHaveBeenCalled();
     expect(sendCouponEmail).not.toHaveBeenCalled();
+  });
+
+  it("refuses a closed event before rate limits, the DB, or Resend, even for bots", async () => {
+    closedSlugs.add("grok-bot-cdmx");
+    const { claimEventCoupon } = await import("@/lib/actions/claim-coupon");
+
+    expect(await claimEventCoupon(fd({ event: "grok-bot-cdmx", email: "a@b.com" }))).toEqual({
+      ok: false,
+      error: "closed",
+    });
+    expect(await claimEventCoupon(fd({ event: "grok-bot-cdmx", email: "a@b.com", company: "x" }))).toEqual({
+      ok: false,
+      error: "closed",
+    });
+    expect(rateLimit).not.toHaveBeenCalled();
+    expect(addGuest).not.toHaveBeenCalled();
+    expect(claimForAttendee).not.toHaveBeenCalled();
+    expect(sendCouponEmail).not.toHaveBeenCalled();
+    expect(reportClaim).not.toHaveBeenCalled();
   });
 
   it("stops when rate limited", async () => {
